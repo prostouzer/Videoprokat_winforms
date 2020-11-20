@@ -36,9 +36,6 @@ namespace videoprokat_winform.Models
             Leasing l2 = new Leasing(mc2, c2, Convert.ToDateTime("19/11/2020"), Convert.ToDateTime("24/11/2020"));
             Leasing l3 = new Leasing(mc3, c1, Convert.ToDateTime("19/11/2020"), Convert.ToDateTime("25/11/2020"));
 
-            //c1.LeaseCopy(l1);
-            //c2.LeaseCopy(l2);
-
             db.LeasedCopies.Add(l1);
             db.LeasedCopies.Add(l2);
             db.LeasedCopies.Add(l3);

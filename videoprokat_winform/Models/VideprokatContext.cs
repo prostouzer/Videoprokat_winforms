@@ -9,7 +9,7 @@ namespace videoprokat_winform.Models
     {
         static VideoprokatContext()
         {
-            Database.SetInitializer<VideoprokatContext>(new Initializer());
+            //Database.SetInitializer<VideoprokatContext>(new Initializer());
         }
         public VideoprokatContext() : base("MyConnection")
         {

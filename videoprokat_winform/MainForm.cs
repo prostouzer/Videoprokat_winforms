@@ -26,6 +26,9 @@ namespace videoprokat_winform
             moviesDataGridView.DataSource = db.MoviesOriginal.Local.ToBindingList();
             moviesDataGridView.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             moviesDataGridView.Columns["Copies"].Visible = false;
+
+            moviesDataGridView.Columns["Id"].ReadOnly = true;
+
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -45,6 +48,7 @@ namespace videoprokat_winform
                                        where r.MovieId == CurrentMovieId
                                        select r).ToList();
                     movieCopiesDataGridView.DataSource = movieCopies;
+                    movieCopiesDataGridView.Columns["Id"].ReadOnly = true;
                 }
             }
         }
@@ -60,7 +64,7 @@ namespace videoprokat_winform
                     var movieCopyLeasingInfo = (from r in db.LeasedCopies
                                                 where r.MovieCopy.Id == CurrentMovieCopyId
                                                 select new
-                                                { r.LeasingStartDate, r.LeasingExpectedEndDate, r.Owner.Name }).ToList();
+                                                { r.LeasingStartDate, r.LeasingExpectedEndDate, r.Client.Name }).ToList();
                     movieCopyLeasingDataGridView.DataSource = movieCopyLeasingInfo;
                 }
             }
@@ -68,27 +72,30 @@ namespace videoprokat_winform
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
+
+        }
+
+        private void moviesDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            int CurrentMovieId = Convert.ToInt32(moviesDataGridView.CurrentRow.Cells["Id"].Value);
+            var CellValue = moviesDataGridView.CurrentCell.Value;
             using (db = new VideoprokatContext())
             {
-                MovieCopy moviecopy = new MovieCopy { Id= 1, Available = true, MovieId = 4, Commentary = "Хорошее качество", PricePerDay = 80 };
-                MovieCopy moviecopy2 = new MovieCopy { Id=2, Available = true, MovieId = 4, Commentary = "Плохое качество(((", PricePerDay = 50 };
-
-                db.MoviesCopies.Add(moviecopy);
-                db.MoviesCopies.Add(moviecopy2);
-
-                db.SaveChanges();
+                var result = db.MoviesOriginal.FirstOrDefault(a => a.Id == CurrentMovieId);
+                if (result != null)
+                {
+                    result.Description = Convert.ToString(moviesDataGridView.CurrentRow.Cells["Description"].Value);
+                    result.Title = Convert.ToString(moviesDataGridView.CurrentRow.Cells["Title"].Value);
+                    result.YearReleased = Convert.ToInt32(moviesDataGridView.CurrentRow.Cells["YearReleased"].Value);
+                    db.Entry(result).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
             }
-            //using (db = new VideoprokatContext())
-            //{
-            //    Client client = new Client { Name = "Петрович" };
-            //    MovieCopy copy = db.MoviesCopies.FirstOrDefault(c => c.Id == 5);
-            //    Leasing leasing = new Leasing(copy, client);
-            //    leasing.LeasingStartDate = Convert.ToDateTime("19.11.2020");
-            //    leasing.LeasingEndDate = Convert.ToDateTime("22.11.2020");
-            //    db.LeasedCopies.Add(leasing);
+        }
 
-            //    db.SaveChanges();
-            //}
+        private void moviesDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            MessageBox.Show("Неправильный формат данных");
         }
     }
 }

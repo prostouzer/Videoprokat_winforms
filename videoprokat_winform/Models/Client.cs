@@ -8,21 +8,6 @@ namespace videoprokat_winform.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
         public decimal Rating { get; set; }
-        public ICollection<Leasing> LeasedCopies { get; set; } // почему не использовать list сразу, ведь его можно сразу присвоить?
-
-        public void LeaseCopy(Leasing leasedCopy)
-        {
-            if (LeasedCopies != null)
-            {
-                LeasedCopies.Add(leasedCopy);
-            }
-            else
-            {
-                LeasedCopies = new List<Leasing>();
-                LeasedCopies.Add(leasedCopy);
-            }
-        }
     }
 }

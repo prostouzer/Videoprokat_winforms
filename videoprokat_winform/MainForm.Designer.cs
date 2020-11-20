@@ -66,7 +66,6 @@
             // 
             // moviesDataGridView
             // 
-            this.moviesDataGridView.AllowUserToAddRows = false;
             this.moviesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.moviesDataGridView.Location = new System.Drawing.Point(12, 27);
             this.moviesDataGridView.Name = "moviesDataGridView";
@@ -74,6 +73,8 @@
             this.moviesDataGridView.Size = new System.Drawing.Size(629, 410);
             this.moviesDataGridView.TabIndex = 0;
             this.moviesDataGridView.Text = "dataGridView1";
+            this.moviesDataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.moviesDataGridView_CellEndEdit);
+            this.moviesDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.moviesDataGridView_DataError);
             this.moviesDataGridView.SelectionChanged += new System.EventHandler(this.moviesDataGridView_SelectionChanged);
             // 
             // menuStrip1
