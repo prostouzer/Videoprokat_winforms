@@ -8,12 +8,12 @@ namespace videoprokat_winform.Models
     class Leasing
     {
         public int Id { get; set; }
-        [Column(TypeName = "datetime2")]
+        //[Column(TypeName = "datetime2")]
         public DateTime LeasingStartDate { get; set; }
-        [Column(TypeName = "datetime2")]
+        //[Column(TypeName = "datetime2")]
         public DateTime LeasingExpectedEndDate { get; set; }
-        [Column(TypeName = "datetime2")] // для совместимости c datetime'ом SQL
-        public DateTime ReturnDate { get; set; } // если клиент вернет позже положенного
+        //[Column(TypeName = "datetime2")] // для совместимости c datetime'ом SQL
+        public Nullable<DateTime> ReturnDate { get; set; } // если клиент вернет позже положенного
         public decimal TotalPrice { get; set; }
 
         public MovieCopy MovieCopy { get; set; } // нужно ли, если используется только параметр movieCopy?
@@ -21,6 +21,8 @@ namespace videoprokat_winform.Models
 
         public Leasing(MovieCopy movieCopy, Client owner, DateTime leasingStartDate, DateTime leasingExpectedEndDate)
         {
+            LeasingStartDate = leasingStartDate;
+            LeasingExpectedEndDate = leasingExpectedEndDate;
             MovieCopy = movieCopy;
             Owner = owner;
             movieCopy.Available = false;
