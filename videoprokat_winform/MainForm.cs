@@ -9,17 +9,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using videoprokat_winform.Models;
-using System.Linq;
 
 namespace videoprokat_winform
 {
     public partial class MainForm : Form
     {
-        VideoprokatContext db;
         public MainForm()
         {
             InitializeComponent();
+        }
 
+        VideoprokatContext db;
+        private void MainForm_Load(object sender, EventArgs e)
+        {
             db = new VideoprokatContext();
             db.MoviesOriginal.Load();
 
@@ -28,12 +30,6 @@ namespace videoprokat_winform
             moviesDataGridView.Columns["Copies"].Visible = false;
 
             moviesDataGridView.Columns["Id"].ReadOnly = true;
-
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void moviesDataGridView_SelectionChanged(object sender, EventArgs e) // из оригинального фильма загружаем в таблицу его копии
@@ -42,14 +38,15 @@ namespace videoprokat_winform
             {
                 int CurrentMovieId = Convert.ToInt32(moviesDataGridView.CurrentRow.Cells["Id"].Value);
 
-                using (db = new VideoprokatContext())
-                {
-                    var movieCopies = (from r in db.MoviesCopies
-                                       where r.MovieId == CurrentMovieId
-                                       select r).ToList();
-                    movieCopiesDataGridView.DataSource = movieCopies;
-                    movieCopiesDataGridView.Columns["Id"].ReadOnly = true;
-                }
+                var movieCopies = (from r in db.MoviesCopies
+                                   where r.MovieId == CurrentMovieId
+                                   select r).ToList();
+                
+                movieCopiesDataGridView.DataSource = movieCopies;
+
+                movieCopiesDataGridView.Columns["Id"].ReadOnly = true;
+                movieCopiesDataGridView.Columns["MovieId"].Visible = false;
+                movieCopiesDataGridView.Columns["Movie"].Visible = false;
             }
         }
 
@@ -59,14 +56,18 @@ namespace videoprokat_winform
             {
                 int CurrentMovieCopyId = Convert.ToInt32(movieCopiesDataGridView.CurrentRow.Cells["Id"].Value);
 
-                using (db = new VideoprokatContext())
-                {
-                    var movieCopyLeasingInfo = (from r in db.LeasedCopies
+                //var movieCopyLeasingInfo = (from r in db.LeasedCopies 
+                //                            where r.MovieCopy.Id == CurrentMovieCopyId
+                //                            select new
+                //                            { r.LeasingStartDate, r.LeasingExpectedEndDate, r.Client.Name }).ToList(); // возвращает анонимный тип, который только read only - не поизменять(
+                var movieCopyLeasingInfo = (from r in db.LeasedCopies
                                                 where r.MovieCopy.Id == CurrentMovieCopyId
-                                                select new
-                                                { r.LeasingStartDate, r.LeasingExpectedEndDate, r.Client.Name }).ToList();
-                    movieCopyLeasingDataGridView.DataSource = movieCopyLeasingInfo;
-                }
+                                                select r).ToList();
+
+                movieCopyLeasingDataGridView.DataSource = movieCopyLeasingInfo;
+                movieCopyLeasingDataGridView.Columns["Id"].Visible = false;
+                //movieCopyLeasingDataGridView.Columns["MovieId"].Visible = false;
+                //movieCopyLeasingDataGridView.Columns["Movie"].Visible = false;
             }
         }
 
@@ -77,25 +78,37 @@ namespace videoprokat_winform
 
         private void moviesDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            int CurrentMovieId = Convert.ToInt32(moviesDataGridView.CurrentRow.Cells["Id"].Value);
-            var CellValue = moviesDataGridView.CurrentCell.Value;
-            using (db = new VideoprokatContext())
-            {
-                var result = db.MoviesOriginal.FirstOrDefault(a => a.Id == CurrentMovieId);
-                if (result != null)
-                {
-                    result.Description = Convert.ToString(moviesDataGridView.CurrentRow.Cells["Description"].Value);
-                    result.Title = Convert.ToString(moviesDataGridView.CurrentRow.Cells["Title"].Value);
-                    result.YearReleased = Convert.ToInt32(moviesDataGridView.CurrentRow.Cells["YearReleased"].Value);
-                    db.Entry(result).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
-            }
+            db.SaveChanges();
         }
 
         private void moviesDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             MessageBox.Show("Неправильный формат данных");
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            db.Dispose();
+        }
+
+        private void movieCopiesDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            db.SaveChanges();
+        }
+
+        private void movieCopiesDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            MessageBox.Show("Неправильный формат данных");
+        }
+
+        private void movieCopyLeasingDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            MessageBox.Show("Неправильный формат данных");
+        }
+
+        private void movieCopyLeasingDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            db.SaveChanges();
         }
     }
 }

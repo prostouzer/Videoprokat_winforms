@@ -32,6 +32,7 @@
             this.movieCopyLeasingDataGridView = new System.Windows.Forms.DataGridView();
             this.moviesDataGridView = new System.Windows.Forms.DataGridView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.movieCopiesDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.movieCopyLeasingDataGridView)).BeginInit();
@@ -41,7 +42,6 @@
             // 
             // movieCopiesDataGridView
             // 
-            this.movieCopiesDataGridView.AllowUserToAddRows = false;
             this.movieCopiesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.movieCopiesDataGridView.Location = new System.Drawing.Point(647, 27);
             this.movieCopiesDataGridView.MultiSelect = false;
@@ -50,6 +50,8 @@
             this.movieCopiesDataGridView.Size = new System.Drawing.Size(418, 248);
             this.movieCopiesDataGridView.TabIndex = 1;
             this.movieCopiesDataGridView.Text = "dataGridView2";
+            this.movieCopiesDataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.movieCopiesDataGridView_CellEndEdit);
+            this.movieCopiesDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.movieCopiesDataGridView_DataError);
             this.movieCopiesDataGridView.SelectionChanged += new System.EventHandler(this.movieCopiesDataGridView_SelectionChanged);
             // 
             // movieCopyLeasingDataGridView
@@ -63,6 +65,8 @@
             this.movieCopyLeasingDataGridView.Size = new System.Drawing.Size(418, 156);
             this.movieCopyLeasingDataGridView.TabIndex = 2;
             this.movieCopyLeasingDataGridView.Text = "dataGridView3";
+            this.movieCopyLeasingDataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.movieCopyLeasingDataGridView_CellEndEdit);
+            this.movieCopyLeasingDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.movieCopyLeasingDataGridView_DataError);
             // 
             // moviesDataGridView
             // 
@@ -80,19 +84,26 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripTextBox1,
             this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1077, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1077, 27);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
+            // toolStripTextBox1
+            // 
+            this.toolStripTextBox1.Name = "toolStripTextBox1";
+            this.toolStripTextBox1.Size = new System.Drawing.Size(100, 23);
+            this.toolStripTextBox1.Text = "Поиск";
+            // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(66, 20);
-            this.toolStripMenuItem1.Text = "Фильмы";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(117, 23);
+            this.toolStripMenuItem1.Text = "Импорт фильмов";
             // 
             // MainForm
             // 
@@ -106,6 +117,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Videoprokat";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.movieCopiesDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.movieCopyLeasingDataGridView)).EndInit();
@@ -123,6 +135,7 @@
         private System.Windows.Forms.DataGridView movieCopiesDataGridView;
         private System.Windows.Forms.DataGridView movieCopyLeasingDataGridView;
         private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
