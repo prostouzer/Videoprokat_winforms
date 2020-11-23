@@ -12,6 +12,8 @@ namespace videoprokat_winform.Models
         public DateTime LeasingExpectedEndDate { get; set; }
         public Nullable<DateTime> ReturnDate { get; set; } // если клиент вернет позже положенного
         public decimal TotalPrice { get; set; }
+        // лучший способ вывода содержимого id свойства?
+        public string ClientName { get; set; }
 
         public int MovieCopyId { get; set; }
         public MovieCopy MovieCopy { get; set; } // нужно ли, если используется только параметр movieCopy?
@@ -24,6 +26,7 @@ namespace videoprokat_winform.Models
             LeasingExpectedEndDate = leasingExpectedEndDate;
             MovieCopy = movieCopy;
             Client = owner;
+            ClientName = owner.Name;
             movieCopy.Available = false;
             TotalPrice = GetExpectedTotalPrice(leasingStartDate, leasingExpectedEndDate, movieCopy);
         }
@@ -33,7 +36,7 @@ namespace videoprokat_winform.Models
         }
         public decimal GetExpectedTotalPrice(DateTime leasingStartDate, DateTime leasingExpectedEndDate, MovieCopy movieCopy)
         {
-            return (Convert.ToDecimal((leasingExpectedEndDate - leasingStartDate).TotalDays))*movieCopy.PricePerDay;
+            return (Convert.ToDecimal((leasingExpectedEndDate - leasingStartDate).TotalDays)) * movieCopy.PricePerDay;
         }
     }
 }

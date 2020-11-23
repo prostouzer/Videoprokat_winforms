@@ -60,14 +60,17 @@ namespace videoprokat_winform
                 //                            where r.MovieCopy.Id == CurrentMovieCopyId
                 //                            select new
                 //                            { r.LeasingStartDate, r.LeasingExpectedEndDate, r.Client.Name }).ToList(); // возвращает анонимный тип, который только read only - не поизменять(
+
                 var movieCopyLeasingInfo = (from r in db.LeasedCopies
-                                                where r.MovieCopy.Id == CurrentMovieCopyId
-                                                select r).ToList();
+                                            where r.MovieCopy.Id == CurrentMovieCopyId
+                                            select r).ToList();
 
                 movieCopyLeasingDataGridView.DataSource = movieCopyLeasingInfo;
                 movieCopyLeasingDataGridView.Columns["Id"].Visible = false;
-                //movieCopyLeasingDataGridView.Columns["MovieId"].Visible = false;
-                //movieCopyLeasingDataGridView.Columns["Movie"].Visible = false;
+                movieCopyLeasingDataGridView.Columns["MovieCopy"].Visible = false;
+                movieCopyLeasingDataGridView.Columns["MovieCopyId"].Visible = false;
+                movieCopyLeasingDataGridView.Columns["Client"].Visible = false;
+                movieCopyLeasingDataGridView.Columns["ClientId"].Visible = false;
             }
         }
 
