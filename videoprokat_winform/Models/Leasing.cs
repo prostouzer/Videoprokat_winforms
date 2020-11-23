@@ -7,10 +7,22 @@ namespace videoprokat_winform.Models
 {
     class Leasing
     {
+        DateTime _returnDate;
+
         public int Id { get; set; }
         public DateTime LeasingStartDate { get; set; }
         public DateTime LeasingExpectedEndDate { get; set; }
-        public Nullable<DateTime> ReturnDate { get; set; } // если клиент вернет позже положенного
+        public Nullable<DateTime> ReturnDate 
+        {
+            get { return _returnDate; }
+            set 
+            {
+                if (ReturnDate > LeasingExpectedEndDate)
+                {
+
+                }
+            }
+        } // если клиент вернет позже положенного
         public decimal TotalPrice { get; set; }
         // лучший способ вывода содержимого id свойства?
         public string ClientName { get; set; }
@@ -37,6 +49,30 @@ namespace videoprokat_winform.Models
         public decimal GetExpectedTotalPrice(DateTime leasingStartDate, DateTime leasingExpectedEndDate, MovieCopy movieCopy)
         {
             return (Convert.ToDecimal((leasingExpectedEndDate - leasingStartDate).TotalDays)) * movieCopy.PricePerDay;
+        }
+        public decimal GetDelayedTotalPrice(DateTime leasingExpectedEndDate, DateTime leasingReturnDate, MovieCopy movieCopy, decimal multiplier) // multiplier > 1 
+        {
+            int totalDays = Convert.ToInt32((leasingReturnDate - leasingExpectedEndDate).TotalDays);
+            return (totalDays * (movieCopy.PricePerDay * multiplier));
+        }
+        public decimal GetEarlyTotalPrice(DateTime leasingStartDate, DateTime leasingReturnDate, MovieCopy movieCopy)
+        {
+            int totalDays = Convert.ToInt32((leasingReturnDate - leasingStartDate).TotalDays);
+            return totalDays * movieCopy.PricePerDay;
+        }
+
+        public void EndLeasing(DateTime returnDate, decimal multiplier = 0)
+        {
+            MovieCopy.Available = true;
+            if (returnDate > LeasingExpectedEndDate) // вернули позже
+            {
+                TotalPrice = GetDelayedTotalPrice(LeasingExpectedEndDate, returnDate, MovieCopy, multiplier);
+            }
+            else if (returnDate < LeasingExpectedEndDate) // вернули раньше
+            {
+                TotalPrice = GetEarlyTotalPrice(LeasingStartDate, returnDate, MovieCopy);
+            }
+            // при returnDate = LeasingExpectedEndDate значение изначально присвоено в конструкторе
         }
     }
 }

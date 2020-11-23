@@ -25,52 +25,45 @@ namespace videoprokat_winform
             db = new VideoprokatContext();
             db.MoviesOriginal.Load();
 
-            moviesDataGridView.DataSource = db.MoviesOriginal.Local.ToBindingList();
-            moviesDataGridView.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            moviesDataGridView.Columns["Copies"].Visible = false;
+            moviesDgv.DataSource = db.MoviesOriginal.Local.ToBindingList();
+            moviesDgv.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            moviesDgv.Columns["Copies"].Visible = false;
 
-            moviesDataGridView.Columns["Id"].ReadOnly = true;
+            moviesDgv.Columns["Id"].ReadOnly = true;
         }
 
-        private void moviesDataGridView_SelectionChanged(object sender, EventArgs e) // из оригинального фильма загружаем в таблицу его копии
+        private void moviesDgv_SelectionChanged(object sender, EventArgs e) // из оригинального фильма загружаем в таблицу его копии
         {
-            if (moviesDataGridView.SelectedCells.Count > 0)
-            {
-                int CurrentMovieId = Convert.ToInt32(moviesDataGridView.CurrentRow.Cells["Id"].Value);
+            int CurrentMovieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
 
-                var movieCopies = (from r in db.MoviesCopies
-                                   where r.MovieId == CurrentMovieId
-                                   select r).ToList();
-                
-                movieCopiesDataGridView.DataSource = movieCopies;
+            var movieCopies = (from r in db.MoviesCopies
+                               where r.MovieId == CurrentMovieId
+                               select r).ToList();
 
-                movieCopiesDataGridView.Columns["Id"].ReadOnly = true;
-                movieCopiesDataGridView.Columns["MovieId"].Visible = false;
-                movieCopiesDataGridView.Columns["Movie"].Visible = false;
-            }
+            copiesDgv.DataSource = movieCopies;
+
+            copiesDgv.Columns["Id"].ReadOnly = true;
+            copiesDgv.Columns["MovieId"].Visible = false;
+            copiesDgv.Columns["Movie"].Visible = false;
         }
 
-        private void movieCopiesDataGridView_SelectionChanged(object sender, EventArgs e) // из копии фильма загружаем в таблицу инфу по аренде
+        private void copiesDgv_SelectionChanged(object sender, EventArgs e) // из копии фильма загружаем в таблицу инфу по аренде
         {
-            if (movieCopiesDataGridView.SelectedCells.Count > 0)
+            if (copiesDgv.SelectedCells.Count > 0)
             {
-                int CurrentMovieCopyId = Convert.ToInt32(movieCopiesDataGridView.CurrentRow.Cells["Id"].Value);
-
-                //var movieCopyLeasingInfo = (from r in db.LeasedCopies 
-                //                            where r.MovieCopy.Id == CurrentMovieCopyId
-                //                            select new
-                //                            { r.LeasingStartDate, r.LeasingExpectedEndDate, r.Client.Name }).ToList(); // возвращает анонимный тип, который только read only - не поизменять(
+                int CurrentMovieCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
 
                 var movieCopyLeasingInfo = (from r in db.LeasedCopies
                                             where r.MovieCopy.Id == CurrentMovieCopyId
                                             select r).ToList();
 
-                movieCopyLeasingDataGridView.DataSource = movieCopyLeasingInfo;
-                movieCopyLeasingDataGridView.Columns["Id"].Visible = false;
-                movieCopyLeasingDataGridView.Columns["MovieCopy"].Visible = false;
-                movieCopyLeasingDataGridView.Columns["MovieCopyId"].Visible = false;
-                movieCopyLeasingDataGridView.Columns["Client"].Visible = false;
-                movieCopyLeasingDataGridView.Columns["ClientId"].Visible = false;
+                leasingsDgv.DataSource = movieCopyLeasingInfo;
+
+                leasingsDgv.Columns["Id"].Visible = false;
+                leasingsDgv.Columns["MovieCopy"].Visible = false;
+                leasingsDgv.Columns["MovieCopyId"].Visible = false;
+                leasingsDgv.Columns["Client"].Visible = false;
+                leasingsDgv.Columns["ClientId"].Visible = false;
             }
         }
 
@@ -79,12 +72,12 @@ namespace videoprokat_winform
 
         }
 
-        private void moviesDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private void moviesDgv_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             db.SaveChanges();
         }
 
-        private void moviesDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        private void moviesDgv_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             MessageBox.Show("Неправильный формат данных");
         }
@@ -94,22 +87,22 @@ namespace videoprokat_winform
             db.Dispose();
         }
 
-        private void movieCopiesDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private void copiesDgv_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             db.SaveChanges();
         }
 
-        private void movieCopiesDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        private void copiesDgv_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             MessageBox.Show("Неправильный формат данных");
         }
 
-        private void movieCopyLeasingDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        private void leasingsDgv_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             MessageBox.Show("Неправильный формат данных");
         }
 
-        private void movieCopyLeasingDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private void leasingsDgv_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             db.SaveChanges();
         }

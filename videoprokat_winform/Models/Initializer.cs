@@ -25,13 +25,6 @@ namespace videoprokat_winform.Models
             db.Clients.Add(c1);
             db.Clients.Add(c2);
 
-            //DateTime d1 = new DateTime(2020, 11, 19);
-            //DateTime d2 = new DateTime(2020, 11, 22);
-            //DateTime d3 = new DateTime(2020, 11, 24);
-
-            //Leasing l1 = new Leasing(mc1, c2, d1, d2);
-            //Leasing l2 = new Leasing(mc2, c2, d1, d3);
-
             Leasing l1 = new Leasing(mc1, c2, Convert.ToDateTime("19/11/2020"), Convert.ToDateTime("22/11/2020"));
             Leasing l2 = new Leasing(mc2, c2, Convert.ToDateTime("19/11/2020"), Convert.ToDateTime("24/11/2020"));
             Leasing l3 = new Leasing(mc3, c1, Convert.ToDateTime("19/11/2020"), Convert.ToDateTime("25/11/2020"));
