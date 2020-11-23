@@ -7,22 +7,18 @@ namespace videoprokat_winform.Models
 {
     class Leasing
     {
-        DateTime _returnDate;
-
+        // одних свойств в тела методов достаточно, или нужны поля?
         public int Id { get; set; }
         public DateTime LeasingStartDate { get; set; }
         public DateTime LeasingExpectedEndDate { get; set; }
-        public Nullable<DateTime> ReturnDate 
-        {
-            get { return _returnDate; }
-            set 
-            {
-                if (ReturnDate > LeasingExpectedEndDate)
-                {
-
-                }
-            }
-        } // если клиент вернет позже положенного
+        public Nullable<DateTime> ReturnDate { get; set; }
+        //{
+        //    get { }
+        //    set
+        //    {
+        //            if returndate > expected end date - 
+        //    }
+        //}
         public decimal TotalPrice { get; set; }
         // лучший способ вывода содержимого id свойства?
         public string ClientName { get; set; }
@@ -50,15 +46,19 @@ namespace videoprokat_winform.Models
         {
             return (Convert.ToDecimal((leasingExpectedEndDate - leasingStartDate).TotalDays)) * movieCopy.PricePerDay;
         }
-        public decimal GetDelayedTotalPrice(DateTime leasingExpectedEndDate, DateTime leasingReturnDate, MovieCopy movieCopy, decimal multiplier) // multiplier > 1 
+        public void ReturnDelayed(DateTime leasingExpectedEndDate, DateTime leasingReturnDate, MovieCopy movieCopy, decimal multiplier) // multiplier > 1 
         {
             int totalDays = Convert.ToInt32((leasingReturnDate - leasingExpectedEndDate).TotalDays);
-            return (totalDays * (movieCopy.PricePerDay * multiplier));
+            TotalPrice = (totalDays * (movieCopy.PricePerDay * multiplier));
+            movieCopy.Available = true;
+            ReturnDate = leasingReturnDate;
         }
-        public decimal GetEarlyTotalPrice(DateTime leasingStartDate, DateTime leasingReturnDate, MovieCopy movieCopy)
+        public void ReturnEarly(DateTime leasingStartDate, DateTime leasingReturnDate, MovieCopy movieCopy)
         {
             int totalDays = Convert.ToInt32((leasingReturnDate - leasingStartDate).TotalDays);
-            return totalDays * movieCopy.PricePerDay;
+            TotalPrice = totalDays * movieCopy.PricePerDay;
+            movieCopy.Available = true;
+            ReturnDate = leasingReturnDate;
         }
 
         public void EndLeasing(DateTime returnDate, decimal multiplier = 0)
@@ -66,13 +66,18 @@ namespace videoprokat_winform.Models
             MovieCopy.Available = true;
             if (returnDate > LeasingExpectedEndDate) // вернули позже
             {
-                TotalPrice = GetDelayedTotalPrice(LeasingExpectedEndDate, returnDate, MovieCopy, multiplier);
+                ReturnDelayed(LeasingExpectedEndDate, returnDate, MovieCopy, multiplier);
             }
             else if (returnDate < LeasingExpectedEndDate) // вернули раньше
             {
-                TotalPrice = GetEarlyTotalPrice(LeasingStartDate, returnDate, MovieCopy);
+                ReturnEarly(LeasingStartDate, returnDate, MovieCopy);
             }
-            // при returnDate = LeasingExpectedEndDate значение изначально присвоено в конструкторе
+            else // вернули в срок
+            {
+                // при returnDate = LeasingExpectedEndDate значение изначально присвоено в конструкторе
+                MovieCopy.Available = true;
+                ReturnDate = LeasingExpectedEndDate;
+            }
         }
     }
 }
