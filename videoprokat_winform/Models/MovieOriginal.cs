@@ -12,9 +12,9 @@ namespace videoprokat_winform.Models
         public int YearReleased { get; set; }
 
         public ICollection<MovieCopy> Copies { get; set; }
-        public MovieOriginal()
-        {
-            Copies = new List<MovieCopy>();
-        }
+        //public MovieOriginal()
+        //{
+        //    Copies = new List<MovieCopy>();
+        //}
     }
 }

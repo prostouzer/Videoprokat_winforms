@@ -19,6 +19,7 @@ namespace videoprokat_winform.Models
         public int ClientId { get; set; }
         public Client Client { get; set; }
 
+        // нужен ли этот конструктор, если с передачей MovieCopy он создает лишние записи в таблице MoviesCopies? см. кнопку добавления на LeasingForm
         public Leasing(MovieCopy movieCopy, Client owner, DateTime leasingStartDate, DateTime leasingExpectedEndDate)
         {
             LeasingStartDate = leasingStartDate;
