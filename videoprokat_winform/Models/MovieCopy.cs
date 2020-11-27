@@ -4,7 +4,7 @@ using System.Text;
 
 namespace videoprokat_winform.Models
 {
-    class MovieCopy
+    public class MovieCopy
     {
         public int Id { get; set; }
         public string Commentary { get; set; }

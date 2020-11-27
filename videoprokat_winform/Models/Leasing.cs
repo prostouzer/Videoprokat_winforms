@@ -7,24 +7,15 @@ namespace videoprokat_winform.Models
 {
     class Leasing
     {
-        // одних свойств в тела методов достаточно, или нужны поля?
         public int Id { get; set; }
         public DateTime LeasingStartDate { get; set; }
         public DateTime LeasingExpectedEndDate { get; set; }
         public Nullable<DateTime> ReturnDate { get; set; }
-        //{
-        //    get { }
-        //    set
-        //    {
-        //            if returndate > expected end date - 
-        //    }
-        //}
         public decimal TotalPrice { get; set; }
-        // лучший способ вывода содержимого id свойства?
+        // лучший способ вывода имени? через id?
         public string ClientName { get; set; }
-
         public int MovieCopyId { get; set; }
-        public MovieCopy MovieCopy { get; set; } // нужно ли, если используется только параметр movieCopy?
+        public MovieCopy MovieCopy { get; set; } // нужно ли, если используется только параметр movieCopy? movieCopyId для связи в entity framework недостаточно?
         public int ClientId { get; set; }
         public Client Client { get; set; }
 
@@ -38,10 +29,7 @@ namespace videoprokat_winform.Models
             movieCopy.Available = false;
             TotalPrice = GetExpectedTotalPrice(leasingStartDate, leasingExpectedEndDate, movieCopy);
         }
-        public Leasing()
-        {
-
-        }
+        public Leasing() { }
         public decimal GetExpectedTotalPrice(DateTime leasingStartDate, DateTime leasingExpectedEndDate, MovieCopy movieCopy)
         {
             return (Convert.ToDecimal((leasingExpectedEndDate - leasingStartDate).TotalDays)) * movieCopy.PricePerDay;

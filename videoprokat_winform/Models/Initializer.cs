@@ -5,7 +5,8 @@ using System.Data.Entity;
 
 namespace videoprokat_winform.Models
 {
-    class Initializer : DropCreateDatabaseAlways<VideoprokatContext>
+    //class Initializer : DropCreateDatabaseAlways<VideoprokatContext>
+    class Initializer : CreateDatabaseIfNotExists<VideoprokatContext>
     {
         protected override void Seed(VideoprokatContext db)
         {
@@ -16,9 +17,17 @@ namespace videoprokat_winform.Models
             MovieCopy mc1 = new MovieCopy { MovieId = 1, Available = true, Commentary = "Хорошее качество", PricePerDay = 80 };
             MovieCopy mc2 = new MovieCopy { MovieId = 1, Available = true, Commentary = "Ужасное качество(((", PricePerDay = 50 };
             MovieCopy mc3 = new MovieCopy { MovieId = 2, Available = true, Commentary = "Пойдет фильмец", PricePerDay = 60 };
+
+            // без владельца
+            MovieCopy mc4 = new MovieCopy { MovieId = 1, Available = true, Commentary = "На русском языке", PricePerDay = 110 };
+            MovieCopy mc5 = new MovieCopy { MovieId = 1, Available = true, Commentary = "Качество 360", PricePerDay = 30 };
+            MovieCopy mc6 = new MovieCopy { MovieId = 2, Available = true, Commentary = "В 3D", PricePerDay = 200 };
             db.MoviesCopies.Add(mc1);
             db.MoviesCopies.Add(mc2);
             db.MoviesCopies.Add(mc3);
+            db.MoviesCopies.Add(mc4);
+            db.MoviesCopies.Add(mc5);
+            db.MoviesCopies.Add(mc6);
 
             Client c1 = new Client { Name = "Петрович", Rating = 5 };
             Client c2 = new Client { Name = "Ваня", Rating = 4 };

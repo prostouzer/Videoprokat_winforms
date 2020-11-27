@@ -28,13 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.copiesDgv = new System.Windows.Forms.DataGridView();
+            this.copiesContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.leasingItem = new System.Windows.Forms.ToolStripMenuItem();
             this.leasingsDgv = new System.Windows.Forms.DataGridView();
             this.moviesDgv = new System.Windows.Forms.DataGridView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.copiesDgv)).BeginInit();
+            this.copiesContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.leasingsDgv)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.moviesDgv)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -43,6 +47,7 @@
             // copiesDgv
             // 
             this.copiesDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.copiesDgv.ContextMenuStrip = this.copiesContextMenu;
             this.copiesDgv.Location = new System.Drawing.Point(647, 27);
             this.copiesDgv.MultiSelect = false;
             this.copiesDgv.Name = "copiesDgv";
@@ -53,6 +58,21 @@
             this.copiesDgv.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.copiesDgv_CellEndEdit);
             this.copiesDgv.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.copiesDgv_DataError);
             this.copiesDgv.SelectionChanged += new System.EventHandler(this.copiesDgv_SelectionChanged);
+            this.copiesDgv.MouseUp += new System.Windows.Forms.MouseEventHandler(this.copiesDgv_MouseUp);
+            // 
+            // copiesContextMenu
+            // 
+            this.copiesContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.leasingItem});
+            this.copiesContextMenu.Name = "copiesContextMenu";
+            this.copiesContextMenu.Size = new System.Drawing.Size(115, 26);
+            // 
+            // leasingItem
+            // 
+            this.leasingItem.Enabled = false;
+            this.leasingItem.Name = "leasingItem";
+            this.leasingItem.Size = new System.Drawing.Size(114, 22);
+            this.leasingItem.Text = "Прокат";
             // 
             // leasingsDgv
             // 
@@ -120,6 +140,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.copiesDgv)).EndInit();
+            this.copiesContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.leasingsDgv)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.moviesDgv)).EndInit();
             this.menuStrip1.ResumeLayout(false);
@@ -137,6 +158,8 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ContextMenuStrip copiesContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem leasingItem;
     }
 }
 

@@ -14,12 +14,22 @@ namespace videoprokat_winform
 {
     public partial class MainForm : Form
     {
+        VideoprokatContext db;
         public MainForm()
         {
             InitializeComponent();
+
+            copiesContextMenu.Items[0].Click += OpenLeaseForm;
         }
 
-        VideoprokatContext db;
+        //void OpenLeaseForm(object sender, EventArgs e)
+        void OpenLeaseForm(object sender, EventArgs e)
+        {
+            int CurrentCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
+            MovieCopy movieCopy = db.MoviesCopies.First(c => c.Id == CurrentCopyId);
+            LeasingForm form = new LeasingForm(movieCopy);
+            form.ShowDialog();
+        }
         private void MainForm_Load(object sender, EventArgs e)
         {
             db = new VideoprokatContext();
@@ -34,17 +44,21 @@ namespace videoprokat_winform
 
         private void moviesDgv_SelectionChanged(object sender, EventArgs e) // из оригинального фильма загружаем в таблицу его копии
         {
-            int CurrentMovieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
+            if (moviesDgv.CurrentRow != null)
+            {
+                int CurrentMovieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
 
-            var movieCopies = (from r in db.MoviesCopies
-                               where r.MovieId == CurrentMovieId
-                               select r).ToList();
+                var movieCopies = (from r in db.MoviesCopies
+                                   where r.MovieId == CurrentMovieId
+                                   select r).ToList();
 
-            copiesDgv.DataSource = movieCopies;
+                copiesDgv.DataSource = movieCopies;
 
-            copiesDgv.Columns["Id"].ReadOnly = true;
-            copiesDgv.Columns["MovieId"].Visible = false;
-            copiesDgv.Columns["Movie"].Visible = false;
+                copiesDgv.Columns["Id"].ReadOnly = true;
+                copiesDgv.Columns["Available"].ReadOnly = true;
+                copiesDgv.Columns["MovieId"].Visible = false;
+                copiesDgv.Columns["Movie"].Visible = false;
+            }
         }
 
         private void copiesDgv_SelectionChanged(object sender, EventArgs e) // из копии фильма загружаем в таблицу инфу по аренде
@@ -105,6 +119,24 @@ namespace videoprokat_winform
         private void leasingsDgv_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             db.SaveChanges();
+        }
+
+        private void copiesDgv_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (copiesDgv.SelectedCells.Count > 0)
+                {
+                    if ((bool)copiesDgv.CurrentRow.Cells["Available"].Value == true)
+                    {
+                        copiesContextMenu.Items[0].Enabled = true; // leasing button
+                    }
+                    else
+                    {
+                        copiesContextMenu.Items[0].Enabled = false; // leasing button
+                    }
+                }
+            }
         }
     }
 }

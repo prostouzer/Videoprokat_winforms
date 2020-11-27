@@ -1,0 +1,162 @@
+﻿
+namespace videoprokat_winform
+{
+    partial class LeasingForm
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.movieNameLabel = new System.Windows.Forms.Label();
+            this.movieCommentLabel = new System.Windows.Forms.Label();
+            this.startDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.endDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.clientsComboBox = new System.Windows.Forms.ComboBox();
+            this.SuspendLayout();
+            // 
+            // movieNameLabel
+            // 
+            this.movieNameLabel.AutoSize = true;
+            this.movieNameLabel.Font = new System.Drawing.Font("Times New Roman", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.movieNameLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.movieNameLabel.Location = new System.Drawing.Point(12, 9);
+            this.movieNameLabel.Name = "movieNameLabel";
+            this.movieNameLabel.Size = new System.Drawing.Size(127, 25);
+            this.movieNameLabel.TabIndex = 0;
+            this.movieNameLabel.Text = "Movie Name";
+            // 
+            // movieCommentLabel
+            // 
+            this.movieCommentLabel.AutoSize = true;
+            this.movieCommentLabel.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.movieCommentLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.movieCommentLabel.Location = new System.Drawing.Point(12, 34);
+            this.movieCommentLabel.Name = "movieCommentLabel";
+            this.movieCommentLabel.Size = new System.Drawing.Size(169, 25);
+            this.movieCommentLabel.TabIndex = 1;
+            this.movieCommentLabel.Text = "Movie Commentary";
+            // 
+            // startDatePicker
+            // 
+            this.startDatePicker.Location = new System.Drawing.Point(12, 104);
+            this.startDatePicker.Name = "startDatePicker";
+            this.startDatePicker.Size = new System.Drawing.Size(250, 23);
+            this.startDatePicker.TabIndex = 2;
+            // 
+            // endDatePicker
+            // 
+            this.endDatePicker.Location = new System.Drawing.Point(267, 104);
+            this.endDatePicker.Name = "endDatePicker";
+            this.endDatePicker.Size = new System.Drawing.Size(250, 23);
+            this.endDatePicker.TabIndex = 3;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(101, 86);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(49, 15);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Начало";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(360, 86);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(41, 15);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "Конец";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 222);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(505, 68);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Добавить";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 165);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(49, 15);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Клиент:";
+            // 
+            // clientsComboBox
+            // 
+            this.clientsComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.clientsComboBox.FormattingEnabled = true;
+            this.clientsComboBox.Location = new System.Drawing.Point(67, 162);
+            this.clientsComboBox.Name = "clientsComboBox";
+            this.clientsComboBox.Size = new System.Drawing.Size(450, 23);
+            this.clientsComboBox.TabIndex = 9;
+            this.clientsComboBox.Format += new System.Windows.Forms.ListControlConvertEventHandler(this.clientsComboBox_Format);
+            // 
+            // LeasingForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(529, 302);
+            this.Controls.Add(this.clientsComboBox);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.endDatePicker);
+            this.Controls.Add(this.startDatePicker);
+            this.Controls.Add(this.movieCommentLabel);
+            this.Controls.Add(this.movieNameLabel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Name = "LeasingForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Прокат";
+            this.Load += new System.EventHandler(this.LeasingForm_Load);
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Label movieNameLabel;
+        private System.Windows.Forms.Label movieCommentLabel;
+        private System.Windows.Forms.DateTimePicker startDatePicker;
+        private System.Windows.Forms.DateTimePicker endDatePicker;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox clientsComboBox;
+    }
+}
