@@ -6,10 +6,10 @@ namespace videoprokat_winform.Models
 {
     class Client
     {
-        decimal _rating;
+        float _rating;
         public int Id { get; set; }
         public string Name { get; set; }
-        public decimal Rating
+        public float Rating
         {
             get { return _rating; }
             set

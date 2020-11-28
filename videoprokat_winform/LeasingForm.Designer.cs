@@ -38,6 +38,7 @@ namespace videoprokat_winform
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.clientsComboBox = new System.Windows.Forms.ComboBox();
+            this.priceLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // movieNameLabel
@@ -75,6 +76,7 @@ namespace videoprokat_winform
             this.endDatePicker.Name = "endDatePicker";
             this.endDatePicker.Size = new System.Drawing.Size(250, 23);
             this.endDatePicker.TabIndex = 3;
+            this.endDatePicker.ValueChanged += new System.EventHandler(this.endDatePicker_ValueChanged);
             // 
             // label3
             // 
@@ -107,7 +109,7 @@ namespace videoprokat_winform
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 165);
+            this.label1.Location = new System.Drawing.Point(12, 179);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(49, 15);
             this.label1.TabIndex = 7;
@@ -117,17 +119,28 @@ namespace videoprokat_winform
             // 
             this.clientsComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.clientsComboBox.FormattingEnabled = true;
-            this.clientsComboBox.Location = new System.Drawing.Point(67, 162);
+            this.clientsComboBox.Location = new System.Drawing.Point(67, 176);
             this.clientsComboBox.Name = "clientsComboBox";
             this.clientsComboBox.Size = new System.Drawing.Size(450, 23);
             this.clientsComboBox.TabIndex = 9;
             this.clientsComboBox.Format += new System.Windows.Forms.ListControlConvertEventHandler(this.clientsComboBox_Format);
+            // 
+            // priceLabel
+            // 
+            this.priceLabel.AutoSize = true;
+            this.priceLabel.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.priceLabel.Location = new System.Drawing.Point(199, 139);
+            this.priceLabel.Name = "priceLabel";
+            this.priceLabel.Size = new System.Drawing.Size(68, 25);
+            this.priceLabel.TabIndex = 10;
+            this.priceLabel.Text = "Цена: ";
             // 
             // LeasingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(529, 302);
+            this.Controls.Add(this.priceLabel);
             this.Controls.Add(this.clientsComboBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
@@ -158,5 +171,6 @@ namespace videoprokat_winform
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox clientsComboBox;
+        private System.Windows.Forms.Label priceLabel;
     }
 }

@@ -34,14 +34,15 @@
             this.leasingItem = new System.Windows.Forms.ToolStripMenuItem();
             this.leasingsDgv = new System.Windows.Forms.DataGridView();
             this.moviesDgv = new System.Windows.Forms.DataGridView();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu = new System.Windows.Forms.MenuStrip();
+            this.searchBox = new System.Windows.Forms.ToolStripTextBox();
+            this.clientsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importMoviesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.copiesDgv)).BeginInit();
             this.copiesContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.leasingsDgv)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.moviesDgv)).BeginInit();
-            this.menuStrip1.SuspendLayout();
+            this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // copiesDgv
@@ -101,29 +102,36 @@
             this.moviesDgv.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.moviesDgv_DataError);
             this.moviesDgv.SelectionChanged += new System.EventHandler(this.moviesDgv_SelectionChanged);
             // 
-            // menuStrip1
+            // mainMenu
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripTextBox1,
-            this.toolStripMenuItem1});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1077, 27);
-            this.menuStrip1.TabIndex = 3;
-            this.menuStrip1.Text = "menuStrip1";
-            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
+            this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.searchBox,
+            this.clientsMenuItem,
+            this.importMoviesMenuItem});
+            this.mainMenu.Location = new System.Drawing.Point(0, 0);
+            this.mainMenu.Name = "mainMenu";
+            this.mainMenu.Size = new System.Drawing.Size(1077, 27);
+            this.mainMenu.TabIndex = 3;
+            this.mainMenu.Text = "menuStrip1";
+            this.mainMenu.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
-            // toolStripTextBox1
+            // searchBox
             // 
-            this.toolStripTextBox1.Name = "toolStripTextBox1";
-            this.toolStripTextBox1.Size = new System.Drawing.Size(100, 23);
-            this.toolStripTextBox1.Text = "Поиск";
+            this.searchBox.Name = "searchBox";
+            this.searchBox.Size = new System.Drawing.Size(100, 23);
+            this.searchBox.Text = "Поиск";
             // 
-            // toolStripMenuItem1
+            // clientsMenuItem
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(117, 23);
-            this.toolStripMenuItem1.Text = "Импорт фильмов";
+            this.clientsMenuItem.Name = "clientsMenuItem";
+            this.clientsMenuItem.Size = new System.Drawing.Size(67, 23);
+            this.clientsMenuItem.Text = "Клиенты";
+            // 
+            // importMoviesMenuItem
+            // 
+            this.importMoviesMenuItem.Name = "importMoviesMenuItem";
+            this.importMoviesMenuItem.Size = new System.Drawing.Size(117, 23);
+            this.importMoviesMenuItem.Text = "Импорт фильмов";
             // 
             // MainForm
             // 
@@ -133,8 +141,8 @@
             this.Controls.Add(this.leasingsDgv);
             this.Controls.Add(this.copiesDgv);
             this.Controls.Add(this.moviesDgv);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
+            this.Controls.Add(this.mainMenu);
+            this.MainMenuStrip = this.mainMenu;
             this.Name = "MainForm";
             this.Text = "Videoprokat";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
@@ -143,8 +151,8 @@
             this.copiesContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.leasingsDgv)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.moviesDgv)).EndInit();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.mainMenu.ResumeLayout(false);
+            this.mainMenu.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -155,11 +163,12 @@
         private System.Windows.Forms.DataGridView moviesDgv;
         private System.Windows.Forms.DataGridView copiesDgv;
         private System.Windows.Forms.DataGridView leasingsDgv;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.MenuStrip mainMenu;
+        private System.Windows.Forms.ToolStripTextBox searchBox;
+        private System.Windows.Forms.ToolStripMenuItem importMoviesMenuItem;
         private System.Windows.Forms.ContextMenuStrip copiesContextMenu;
         private System.Windows.Forms.ToolStripMenuItem leasingItem;
+        private System.Windows.Forms.ToolStripMenuItem clientsMenuItem;
     }
 }
 

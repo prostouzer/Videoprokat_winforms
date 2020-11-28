@@ -19,10 +19,15 @@ namespace videoprokat_winform
         {
             InitializeComponent();
 
-            copiesContextMenu.Items[0].Click += OpenLeaseForm;
-        }
+            mainMenu.Items[1].Click += OpenClientsForm; // "Клиенты"
 
-        //void OpenLeaseForm(object sender, EventArgs e)
+            copiesContextMenu.Items[0].Click += OpenLeaseForm; // "Прокат"
+        }
+        void OpenClientsForm(object sender, EventArgs e)
+        {
+            ClientsForm form = new ClientsForm();
+            form.ShowDialog();
+        }
         void OpenLeaseForm(object sender, EventArgs e)
         {
             int CurrentCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);

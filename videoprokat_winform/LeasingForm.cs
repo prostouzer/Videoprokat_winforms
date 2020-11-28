@@ -70,28 +70,6 @@ namespace videoprokat_winform
             {
                 MessageBox.Show("Укажите клиента");
             }
-
-            //if (clientsComboBox.SelectedIndex > -1)
-            //{
-            //    if (startDatePicker.Value <= endDatePicker.Value)
-            //    {
-
-            //        int clientId = Convert.ToInt32(clientsComboBox.SelectedValue);
-            //        Client owner = db.Clients.First(r => r.Id == clientId);
-            //        Leasing leasing = new Leasing(copy, owner, startDatePicker.Value, endDatePicker.Value);
-            //        db.LeasedCopies.Add(leasing);
-            //        db.SaveChanges();
-            //        this.Close();
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("Конец проката должен быть позже начала");
-            //    }
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Укажите клиента");
-            //}
         }
 
         private void clientsComboBox_Format(object sender, ListControlConvertEventArgs e)
@@ -99,6 +77,19 @@ namespace videoprokat_winform
             string id = (((Client)e.ListItem).Id).ToString();
             string name = ((Client)e.ListItem).Name;
             e.Value = id + ", " + name;
+        }
+
+        private void endDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+            if (endDatePicker.Value > startDatePicker.Value)
+            {
+                decimal price = (int)((endDatePicker.Value - startDatePicker.Value).TotalDays + 1) * currentCopy.PricePerDay; // + 1 к дням чтобы клиент также платил за последний день проката
+                priceLabel.Text = "Цена: " + price.ToString();
+            }
+            else
+            {
+                priceLabel.Text = "Цена: - ";
+            }
         }
     }
 }
