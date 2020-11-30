@@ -13,52 +13,106 @@ namespace videoprokat_winform
     public partial class ReturnForm : Form
     {
         Leasing currentLeasing;
+        MovieCopy currentCopy;
+        string MovieOriginalTitle;
+        Client currentOwner;
+        VideoprokatContext db = new VideoprokatContext();
         public ReturnForm(Leasing leasing)
         {
             InitializeComponent();
-            currentLeasing = leasing;
+
+            currentLeasing = db.LeasedCopies.First(l => l.Id == leasing.Id);
+            currentCopy = db.MoviesCopies.First(c => c.Id == leasing.MovieCopyId);
+            MovieOriginalTitle = leasing.MovieCopy.Movie.Title;
+            currentOwner = db.Clients.First(o => o.Id == leasing.ClientId);
         }
 
         private void ReturnForm_Load(object sender, EventArgs e)
         {
-            MovieCopy currentCopy;
-            Client currentOwner;
-            MovieOriginal currentMovie;
-            using (VideoprokatContext db = new VideoprokatContext())
-            {
-                currentOwner = db.Clients.First(o => o.Id == currentLeasing.ClientId);
-                currentCopy = db.MoviesCopies.First(c => c.Id == currentLeasing.MovieCopyId);
-                currentMovie = db.MoviesOriginal.First(o => o.Id == currentCopy.MovieId);
-            }
             ownerNameLabel.Text = currentOwner.Name + ", рейтинг " + currentOwner.Rating.ToString();
-            movieNameLabel.Text = currentMovie.Title;
+            movieNameLabel.Text = MovieOriginalTitle;
+
             movieCommentLabel.Text = currentCopy.Commentary;
 
-            startDate.Value = currentLeasing.LeasingStartDate;
-            returnDate.Value = DateTime.Now;
-            returnDate.MinDate = currentLeasing.LeasingStartDate;
-            expectedEndLabel.Text = "Ожидается: " + currentLeasing.LeasingExpectedEndDate.ToString();
+            startDatePicker.Value = currentLeasing.LeasingStartDate;
+            returnDatePicker.Value = DateTime.Now;
+            returnDatePicker.MinDate = currentLeasing.LeasingStartDate;
+            expectedEndLabel.Text = "Ожидается: " + currentLeasing.LeasingExpectedEndDate.ToShortDateString();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        decimal totalPriceChange;
+        double daysDiff;
+        decimal fineMultiplier = 2;
+        private void returnButton_Click(object sender, EventArgs e)
         {
-            // TODO RETURN BUTTON
+            DialogResult dialogResult;
+            if (returnDatePicker.Value.Date == currentLeasing.LeasingExpectedEndDate) // on time
+            {
+                dialogResult = MessageBox.Show("Возврат " + MovieOriginalTitle + ", " + currentCopy.Commentary + " в срок",
+                    "Возврат в срок", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    currentLeasing.ReturnOnTime();
+                    db.SaveChanges();
+                    this.Close();
+                }
+            }
+            else if (returnDatePicker.Value > currentLeasing.LeasingExpectedEndDate) // delayed
+            {
+                dialogResult = MessageBox.Show("Возврат " + MovieOriginalTitle + ", " + currentCopy.Commentary + ", ШТРАФ " + totalPriceChange.ToString(),
+                     "Поздний возврат", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    currentLeasing.ReturnDelayed(returnDatePicker.Value, fineMultiplier);
+                    db.SaveChanges();
+                    this.Close();
+                }
+            }
+            else // early
+            {
+                dialogResult = MessageBox.Show("Возврат " + MovieOriginalTitle + ", " + currentCopy.Commentary + ", ВЕРНУТЬ " + (-1 * totalPriceChange).ToString(),
+                     "Ранний возврат", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    currentLeasing.ReturnEarly(returnDatePicker.Value);
+                    db.SaveChanges();
+                    this.Close();
+                }
+            }
         }
 
         private void returnDate_ValueChanged(object sender, EventArgs e)
         {
-            if (returnDate.Value.Date > currentLeasing.LeasingExpectedEndDate.Date) // delayed return
+            if (returnDatePicker.Value.Date == currentLeasing.LeasingExpectedEndDate.Date) // on time
             {
-                returnDateLabel.ForeColor = Color.Red;
-            }
-            else if (returnDate.Value.Date == currentLeasing.LeasingExpectedEndDate.Date) // on time
-            {
+                totalPriceChangeLabel.Visible = false;
                 returnDateLabel.ForeColor = SystemColors.ControlText;
             }
-            else // early return
+            else if (returnDatePicker.Value.Date > currentLeasing.LeasingExpectedEndDate.Date) // delayed
+            {
+                returnDateLabel.ForeColor = Color.Red;
+                totalPriceChangeLabel.ForeColor = Color.Red;
+                totalPriceChangeLabel.Visible = true;
+
+                daysDiff = (returnDatePicker.Value.Date - currentLeasing.LeasingExpectedEndDate.Date).TotalDays;
+                totalPriceChange = (currentCopy.PricePerDay * (decimal)daysDiff) * fineMultiplier;// getting MORE money from leasing
+                totalPriceChangeLabel.Text = "Штраф: " + totalPriceChange.ToString();
+            }
+            else // early
             {
                 returnDateLabel.ForeColor = Color.Green;
+                totalPriceChangeLabel.ForeColor = Color.Green;
+                totalPriceChangeLabel.Visible = true;
+
+                daysDiff = (currentLeasing.LeasingExpectedEndDate.Date - returnDatePicker.Value.Date).TotalDays;
+                totalPriceChange = currentCopy.PricePerDay * (decimal)-daysDiff; // getting LESS money from leasing
+                totalPriceChangeLabel.Text = "Возврат: " + (-1 * totalPriceChange).ToString(); // -1 to prevent ~"Возврат -100"
             }
+        }
+
+        private void ReturnForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            db.Dispose();
         }
     }
 }

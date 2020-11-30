@@ -25,6 +25,7 @@ namespace videoprokat_winform
             movieCommentLabel.Text = currentCopy.Commentary;
             startDatePicker.Value = DateTime.Now;
             endDatePicker.Value = DateTime.Now.AddDays(3);
+            endDatePicker.MinDate = startDatePicker.Value.AddDays(1);
 
             using (VideoprokatContext db = new VideoprokatContext())
             {
@@ -35,7 +36,7 @@ namespace videoprokat_winform
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void leaseButton_Click(object sender, EventArgs e)
         {
             if (clientsComboBox.SelectedIndex > -1)
             {
@@ -54,7 +55,9 @@ namespace videoprokat_winform
                         leasing.LeasingExpectedEndDate = endDatePicker.Value;
                         leasing.ClientId = clientId;
                         leasing.MovieCopyId = movieCopyId;
+                        leasing.MovieCopy = currentCopy;
                         leasing.ClientName = owner.Name;
+                        leasing.TotalPrice = leasing.GetExpectedTotalPrice();
 
                         db.LeasedCopies.Add(leasing);
                         db.SaveChanges();

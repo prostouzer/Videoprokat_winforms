@@ -81,7 +81,7 @@ namespace videoprokat_winform
                 int CurrentMovieCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
 
                 var movieCopyLeasingInfo = (from r in db.LeasedCopies
-                                            where r.MovieCopy.Id == CurrentMovieCopyId
+                                            where r.MovieCopy.Id == CurrentMovieCopyId && r.ReturnDate == null
                                             select r).ToList();
 
                 leasingsDgv.DataSource = movieCopyLeasingInfo;
@@ -158,11 +158,14 @@ namespace videoprokat_winform
             {
                 if (leasingsDgv.SelectedCells.Count > 0)
                 {
-                    leasingContextMenu.Items[0].Enabled = true; // return button
-                }
-                else
-                {
-                    leasingContextMenu.Items[0].Enabled = false; // return button
+                    if ((bool)copiesDgv.CurrentRow.Cells["Available"].Value == false)
+                    {
+                        leasingContextMenu.Items[0].Enabled = true; // return button
+                    }
+                    else
+                    {
+                        leasingContextMenu.Items[0].Enabled = false; // return button
+                    }
                 }
             }
         }

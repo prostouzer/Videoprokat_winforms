@@ -29,32 +29,33 @@ namespace videoprokat_winform
         /// </summary>
         private void InitializeComponent()
         {
-            this.startDate = new System.Windows.Forms.DateTimePicker();
-            this.returnDate = new System.Windows.Forms.DateTimePicker();
+            this.startDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.returnDatePicker = new System.Windows.Forms.DateTimePicker();
             this.startDateLabel = new System.Windows.Forms.Label();
             this.returnDateLabel = new System.Windows.Forms.Label();
             this.movieCommentLabel = new System.Windows.Forms.Label();
             this.movieNameLabel = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.returnButton = new System.Windows.Forms.Button();
             this.ownerNameLabel = new System.Windows.Forms.Label();
             this.expectedEndLabel = new System.Windows.Forms.Label();
+            this.totalPriceChangeLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // startDate
+            // startDatePicker
             // 
-            this.startDate.Enabled = false;
-            this.startDate.Location = new System.Drawing.Point(12, 134);
-            this.startDate.Name = "startDate";
-            this.startDate.Size = new System.Drawing.Size(200, 23);
-            this.startDate.TabIndex = 0;
+            this.startDatePicker.Enabled = false;
+            this.startDatePicker.Location = new System.Drawing.Point(12, 134);
+            this.startDatePicker.Name = "startDatePicker";
+            this.startDatePicker.Size = new System.Drawing.Size(200, 23);
+            this.startDatePicker.TabIndex = 0;
             // 
-            // returnDate
+            // returnDatePicker
             // 
-            this.returnDate.Location = new System.Drawing.Point(218, 134);
-            this.returnDate.Name = "returnDate";
-            this.returnDate.Size = new System.Drawing.Size(304, 23);
-            this.returnDate.TabIndex = 1;
-            this.returnDate.ValueChanged += new System.EventHandler(this.returnDate_ValueChanged);
+            this.returnDatePicker.Location = new System.Drawing.Point(218, 134);
+            this.returnDatePicker.Name = "returnDatePicker";
+            this.returnDatePicker.Size = new System.Drawing.Size(304, 23);
+            this.returnDatePicker.TabIndex = 1;
+            this.returnDatePicker.ValueChanged += new System.EventHandler(this.returnDate_ValueChanged);
             // 
             // startDateLabel
             // 
@@ -98,15 +99,15 @@ namespace videoprokat_winform
             this.movieNameLabel.TabIndex = 4;
             this.movieNameLabel.Text = "Movie Name";
             // 
-            // button1
+            // returnButton
             // 
-            this.button1.Location = new System.Drawing.Point(12, 218);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(510, 71);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Вернуть";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.returnButton.Location = new System.Drawing.Point(12, 218);
+            this.returnButton.Name = "returnButton";
+            this.returnButton.Size = new System.Drawing.Size(510, 71);
+            this.returnButton.TabIndex = 6;
+            this.returnButton.Text = "Вернуть";
+            this.returnButton.UseVisualStyleBackColor = true;
+            this.returnButton.Click += new System.EventHandler(this.returnButton_Click);
             // 
             // ownerNameLabel
             // 
@@ -128,22 +129,37 @@ namespace videoprokat_winform
             this.expectedEndLabel.TabIndex = 8;
             this.expectedEndLabel.Text = "Ожидается: ";
             // 
+            // totalPriceChangeLabel
+            // 
+            this.totalPriceChangeLabel.AutoSize = true;
+            this.totalPriceChangeLabel.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.totalPriceChangeLabel.Location = new System.Drawing.Point(166, 181);
+            this.totalPriceChangeLabel.Name = "totalPriceChangeLabel";
+            this.totalPriceChangeLabel.Size = new System.Drawing.Size(152, 25);
+            this.totalPriceChangeLabel.TabIndex = 11;
+            this.totalPriceChangeLabel.Text = "Штраф/Возврат";
+            this.totalPriceChangeLabel.Visible = false;
+            // 
             // ReturnForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(534, 301);
+            this.Controls.Add(this.totalPriceChangeLabel);
             this.Controls.Add(this.expectedEndLabel);
             this.Controls.Add(this.ownerNameLabel);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.returnButton);
             this.Controls.Add(this.movieCommentLabel);
             this.Controls.Add(this.movieNameLabel);
             this.Controls.Add(this.returnDateLabel);
             this.Controls.Add(this.startDateLabel);
-            this.Controls.Add(this.returnDate);
-            this.Controls.Add(this.startDate);
+            this.Controls.Add(this.returnDatePicker);
+            this.Controls.Add(this.startDatePicker);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "ReturnForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Вернуть";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ReturnForm_FormClosed);
             this.Load += new System.EventHandler(this.ReturnForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -152,14 +168,15 @@ namespace videoprokat_winform
 
         #endregion
 
-        private System.Windows.Forms.DateTimePicker startDate;
-        private System.Windows.Forms.DateTimePicker returnDate;
+        private System.Windows.Forms.DateTimePicker startDatePicker;
+        private System.Windows.Forms.DateTimePicker returnDatePicker;
         private System.Windows.Forms.Label startDateLabel;
         private System.Windows.Forms.Label returnDateLabel;
         private System.Windows.Forms.Label movieCommentLabel;
         private System.Windows.Forms.Label movieNameLabel;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button returnButton;
         private System.Windows.Forms.Label ownerNameLabel;
         private System.Windows.Forms.Label expectedEndLabel;
+        private System.Windows.Forms.Label totalPriceChangeLabel;
     }
 }

@@ -35,7 +35,7 @@ namespace videoprokat_winform
             this.endDatePicker = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.leaseButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.clientsComboBox = new System.Windows.Forms.ComboBox();
             this.priceLabel = new System.Windows.Forms.Label();
@@ -96,15 +96,15 @@ namespace videoprokat_winform
             this.label4.TabIndex = 5;
             this.label4.Text = "Конец";
             // 
-            // button1
+            // leaseButton
             // 
-            this.button1.Location = new System.Drawing.Point(12, 221);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(505, 68);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Добавить";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.leaseButton.Location = new System.Drawing.Point(12, 221);
+            this.leaseButton.Name = "leaseButton";
+            this.leaseButton.Size = new System.Drawing.Size(505, 68);
+            this.leaseButton.TabIndex = 6;
+            this.leaseButton.Text = "Добавить";
+            this.leaseButton.UseVisualStyleBackColor = true;
+            this.leaseButton.Click += new System.EventHandler(this.leaseButton_Click);
             // 
             // label1
             // 
@@ -143,7 +143,7 @@ namespace videoprokat_winform
             this.Controls.Add(this.priceLabel);
             this.Controls.Add(this.clientsComboBox);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.leaseButton);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.endDatePicker);
@@ -168,7 +168,7 @@ namespace videoprokat_winform
         private System.Windows.Forms.DateTimePicker endDatePicker;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button leaseButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox clientsComboBox;
         private System.Windows.Forms.Label priceLabel;

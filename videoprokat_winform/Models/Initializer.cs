@@ -34,9 +34,27 @@ namespace videoprokat_winform.Models
             db.Clients.Add(c1);
             db.Clients.Add(c2);
 
-            Leasing l1 = new Leasing(mc1, c2, Convert.ToDateTime("19/11/2020"), Convert.ToDateTime("22/11/2020"));
-            Leasing l2 = new Leasing(mc2, c2, Convert.ToDateTime("19/11/2020"), Convert.ToDateTime("24/11/2020"));
-            Leasing l3 = new Leasing(mc3, c1, Convert.ToDateTime("19/11/2020"), Convert.ToDateTime("25/11/2020"));
+            Leasing l1 = new Leasing
+            {
+                MovieCopy = mc1,
+                Client = c2,
+                LeasingStartDate = Convert.ToDateTime("19/11/2020"),
+                LeasingExpectedEndDate = Convert.ToDateTime("22/11/2020")
+            };
+            Leasing l2 = new Leasing
+            {
+                MovieCopy = mc2,
+                Client = c2,
+                LeasingStartDate = Convert.ToDateTime("19/11/2020"),
+                LeasingExpectedEndDate = Convert.ToDateTime("24/11/2020")
+            };
+            Leasing l3 = new Leasing
+            {
+                MovieCopy = mc3,
+                Client = c1,
+                LeasingStartDate = Convert.ToDateTime("19/11/2020"),
+                LeasingExpectedEndDate = Convert.ToDateTime("25/11/2020")
+            };
 
             db.LeasedCopies.Add(l1);
             db.LeasedCopies.Add(l2);

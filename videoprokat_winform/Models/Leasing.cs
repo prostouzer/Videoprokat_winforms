@@ -15,58 +15,54 @@ namespace videoprokat_winform.Models
         // лучший способ вывода имени? через id?
         public string ClientName { get; set; }
         public int MovieCopyId { get; set; }
-        public MovieCopy MovieCopy { get; set; } // нужно ли, если используется только параметр movieCopy? movieCopyId для связи в entity framework недостаточно?
+        public MovieCopy MovieCopy { get; set; }
         public int ClientId { get; set; }
         public Client Client { get; set; }
 
-        // нужен ли этот конструктор, если с передачей MovieCopy он создает лишние записи в таблице MoviesCopies? см. кнопку добавления на LeasingForm
-        public Leasing(MovieCopy movieCopy, Client owner, DateTime leasingStartDate, DateTime leasingExpectedEndDate)
+        //public Leasing() { }
+        //public decimal GetExpectedTotalPrice(DateTime leasingStartDate, DateTime leasingExpectedEndDate, MovieCopy movieCopy)
+        public decimal GetExpectedTotalPrice()
         {
-            LeasingStartDate = leasingStartDate;
-            LeasingExpectedEndDate = leasingExpectedEndDate;
-            MovieCopy = movieCopy;
-            Client = owner;
-            ClientName = owner.Name;
-            movieCopy.Available = false;
-            TotalPrice = GetExpectedTotalPrice(leasingStartDate, leasingExpectedEndDate, movieCopy);
+            return Convert.ToDecimal((LeasingExpectedEndDate.Date - LeasingStartDate.Date).TotalDays) * MovieCopy.PricePerDay;
         }
-        public Leasing() { }
-        public decimal GetExpectedTotalPrice(DateTime leasingStartDate, DateTime leasingExpectedEndDate, MovieCopy movieCopy)
-        {
-            return (Convert.ToDecimal((leasingExpectedEndDate - leasingStartDate).TotalDays)) * movieCopy.PricePerDay;
-        }
-        public void ReturnDelayed(DateTime leasingExpectedEndDate, DateTime leasingReturnDate, MovieCopy movieCopy, decimal multiplier) // multiplier > 1 
-        {
-            int totalDays = Convert.ToInt32((leasingReturnDate - leasingExpectedEndDate).TotalDays);
-            TotalPrice = (totalDays * (movieCopy.PricePerDay * multiplier));
-            movieCopy.Available = true;
-            ReturnDate = leasingReturnDate;
-        }
-        public void ReturnEarly(DateTime leasingStartDate, DateTime leasingReturnDate, MovieCopy movieCopy)
-        {
-            int totalDays = Convert.ToInt32((leasingReturnDate - leasingStartDate).TotalDays);
-            TotalPrice = totalDays * movieCopy.PricePerDay;
-            movieCopy.Available = true;
-            ReturnDate = leasingReturnDate;
-        }
-
-        public void EndLeasing(DateTime returnDate, decimal multiplier = 0)
+        public void ReturnOnTime()
         {
             MovieCopy.Available = true;
-            if (returnDate > LeasingExpectedEndDate) // вернули позже
-            {
-                ReturnDelayed(LeasingExpectedEndDate, returnDate, MovieCopy, multiplier);
-            }
-            else if (returnDate < LeasingExpectedEndDate) // вернули раньше
-            {
-                ReturnEarly(LeasingStartDate, returnDate, MovieCopy);
-            }
-            else // вернули в срок
-            {
-                // при returnDate = LeasingExpectedEndDate значение изначально присвоено в конструкторе
-                MovieCopy.Available = true;
-                ReturnDate = LeasingExpectedEndDate;
-            }
+            ReturnDate = LeasingExpectedEndDate;
         }
+        public void ReturnDelayed(DateTime leasingReturnDate, decimal fineMultiplier = 2) // multiplier > 1 
+        {
+            double delayedDaysDiff = (leasingReturnDate.Date - LeasingExpectedEndDate.Date).TotalDays;
+            decimal totalPriceChange = (MovieCopy.PricePerDay * (decimal)delayedDaysDiff) * fineMultiplier; // getting MORE money from leasing
+            TotalPrice += totalPriceChange;
+            MovieCopy.Available = true;
+            ReturnDate = leasingReturnDate;
+        }
+        public void ReturnEarly(DateTime leasingReturnDate)
+        {
+            double daysDiff = (LeasingExpectedEndDate.Date - leasingReturnDate.Date).TotalDays;
+            decimal totalPriceChange = MovieCopy.PricePerDay * (decimal)daysDiff; // getting LESS money from leasing
+            TotalPrice -= totalPriceChange;
+            MovieCopy.Available = true;
+            ReturnDate = leasingReturnDate;
+        }
+        //public void EndLeasing(DateTime returnDate, decimal multiplier = 0)
+        //{
+        //    MovieCopy.Available = true;
+        //    if (returnDate > LeasingExpectedEndDate) // вернули позже
+        //    {
+        //        ReturnDelayed(LeasingExpectedEndDate, returnDate, MovieCopy, multiplier);
+        //    }
+        //    else if (returnDate < LeasingExpectedEndDate) // вернули раньше
+        //    {
+        //        ReturnEarly(LeasingStartDate, returnDate, MovieCopy);
+        //    }
+        //    else // вернули в срок
+        //    {
+        //        // при returnDate = LeasingExpectedEndDate значение изначально присвоено в конструкторе
+        //        MovieCopy.Available = true;
+        //        ReturnDate = LeasingExpectedEndDate;
+        //    }
+        //}
     }
 }
