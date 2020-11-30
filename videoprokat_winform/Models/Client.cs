@@ -4,7 +4,7 @@ using System.Text;
 
 namespace videoprokat_winform.Models
 {
-    class Client
+    public class Client
     {
         float _rating;
         public int Id { get; set; }

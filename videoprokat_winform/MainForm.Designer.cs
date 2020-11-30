@@ -33,6 +33,8 @@
             this.copiesContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.leasingItem = new System.Windows.Forms.ToolStripMenuItem();
             this.leasingsDgv = new System.Windows.Forms.DataGridView();
+            this.leasingContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.moviesDgv = new System.Windows.Forms.DataGridView();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.searchBox = new System.Windows.Forms.ToolStripTextBox();
@@ -41,6 +43,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.copiesDgv)).BeginInit();
             this.copiesContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.leasingsDgv)).BeginInit();
+            this.leasingContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.moviesDgv)).BeginInit();
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
@@ -79,6 +82,7 @@
             // 
             this.leasingsDgv.AllowUserToAddRows = false;
             this.leasingsDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.leasingsDgv.ContextMenuStrip = this.leasingContextMenu;
             this.leasingsDgv.Location = new System.Drawing.Point(647, 281);
             this.leasingsDgv.MultiSelect = false;
             this.leasingsDgv.Name = "leasingsDgv";
@@ -88,6 +92,20 @@
             this.leasingsDgv.Text = "dataGridView3";
             this.leasingsDgv.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.leasingsDgv_CellEndEdit);
             this.leasingsDgv.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.leasingsDgv_DataError);
+            this.leasingsDgv.MouseUp += new System.Windows.Forms.MouseEventHandler(this.leasingsDgv_MouseUp);
+            // 
+            // leasingContextMenu
+            // 
+            this.leasingContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.leasingContextMenu.Name = "leasingContextMenu";
+            this.leasingContextMenu.Size = new System.Drawing.Size(119, 26);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItem1.Text = "Вернуть";
             // 
             // moviesDgv
             // 
@@ -150,6 +168,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.copiesDgv)).EndInit();
             this.copiesContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.leasingsDgv)).EndInit();
+            this.leasingContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.moviesDgv)).EndInit();
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
@@ -169,6 +188,8 @@
         private System.Windows.Forms.ContextMenuStrip copiesContextMenu;
         private System.Windows.Forms.ToolStripMenuItem leasingItem;
         private System.Windows.Forms.ToolStripMenuItem clientsMenuItem;
+        private System.Windows.Forms.ContextMenuStrip leasingContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
 

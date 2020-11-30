@@ -65,23 +65,23 @@ namespace videoprokat_winform
             // 
             // startDatePicker
             // 
-            this.startDatePicker.Location = new System.Drawing.Point(12, 104);
+            this.startDatePicker.Location = new System.Drawing.Point(12, 103);
             this.startDatePicker.Name = "startDatePicker";
             this.startDatePicker.Size = new System.Drawing.Size(250, 23);
             this.startDatePicker.TabIndex = 2;
             // 
             // endDatePicker
             // 
-            this.endDatePicker.Location = new System.Drawing.Point(267, 104);
+            this.endDatePicker.Location = new System.Drawing.Point(267, 103);
             this.endDatePicker.Name = "endDatePicker";
-            this.endDatePicker.Size = new System.Drawing.Size(250, 23);
+            this.endDatePicker.Size = new System.Drawing.Size(255, 23);
             this.endDatePicker.TabIndex = 3;
             this.endDatePicker.ValueChanged += new System.EventHandler(this.endDatePicker_ValueChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(101, 86);
+            this.label3.Location = new System.Drawing.Point(101, 85);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(49, 15);
             this.label3.TabIndex = 4;
@@ -90,7 +90,7 @@ namespace videoprokat_winform
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(360, 86);
+            this.label4.Location = new System.Drawing.Point(360, 85);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(41, 15);
             this.label4.TabIndex = 5;
@@ -98,7 +98,7 @@ namespace videoprokat_winform
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 222);
+            this.button1.Location = new System.Drawing.Point(12, 221);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(505, 68);
             this.button1.TabIndex = 6;
@@ -109,7 +109,7 @@ namespace videoprokat_winform
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 179);
+            this.label1.Location = new System.Drawing.Point(12, 178);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(49, 15);
             this.label1.TabIndex = 7;
@@ -119,7 +119,7 @@ namespace videoprokat_winform
             // 
             this.clientsComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.clientsComboBox.FormattingEnabled = true;
-            this.clientsComboBox.Location = new System.Drawing.Point(67, 176);
+            this.clientsComboBox.Location = new System.Drawing.Point(67, 175);
             this.clientsComboBox.Name = "clientsComboBox";
             this.clientsComboBox.Size = new System.Drawing.Size(450, 23);
             this.clientsComboBox.TabIndex = 9;
@@ -129,7 +129,7 @@ namespace videoprokat_winform
             // 
             this.priceLabel.AutoSize = true;
             this.priceLabel.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.priceLabel.Location = new System.Drawing.Point(199, 139);
+            this.priceLabel.Location = new System.Drawing.Point(199, 138);
             this.priceLabel.Name = "priceLabel";
             this.priceLabel.Size = new System.Drawing.Size(68, 25);
             this.priceLabel.TabIndex = 10;
@@ -139,7 +139,7 @@ namespace videoprokat_winform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(529, 302);
+            this.ClientSize = new System.Drawing.Size(534, 301);
             this.Controls.Add(this.priceLabel);
             this.Controls.Add(this.clientsComboBox);
             this.Controls.Add(this.label1);

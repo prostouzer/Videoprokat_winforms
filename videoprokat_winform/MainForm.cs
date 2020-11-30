@@ -22,6 +22,7 @@ namespace videoprokat_winform
             mainMenu.Items[1].Click += OpenClientsForm; // "Клиенты"
 
             copiesContextMenu.Items[0].Click += OpenLeaseForm; // "Прокат"
+            leasingContextMenu.Items[0].Click += OpenReturnForm; // "Вернуть"
         }
         void OpenClientsForm(object sender, EventArgs e)
         {
@@ -33,6 +34,13 @@ namespace videoprokat_winform
             int CurrentCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
             MovieCopy movieCopy = db.MoviesCopies.First(c => c.Id == CurrentCopyId);
             LeasingForm form = new LeasingForm(movieCopy);
+            form.ShowDialog();
+        }
+        void OpenReturnForm(object sender, EventArgs e)
+        {
+            int CurrentLeasingId = Convert.ToInt32(leasingsDgv.CurrentRow.Cells["Id"].Value);
+            Leasing leasing = db.LeasedCopies.First(l => l.Id == CurrentLeasingId);
+            ReturnForm form = new ReturnForm(leasing);
             form.ShowDialog();
         }
         private void MainForm_Load(object sender, EventArgs e)
@@ -140,6 +148,21 @@ namespace videoprokat_winform
                     {
                         copiesContextMenu.Items[0].Enabled = false; // leasing button
                     }
+                }
+            }
+        }
+
+        private void leasingsDgv_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (leasingsDgv.SelectedCells.Count > 0)
+                {
+                    leasingContextMenu.Items[0].Enabled = true; // return button
+                }
+                else
+                {
+                    leasingContextMenu.Items[0].Enabled = false; // return button
                 }
             }
         }

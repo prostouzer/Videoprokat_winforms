@@ -5,7 +5,7 @@ using System.Text;
 
 namespace videoprokat_winform.Models
 {
-    class Leasing
+    public class Leasing
     {
         public int Id { get; set; }
         public DateTime LeasingStartDate { get; set; }
