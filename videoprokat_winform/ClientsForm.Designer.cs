@@ -49,12 +49,14 @@ namespace videoprokat_winform
             this.clients.TabIndex = 0;
             this.clients.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.clients_CellEndEdit);
             this.clients.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.clients_DataError);
+            this.clients.SelectionChanged += new System.EventHandler(this.clients_SelectionChanged);
             // 
             // leasedCopies
             // 
             this.leasedCopies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.leasedCopies.Location = new System.Drawing.Point(12, 222);
             this.leasedCopies.Name = "leasedCopies";
+            this.leasedCopies.ReadOnly = true;
             this.leasedCopies.RowTemplate.Height = 25;
             this.leasedCopies.Size = new System.Drawing.Size(382, 232);
             this.leasedCopies.TabIndex = 1;

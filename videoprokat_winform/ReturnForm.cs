@@ -46,7 +46,7 @@ namespace videoprokat_winform
         private void returnButton_Click(object sender, EventArgs e)
         {
             DialogResult dialogResult;
-            if (returnDatePicker.Value.Date == currentLeasing.LeasingExpectedEndDate) // on time
+            if (returnDatePicker.Value.Date == currentLeasing.LeasingExpectedEndDate.Date) // on time
             {
                 dialogResult = MessageBox.Show("Возврат " + MovieOriginalTitle + ", " + currentCopy.Commentary + " в срок",
                     "Возврат в срок", MessageBoxButtons.YesNo);
@@ -57,7 +57,7 @@ namespace videoprokat_winform
                     this.Close();
                 }
             }
-            else if (returnDatePicker.Value > currentLeasing.LeasingExpectedEndDate) // delayed
+            else if (returnDatePicker.Value > currentLeasing.LeasingExpectedEndDate.Date) // delayed
             {
                 dialogResult = MessageBox.Show("Возврат " + MovieOriginalTitle + ", " + currentCopy.Commentary + ", ШТРАФ " + totalPriceChange.ToString(),
                      "Поздний возврат", MessageBoxButtons.YesNo);

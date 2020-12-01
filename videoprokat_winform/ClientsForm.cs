@@ -60,5 +60,26 @@ namespace videoprokat_winform
         {
             MessageBox.Show("Неправильный формат данных");
         }
+
+        private void clients_SelectionChanged(object sender, EventArgs e)
+        {
+            int currentClientId = -1;
+            if (clients.CurrentRow != null)
+            {
+                currentClientId = Convert.ToInt32(clients.CurrentRow.Cells["Id"].Value);
+                Client currentClient = new Client();
+                currentClient = db.Clients.First(c => c.Id == currentClientId);
+                var leasedByClient = (from r in db.LeasedCopies
+                                      where r.ClientId == currentClient.Id
+                                      select r).ToList();
+                leasedCopies.DataSource = leasedByClient;
+
+                leasedCopies.Columns["ClientName"].Visible = false;
+                leasedCopies.Columns["MovieCopyId"].Visible = false;
+                leasedCopies.Columns["MovieCopy"].Visible = false;
+                leasedCopies.Columns["ClientId"].Visible = false;
+                leasedCopies.Columns["Client"].Visible = false;
+            }
+        }
     }
 }

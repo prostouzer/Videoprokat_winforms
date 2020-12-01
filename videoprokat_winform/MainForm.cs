@@ -19,10 +19,23 @@ namespace videoprokat_winform
         {
             InitializeComponent();
 
+            mainMenu.Items[0].TextChanged += filterMovies; // "Поиск"
             mainMenu.Items[1].Click += OpenClientsForm; // "Клиенты"
 
             copiesContextMenu.Items[0].Click += OpenLeaseForm; // "Прокат"
             leasingContextMenu.Items[0].Click += OpenReturnForm; // "Вернуть"
+        }
+        void filterMovies(object sender, EventArgs e)
+        {
+            var filteredData = db.MoviesOriginal.Local.ToBindingList().Where(x => x.Title.Contains(searchBox.Text)).ToList();
+            if (filteredData.Count() > 0 && searchBox.Text != "")
+            {
+                moviesDgv.DataSource = filteredData;
+            }
+            else
+            {
+                moviesDgv.DataSource = db.MoviesOriginal.Local.ToBindingList(); // чтобы вернулась строка добавления новой записи
+            }
         }
         void OpenClientsForm(object sender, EventArgs e)
         {
@@ -76,7 +89,7 @@ namespace videoprokat_winform
 
         private void copiesDgv_SelectionChanged(object sender, EventArgs e) // из копии фильма загружаем в таблицу инфу по аренде
         {
-            if (copiesDgv.SelectedCells.Count > 0)
+            if (copiesDgv.SelectedRows.Count > 0)
             {
                 int CurrentMovieCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
 
@@ -92,11 +105,6 @@ namespace videoprokat_winform
                 leasingsDgv.Columns["Client"].Visible = false;
                 leasingsDgv.Columns["ClientId"].Visible = false;
             }
-        }
-
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
         }
 
         private void moviesDgv_CellEndEdit(object sender, DataGridViewCellEventArgs e)

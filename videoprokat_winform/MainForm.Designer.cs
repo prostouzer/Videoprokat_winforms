@@ -131,13 +131,11 @@
             this.mainMenu.Size = new System.Drawing.Size(1077, 27);
             this.mainMenu.TabIndex = 3;
             this.mainMenu.Text = "menuStrip1";
-            this.mainMenu.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // searchBox
             // 
             this.searchBox.Name = "searchBox";
             this.searchBox.Size = new System.Drawing.Size(100, 23);
-            this.searchBox.Text = "Поиск";
             // 
             // clientsMenuItem
             // 
