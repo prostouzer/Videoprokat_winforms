@@ -23,6 +23,8 @@ namespace videoprokat_winform
             mainMenu.Items[1].Click += OpenClientsForm; // "Клиенты"
 
             copiesContextMenu.Items[0].Click += OpenLeaseForm; // "Прокат"
+            copiesContextMenu.Items[1].Click += OpenNewCopyForm; // "Новая копия"
+
             leasingContextMenu.Items[0].Click += OpenReturnForm; // "Вернуть"
         }
         void filterMovies(object sender, EventArgs e)
@@ -44,9 +46,16 @@ namespace videoprokat_winform
         }
         void OpenLeaseForm(object sender, EventArgs e)
         {
-            int CurrentCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
-            MovieCopy movieCopy = db.MoviesCopies.First(c => c.Id == CurrentCopyId);
+            int currentCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
+            MovieCopy movieCopy = db.MoviesCopies.First(c => c.Id == currentCopyId);
             LeasingForm form = new LeasingForm(movieCopy);
+            form.ShowDialog();
+        }
+        void OpenNewCopyForm(object sender, EventArgs e)
+        {
+            int currentMovieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
+            MovieOriginal movie = db.MoviesOriginal.First(m => m.Id == currentMovieId);
+            MovieCopyForm form = new MovieCopyForm(movie);
             form.ShowDialog();
         }
         void OpenReturnForm(object sender, EventArgs e)
@@ -148,6 +157,7 @@ namespace videoprokat_winform
             {
                 if (copiesDgv.SelectedCells.Count > 0)
                 {
+                    copiesContextMenu.Items[1].Enabled = true; // new copy button
                     if ((bool)copiesDgv.CurrentRow.Cells["Available"].Value == true)
                     {
                         copiesContextMenu.Items[0].Enabled = true; // leasing button
@@ -156,6 +166,11 @@ namespace videoprokat_winform
                     {
                         copiesContextMenu.Items[0].Enabled = false; // leasing button
                     }
+                }
+                else
+                {
+                    copiesContextMenu.Items[0].Enabled = false; // leasing button
+                    copiesContextMenu.Items[1].Enabled = false; // new copy button
                 }
             }
         }

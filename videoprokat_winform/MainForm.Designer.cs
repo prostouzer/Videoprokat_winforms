@@ -40,6 +40,7 @@
             this.searchBox = new System.Windows.Forms.ToolStripTextBox();
             this.clientsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importMoviesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newCopyItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.copiesDgv)).BeginInit();
             this.copiesContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.leasingsDgv)).BeginInit();
@@ -50,6 +51,7 @@
             // 
             // copiesDgv
             // 
+            this.copiesDgv.AllowUserToAddRows = false;
             this.copiesDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.copiesDgv.ContextMenuStrip = this.copiesContextMenu;
             this.copiesDgv.Location = new System.Drawing.Point(647, 27);
@@ -67,15 +69,16 @@
             // copiesContextMenu
             // 
             this.copiesContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.leasingItem});
+            this.leasingItem,
+            this.newCopyItem});
             this.copiesContextMenu.Name = "copiesContextMenu";
-            this.copiesContextMenu.Size = new System.Drawing.Size(115, 26);
+            this.copiesContextMenu.Size = new System.Drawing.Size(145, 48);
             // 
             // leasingItem
             // 
             this.leasingItem.Enabled = false;
             this.leasingItem.Name = "leasingItem";
-            this.leasingItem.Size = new System.Drawing.Size(114, 22);
+            this.leasingItem.Size = new System.Drawing.Size(144, 22);
             this.leasingItem.Text = "Прокат";
             // 
             // leasingsDgv
@@ -149,6 +152,12 @@
             this.importMoviesMenuItem.Size = new System.Drawing.Size(117, 23);
             this.importMoviesMenuItem.Text = "Импорт фильмов";
             // 
+            // newCopyItem
+            // 
+            this.newCopyItem.Name = "newCopyItem";
+            this.newCopyItem.Size = new System.Drawing.Size(144, 22);
+            this.newCopyItem.Text = "Новая копия";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -188,6 +197,7 @@
         private System.Windows.Forms.ToolStripMenuItem clientsMenuItem;
         private System.Windows.Forms.ContextMenuStrip leasingContextMenu;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem newCopyItem;
     }
 }
 
