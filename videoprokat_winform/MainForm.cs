@@ -75,6 +75,18 @@ namespace videoprokat_winform
             moviesDgv.Columns["Copies"].Visible = false;
 
             moviesDgv.Columns["Id"].ReadOnly = true;
+
+            moviesDgv.Sort(moviesDgv.Columns["Title"], ListSortDirection.Ascending);
+
+            moviesDgv.Columns["Id"].HeaderText = "ID";
+            moviesDgv.Columns["Title"].HeaderText = "Название";
+            moviesDgv.Columns["Description"].HeaderText = "Описание";
+            moviesDgv.Columns["YearReleased"].HeaderText = "Год выпуска";
+
+            moviesDgv.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            moviesDgv.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            moviesDgv.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            moviesDgv.Columns["YearReleased"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
 
         private void moviesDgv_SelectionChanged(object sender, EventArgs e) // из оригинального фильма загружаем в таблицу его копии
@@ -93,6 +105,16 @@ namespace videoprokat_winform
                 copiesDgv.Columns["Available"].ReadOnly = true;
                 copiesDgv.Columns["MovieId"].Visible = false;
                 copiesDgv.Columns["Movie"].Visible = false;
+
+                copiesDgv.Columns["Id"].HeaderText = "ID";
+                copiesDgv.Columns["Commentary"].HeaderText = "Комментарий";
+                copiesDgv.Columns["Available"].HeaderText = "Доступен";
+                copiesDgv.Columns["PricePerDay"].HeaderText = "Цена/день";
+
+                copiesDgv.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                copiesDgv.Columns["Commentary"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                copiesDgv.Columns["Available"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                copiesDgv.Columns["PricePerDay"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             }
         }
 
@@ -113,6 +135,14 @@ namespace videoprokat_winform
                 leasingsDgv.Columns["MovieCopyId"].Visible = false;
                 leasingsDgv.Columns["Client"].Visible = false;
                 leasingsDgv.Columns["ClientId"].Visible = false;
+
+                leasingsDgv.Columns["LeasingStartDate"].HeaderText = "Дата начала";
+                leasingsDgv.Columns["LeasingExpectedEndDate"].HeaderText = "Ожидаемый возврат";
+                leasingsDgv.Columns["ReturnDate"].HeaderText = "Фактический возврат";
+                leasingsDgv.Columns["TotalPrice"].HeaderText = "Итоговая цена";
+                leasingsDgv.Columns["ClientName"].HeaderText = "Клиент";
+
+                leasingsDgv.Columns["ClientName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
         }
 
@@ -157,7 +187,6 @@ namespace videoprokat_winform
             {
                 if (copiesDgv.SelectedCells.Count > 0)
                 {
-                    copiesContextMenu.Items[1].Enabled = true; // new copy button
                     if ((bool)copiesDgv.CurrentRow.Cells["Available"].Value == true)
                     {
                         copiesContextMenu.Items[0].Enabled = true; // leasing button
@@ -170,7 +199,6 @@ namespace videoprokat_winform
                 else
                 {
                     copiesContextMenu.Items[0].Enabled = false; // leasing button
-                    copiesContextMenu.Items[1].Enabled = false; // new copy button
                 }
             }
         }

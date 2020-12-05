@@ -32,6 +32,7 @@
             this.copiesDgv = new System.Windows.Forms.DataGridView();
             this.copiesContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.leasingItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newCopyItem = new System.Windows.Forms.ToolStripMenuItem();
             this.leasingsDgv = new System.Windows.Forms.DataGridView();
             this.leasingContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,7 +41,6 @@
             this.searchBox = new System.Windows.Forms.ToolStripTextBox();
             this.clientsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importMoviesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newCopyItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.copiesDgv)).BeginInit();
             this.copiesContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.leasingsDgv)).BeginInit();
@@ -58,7 +58,7 @@
             this.copiesDgv.MultiSelect = false;
             this.copiesDgv.Name = "copiesDgv";
             this.copiesDgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.copiesDgv.Size = new System.Drawing.Size(418, 248);
+            this.copiesDgv.Size = new System.Drawing.Size(559, 248);
             this.copiesDgv.TabIndex = 1;
             this.copiesDgv.Text = "dataGridView2";
             this.copiesDgv.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.copiesDgv_CellEndEdit);
@@ -72,14 +72,20 @@
             this.leasingItem,
             this.newCopyItem});
             this.copiesContextMenu.Name = "copiesContextMenu";
-            this.copiesContextMenu.Size = new System.Drawing.Size(145, 48);
+            this.copiesContextMenu.Size = new System.Drawing.Size(206, 48);
             // 
             // leasingItem
             // 
             this.leasingItem.Enabled = false;
             this.leasingItem.Name = "leasingItem";
-            this.leasingItem.Size = new System.Drawing.Size(144, 22);
+            this.leasingItem.Size = new System.Drawing.Size(205, 22);
             this.leasingItem.Text = "Прокат";
+            // 
+            // newCopyItem
+            // 
+            this.newCopyItem.Name = "newCopyItem";
+            this.newCopyItem.Size = new System.Drawing.Size(205, 22);
+            this.newCopyItem.Text = "Добавить новую копию";
             // 
             // leasingsDgv
             // 
@@ -90,7 +96,7 @@
             this.leasingsDgv.MultiSelect = false;
             this.leasingsDgv.Name = "leasingsDgv";
             this.leasingsDgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.leasingsDgv.Size = new System.Drawing.Size(418, 156);
+            this.leasingsDgv.Size = new System.Drawing.Size(559, 156);
             this.leasingsDgv.TabIndex = 2;
             this.leasingsDgv.Text = "dataGridView3";
             this.leasingsDgv.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.leasingsDgv_CellEndEdit);
@@ -131,7 +137,7 @@
             this.importMoviesMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Size = new System.Drawing.Size(1077, 27);
+            this.mainMenu.Size = new System.Drawing.Size(1218, 27);
             this.mainMenu.TabIndex = 3;
             this.mainMenu.Text = "menuStrip1";
             // 
@@ -152,17 +158,11 @@
             this.importMoviesMenuItem.Size = new System.Drawing.Size(117, 23);
             this.importMoviesMenuItem.Text = "Импорт фильмов";
             // 
-            // newCopyItem
-            // 
-            this.newCopyItem.Name = "newCopyItem";
-            this.newCopyItem.Size = new System.Drawing.Size(144, 22);
-            this.newCopyItem.Text = "Новая копия";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1077, 449);
+            this.ClientSize = new System.Drawing.Size(1218, 449);
             this.Controls.Add(this.leasingsDgv);
             this.Controls.Add(this.copiesDgv);
             this.Controls.Add(this.moviesDgv);

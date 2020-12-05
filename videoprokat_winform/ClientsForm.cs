@@ -26,6 +26,14 @@ namespace videoprokat_winform
 
             clients.DataSource = db.Clients.Local.ToList();
             clients.Columns["Id"].ReadOnly = true;
+
+            clients.Columns["Id"].HeaderText = "ID";
+            clients.Columns["Name"].HeaderText = "Имя";
+            clients.Columns["Rating"].HeaderText = "Рейтинг";
+
+            clients.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            clients.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            clients.Columns["Rating"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
 
         int DefaultRating = 100;
@@ -79,6 +87,18 @@ namespace videoprokat_winform
                 leasedCopies.Columns["MovieCopy"].Visible = false;
                 leasedCopies.Columns["ClientId"].Visible = false;
                 leasedCopies.Columns["Client"].Visible = false;
+
+                leasedCopies.Columns["Id"].HeaderText = "ID";
+                leasedCopies.Columns["LeasingStartDate"].HeaderText = "Дата начала";
+                leasedCopies.Columns["LeasingExpectedEndDate"].HeaderText = "Ожидаемый возврат";
+                leasedCopies.Columns["ReturnDate"].HeaderText = "Фактический возврат";
+                leasedCopies.Columns["TotalPrice"].HeaderText = "Итоговая цена";
+
+                leasedCopies.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                leasedCopies.Columns["LeasingStartDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                leasedCopies.Columns["LeasingExpectedEndDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                leasedCopies.Columns["ReturnDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                leasedCopies.Columns["TotalPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
         }
     }

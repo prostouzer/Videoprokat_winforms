@@ -48,16 +48,15 @@ namespace videoprokat_winform
                         int movieCopyId = currentCopy.Id;
                         Client owner = db.Clients.First(r => r.Id == clientId);
                         MovieCopy movieCopy = db.MoviesCopies.First(r => r.Id == movieCopyId);
-                        movieCopy.Available = false; // TODO чтобы увидеть изменения на датагриде (чтобы убрался флажок) нужно перезапускать приложение
-                        //Leasing leasing = new Leasing(copy, owner, startDatePicker.Value, endDatePicker.Value); // с такими параметрами при передаче MovieCopy copy аргумента в дб добавлялись каждый раз лишние копии фильмов (не прокаты)
+                        movieCopy.Available = false;
+
                         Leasing leasing = new Leasing();
-                        leasing.LeasingStartDate = startDatePicker.Value;
-                        leasing.LeasingExpectedEndDate = endDatePicker.Value;
+                        leasing.LeasingStartDate = startDatePicker.Value.Date;
+                        leasing.LeasingExpectedEndDate = endDatePicker.Value.Date;
                         leasing.ClientId = clientId;
                         leasing.MovieCopyId = movieCopyId;
-                        leasing.MovieCopy = currentCopy;
                         leasing.ClientName = owner.Name;
-                        leasing.TotalPrice = leasing.GetExpectedTotalPrice();
+                        leasing.TotalPrice = leasing.GetExpectedTotalPrice(currentCopy.PricePerDay);
 
                         db.LeasedCopies.Add(leasing);
                         db.SaveChanges();
@@ -84,9 +83,9 @@ namespace videoprokat_winform
 
         private void endDatePicker_ValueChanged(object sender, EventArgs e)
         {
-            if (endDatePicker.Value > startDatePicker.Value)
+            if (endDatePicker.Value.Date > startDatePicker.Value.Date)
             {
-                decimal price = (int)((endDatePicker.Value - startDatePicker.Value).TotalDays + 1) * currentCopy.PricePerDay; // + 1 к дням чтобы клиент также платил за последний день проката
+                decimal price = (int)((endDatePicker.Value.Date - startDatePicker.Value.Date).TotalDays) * currentCopy.PricePerDay;
                 priceLabel.Text = "Цена: " + price.ToString();
             }
             else

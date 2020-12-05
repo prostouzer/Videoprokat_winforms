@@ -58,14 +58,14 @@ namespace videoprokat_winform
             this.leasedCopies.Name = "leasedCopies";
             this.leasedCopies.ReadOnly = true;
             this.leasedCopies.RowTemplate.Height = 25;
-            this.leasedCopies.Size = new System.Drawing.Size(382, 232);
+            this.leasedCopies.Size = new System.Drawing.Size(721, 232);
             this.leasedCopies.TabIndex = 1;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Arial", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(433, 68);
+            this.label1.Location = new System.Drawing.Point(433, 25);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(274, 25);
             this.label1.TabIndex = 2;
@@ -73,9 +73,9 @@ namespace videoprokat_winform
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(400, 222);
+            this.button1.Location = new System.Drawing.Point(400, 126);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(333, 232);
+            this.button1.Size = new System.Drawing.Size(333, 90);
             this.button1.TabIndex = 3;
             this.button1.Text = "Добавить";
             this.button1.UseVisualStyleBackColor = true;
@@ -83,7 +83,7 @@ namespace videoprokat_winform
             // 
             // clientNameTextBox
             // 
-            this.clientNameTextBox.Location = new System.Drawing.Point(400, 140);
+            this.clientNameTextBox.Location = new System.Drawing.Point(400, 97);
             this.clientNameTextBox.Name = "clientNameTextBox";
             this.clientNameTextBox.Size = new System.Drawing.Size(333, 23);
             this.clientNameTextBox.TabIndex = 4;
@@ -91,7 +91,7 @@ namespace videoprokat_winform
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(544, 113);
+            this.label2.Location = new System.Drawing.Point(544, 70);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(31, 15);
             this.label2.TabIndex = 5;

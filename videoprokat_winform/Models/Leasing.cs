@@ -21,9 +21,9 @@ namespace videoprokat_winform.Models
 
         //public Leasing() { }
         //public decimal GetExpectedTotalPrice(DateTime leasingStartDate, DateTime leasingExpectedEndDate, MovieCopy movieCopy)
-        public decimal GetExpectedTotalPrice()
+        public decimal GetExpectedTotalPrice(decimal pricePerDay)
         {
-            return Convert.ToDecimal((LeasingExpectedEndDate.Date - LeasingStartDate.Date).TotalDays) * MovieCopy.PricePerDay;
+            return Convert.ToDecimal((LeasingExpectedEndDate.Date - LeasingStartDate.Date).TotalDays) * pricePerDay;
         }
         public void ReturnOnTime()
         {
