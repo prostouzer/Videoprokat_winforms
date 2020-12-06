@@ -19,15 +19,16 @@ namespace videoprokat_winform
         {
             InitializeComponent();
 
-            mainMenu.Items[0].TextChanged += filterMovies; // "Поиск"
+            mainMenu.Items[0].TextChanged += FilterMovies; // "Поиск"
             mainMenu.Items[1].Click += OpenClientsForm; // "Клиенты"
+            mainMenu.Items[2].Click += OpenImportMoviesForm;
 
             copiesContextMenu.Items[0].Click += OpenLeaseForm; // "Прокат"
             copiesContextMenu.Items[1].Click += OpenNewCopyForm; // "Новая копия"
 
             leasingContextMenu.Items[0].Click += OpenReturnForm; // "Вернуть"
         }
-        void filterMovies(object sender, EventArgs e)
+        void FilterMovies(object sender, EventArgs e)
         {
             var filteredData = db.MoviesOriginal.Local.ToBindingList().Where(x => x.Title.Contains(searchBox.Text)).ToList();
             if (filteredData.Count() > 0 && searchBox.Text != "")
@@ -42,6 +43,11 @@ namespace videoprokat_winform
         void OpenClientsForm(object sender, EventArgs e)
         {
             ClientsForm form = new ClientsForm();
+            form.ShowDialog();
+        }
+        void OpenImportMoviesForm(object sender, EventArgs e)
+        {
+            ImportMoviesForm form = new ImportMoviesForm();
             form.ShowDialog();
         }
         void OpenLeaseForm(object sender, EventArgs e)
