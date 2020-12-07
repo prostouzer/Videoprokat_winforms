@@ -52,6 +52,8 @@
             // copiesDgv
             // 
             this.copiesDgv.AllowUserToAddRows = false;
+            this.copiesDgv.AllowUserToDeleteRows = false;
+            this.copiesDgv.AllowUserToOrderColumns = true;
             this.copiesDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.copiesDgv.ContextMenuStrip = this.copiesContextMenu;
             this.copiesDgv.Location = new System.Drawing.Point(647, 27);
@@ -119,6 +121,8 @@
             // 
             // moviesDgv
             // 
+            this.moviesDgv.AllowUserToDeleteRows = false;
+            this.moviesDgv.AllowUserToOrderColumns = true;
             this.moviesDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.moviesDgv.Location = new System.Drawing.Point(12, 27);
             this.moviesDgv.Name = "moviesDgv";

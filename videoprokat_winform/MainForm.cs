@@ -31,14 +31,14 @@ namespace videoprokat_winform
         {
             using (VideoprokatContext db = new VideoprokatContext())
             {
-                var filteredData = db.MoviesOriginal.Local.ToBindingList().Where(x => x.Title.Contains(searchBox.Text)).ToList();
+                var filteredData = db.MoviesOriginal.Where(m => m.Title.Contains(searchBox.Text)).ToList();
                 if (filteredData.Count() > 0 && searchBox.Text != "")
                 {
                     moviesDgv.DataSource = filteredData;
                 }
                 else
                 {
-                    moviesDgv.DataSource = db.MoviesOriginal.Local.ToBindingList(); // чтобы вернулась строка добавления новой записи
+                    RedrawMoviesDgv();
                 }
             }
         }
@@ -51,6 +51,7 @@ namespace videoprokat_winform
         {
             ImportMoviesForm form = new ImportMoviesForm();
             form.ShowDialog();
+            RedrawMoviesDgv();
         }
         void OpenLeaseForm(object sender, EventArgs e)
         {
@@ -87,19 +88,56 @@ namespace videoprokat_winform
             RedrawCopiesDgv();
             RedrawLeasingsDgv();
         }
-        private void MainForm_Load(object sender, EventArgs e)
+
+        private void RedrawMoviesDgv()
         {
             using (VideoprokatContext db = new VideoprokatContext())
             {
                 db.MoviesOriginal.Load();
                 moviesDgv.DataSource = db.MoviesOriginal.Local.ToBindingList();
+
+                moviesDgv.Sort(moviesDgv.Columns["Title"], ListSortDirection.Ascending);
             }
+        }
+        private void RedrawCopiesDgv()
+        {
+            using (VideoprokatContext db = new VideoprokatContext())
+            {
+                int CurrentMovieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
+
+                var movieCopies = (from r in db.MoviesCopies
+                                   where r.MovieId == CurrentMovieId
+                                   select r).ToList();
+
+                copiesDgv.DataSource = movieCopies;
+            }
+        }
+        private void RedrawLeasingsDgv()
+        {
+            using (VideoprokatContext db = new VideoprokatContext())
+            {
+                int CurrentMovieCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
+
+                var movieCopyLeasingInfo = (from r in db.LeasedCopies
+                                            where r.MovieCopy.Id == CurrentMovieCopyId && r.ReturnDate == null
+                                            select r).ToList();
+
+                leasingsDgv.DataSource = movieCopyLeasingInfo;
+            }
+        }
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            //using (VideoprokatContext db = new VideoprokatContext())
+            //{
+            //    db.MoviesOriginal.Load();
+            //    moviesDgv.DataSource = db.MoviesOriginal.Local.ToBindingList();
+            //}
+            RedrawMoviesDgv();
+
             moviesDgv.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             moviesDgv.Columns["Copies"].Visible = false;
 
             moviesDgv.Columns["Id"].ReadOnly = true;
-
-            moviesDgv.Sort(moviesDgv.Columns["Title"], ListSortDirection.Ascending);
 
             moviesDgv.Columns["Id"].HeaderText = "ID";
             moviesDgv.Columns["Title"].HeaderText = "Название";
@@ -133,21 +171,6 @@ namespace videoprokat_winform
                 copiesDgv.Columns["PricePerDay"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             }
         }
-
-        private void RedrawCopiesDgv()
-        {
-            using (VideoprokatContext db = new VideoprokatContext())
-            {
-                int CurrentMovieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
-
-                var movieCopies = (from r in db.MoviesCopies
-                                   where r.MovieId == CurrentMovieId
-                                   select r).ToList();
-
-                copiesDgv.DataSource = movieCopies;
-            }
-        }
-
         private void copiesDgv_SelectionChanged(object sender, EventArgs e) // из копии фильма загружаем в таблицу инфу по аренде
         {
             if (copiesDgv.SelectedRows.Count > 0)
@@ -180,19 +203,6 @@ namespace videoprokat_winform
             }
         }
 
-        private void RedrawLeasingsDgv()
-        {
-            using (VideoprokatContext db = new VideoprokatContext())
-            {
-                int CurrentMovieCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
-
-                var movieCopyLeasingInfo = (from r in db.LeasedCopies
-                                            where r.MovieCopy.Id == CurrentMovieCopyId && r.ReturnDate == null
-                                            select r).ToList();
-
-                leasingsDgv.DataSource = movieCopyLeasingInfo;
-            }
-        }
         private void moviesDgv_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             DataGridViewRow currentRow = moviesDgv.CurrentRow;
