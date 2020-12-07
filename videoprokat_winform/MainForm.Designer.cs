@@ -35,7 +35,7 @@
             this.newCopyItem = new System.Windows.Forms.ToolStripMenuItem();
             this.leasingsDgv = new System.Windows.Forms.DataGridView();
             this.leasingContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.returnItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moviesDgv = new System.Windows.Forms.DataGridView();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.searchBox = new System.Windows.Forms.ToolStripTextBox();
@@ -109,15 +109,15 @@
             // leasingContextMenu
             // 
             this.leasingContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
+            this.returnItem});
             this.leasingContextMenu.Name = "leasingContextMenu";
             this.leasingContextMenu.Size = new System.Drawing.Size(119, 26);
             // 
-            // toolStripMenuItem1
+            // returnItem
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(118, 22);
-            this.toolStripMenuItem1.Text = "Вернуть";
+            this.returnItem.Name = "returnItem";
+            this.returnItem.Size = new System.Drawing.Size(118, 22);
+            this.returnItem.Text = "Вернуть";
             // 
             // moviesDgv
             // 
@@ -200,7 +200,7 @@
         private System.Windows.Forms.ToolStripMenuItem leasingItem;
         private System.Windows.Forms.ToolStripMenuItem clientsMenuItem;
         private System.Windows.Forms.ContextMenuStrip leasingContextMenu;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem returnItem;
         private System.Windows.Forms.ToolStripMenuItem newCopyItem;
     }
 }

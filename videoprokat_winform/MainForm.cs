@@ -255,16 +255,16 @@ namespace videoprokat_winform
                 {
                     if ((bool)copiesDgv.CurrentRow.Cells["Available"].Value == true)
                     {
-                        copiesContextMenu.Items[0].Enabled = true; // leasing button
+                        copiesContextMenu.Items[0].Enabled = true; // "Прокат"
                     }
                     else
                     {
-                        copiesContextMenu.Items[0].Enabled = false; // leasing button
+                        copiesContextMenu.Items[0].Enabled = false; // "Прокат"
                     }
                 }
                 else
                 {
-                    copiesContextMenu.Items[0].Enabled = false; // leasing button
+                    copiesContextMenu.Items[0].Enabled = false; // "Прокат"
                 }
             }
         }
@@ -277,12 +277,16 @@ namespace videoprokat_winform
                 {
                     if ((bool)copiesDgv.CurrentRow.Cells["Available"].Value == false)
                     {
-                        leasingContextMenu.Items[0].Enabled = true; // return button
+                        leasingContextMenu.Items[0].Enabled = true; // "Вернуть"
                     }
                     else
                     {
-                        leasingContextMenu.Items[0].Enabled = false; // return button
+                        leasingContextMenu.Items[0].Enabled = false; // "Вернуть"
                     }
+                }
+                else
+                {
+                    leasingContextMenu.Items[0].Enabled = false; // "Вернуть"
                 }
             }
         }
