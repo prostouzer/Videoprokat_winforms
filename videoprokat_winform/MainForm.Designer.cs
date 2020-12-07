@@ -57,6 +57,7 @@
             this.copiesDgv.Location = new System.Drawing.Point(647, 27);
             this.copiesDgv.MultiSelect = false;
             this.copiesDgv.Name = "copiesDgv";
+            this.copiesDgv.ReadOnly = true;
             this.copiesDgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.copiesDgv.Size = new System.Drawing.Size(559, 248);
             this.copiesDgv.TabIndex = 1;
@@ -95,11 +96,11 @@
             this.leasingsDgv.Location = new System.Drawing.Point(647, 281);
             this.leasingsDgv.MultiSelect = false;
             this.leasingsDgv.Name = "leasingsDgv";
+            this.leasingsDgv.ReadOnly = true;
             this.leasingsDgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.leasingsDgv.Size = new System.Drawing.Size(559, 156);
             this.leasingsDgv.TabIndex = 2;
             this.leasingsDgv.Text = "dataGridView3";
-            this.leasingsDgv.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.leasingsDgv_CellEndEdit);
             this.leasingsDgv.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.leasingsDgv_DataError);
             this.leasingsDgv.MouseUp += new System.Windows.Forms.MouseEventHandler(this.leasingsDgv_MouseUp);
             // 
@@ -169,8 +170,7 @@
             this.Controls.Add(this.mainMenu);
             this.MainMenuStrip = this.mainMenu;
             this.Name = "MainForm";
-            this.Text = "Videoprokat";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
+            this.Text = "Видеопрокат";
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.copiesDgv)).EndInit();
             this.copiesContextMenu.ResumeLayout(false);

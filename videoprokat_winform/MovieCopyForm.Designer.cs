@@ -88,6 +88,11 @@ namespace videoprokat_winform
             // 
             this.priceNumericUpDown.DecimalPlaces = 2;
             this.priceNumericUpDown.Location = new System.Drawing.Point(388, 116);
+            this.priceNumericUpDown.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             this.priceNumericUpDown.Name = "priceNumericUpDown";
             this.priceNumericUpDown.Size = new System.Drawing.Size(134, 23);
             this.priceNumericUpDown.TabIndex = 8;

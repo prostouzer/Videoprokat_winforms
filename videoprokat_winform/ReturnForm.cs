@@ -14,8 +14,9 @@ namespace videoprokat_winform
     {
         Leasing currentLeasing;
         MovieCopy currentCopy;
-        string MovieOriginalTitle;
+        MovieOriginal currentMovie;
         Client currentOwner;
+
         VideoprokatContext db = new VideoprokatContext();
         public ReturnForm(Leasing leasing)
         {
@@ -23,14 +24,15 @@ namespace videoprokat_winform
 
             currentLeasing = db.LeasedCopies.First(l => l.Id == leasing.Id);
             currentCopy = db.MoviesCopies.First(c => c.Id == leasing.MovieCopyId);
-            MovieOriginalTitle = leasing.MovieCopy.Movie.Title;
+            currentMovie = db.MoviesOriginal.First(m => m.Id == currentCopy.MovieId);
             currentOwner = db.Clients.First(o => o.Id == leasing.ClientId);
         }
 
         private void ReturnForm_Load(object sender, EventArgs e)
         {
             ownerNameLabel.Text = currentOwner.Name + ", рейтинг " + currentOwner.Rating.ToString();
-            movieNameLabel.Text = MovieOriginalTitle;
+            movieNameLabel.Text = currentMovie.Title;
+            fineFormulaLabel.Text = $"Штраф = {fineMultiplier.ToString()} * цена/день * количество просроченных дней";
 
             movieCommentLabel.Text = currentCopy.Commentary;
 
@@ -48,7 +50,7 @@ namespace videoprokat_winform
             DialogResult dialogResult;
             if (returnDatePicker.Value.Date == currentLeasing.LeasingExpectedEndDate.Date) // on time
             {
-                dialogResult = MessageBox.Show("Возврат " + MovieOriginalTitle + ", " + currentCopy.Commentary + " в срок",
+                dialogResult = MessageBox.Show("Возврат " + currentMovie.Title + ", " + currentCopy.Commentary + " в срок",
                     "Возврат в срок", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
@@ -59,7 +61,7 @@ namespace videoprokat_winform
             }
             else if (returnDatePicker.Value > currentLeasing.LeasingExpectedEndDate.Date) // delayed
             {
-                dialogResult = MessageBox.Show("Возврат " + MovieOriginalTitle + ", " + currentCopy.Commentary + ", ШТРАФ " + totalPriceChange.ToString(),
+                dialogResult = MessageBox.Show("Возврат " + currentMovie.Title + ", " + currentCopy.Commentary + ", ШТРАФ " + totalPriceChange.ToString(),
                      "Поздний возврат", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
@@ -70,7 +72,7 @@ namespace videoprokat_winform
             }
             else // early
             {
-                dialogResult = MessageBox.Show("Возврат " + MovieOriginalTitle + ", " + currentCopy.Commentary + ", ВЕРНУТЬ " + (-1 * totalPriceChange).ToString(),
+                dialogResult = MessageBox.Show("Возврат " + currentMovie.Title + ", " + currentCopy.Commentary + ", ВЕРНУТЬ " + (-1 * totalPriceChange).ToString(),
                      "Ранний возврат", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {

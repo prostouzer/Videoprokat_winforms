@@ -29,17 +29,20 @@ namespace videoprokat_winform
                 DialogResult dialogResult;
                 dialogResult = MessageBox.Show("Создать новую копию фильма " + currentMovie.Title + ", " + commentTextBox.Text.Trim() + 
                     ", с ценой " + priceNumericUpDown.Value.ToString() + " руб. за день?", "Новая копия", MessageBoxButtons.YesNo) ;
-                MovieCopy copy = new MovieCopy();
-                copy.MovieId = currentMovie.Id;
-                copy.Available = true;
-                copy.Commentary = commentTextBox.Text;
-                copy.PricePerDay = priceNumericUpDown.Value;
-                using (VideoprokatContext db = new VideoprokatContext())
+                if (dialogResult == DialogResult.Yes)
                 {
-                    db.MoviesCopies.Add(copy);
-                    db.SaveChanges();
+                    MovieCopy copy = new MovieCopy();
+                    copy.MovieId = currentMovie.Id;
+                    copy.Available = true;
+                    copy.Commentary = commentTextBox.Text;
+                    copy.PricePerDay = priceNumericUpDown.Value;
+                    using (VideoprokatContext db = new VideoprokatContext())
+                    {
+                        db.MoviesCopies.Add(copy);
+                        db.SaveChanges();
+                    }
+                    this.Close();
                 }
-                this.Close();
             }
             else
             {

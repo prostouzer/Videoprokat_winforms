@@ -39,6 +39,7 @@ namespace videoprokat_winform
             this.ownerNameLabel = new System.Windows.Forms.Label();
             this.expectedEndLabel = new System.Windows.Forms.Label();
             this.totalPriceChangeLabel = new System.Windows.Forms.Label();
+            this.fineFormulaLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // startDatePicker
@@ -133,18 +134,29 @@ namespace videoprokat_winform
             // 
             this.totalPriceChangeLabel.AutoSize = true;
             this.totalPriceChangeLabel.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.totalPriceChangeLabel.Location = new System.Drawing.Point(166, 181);
+            this.totalPriceChangeLabel.Location = new System.Drawing.Point(168, 190);
             this.totalPriceChangeLabel.Name = "totalPriceChangeLabel";
             this.totalPriceChangeLabel.Size = new System.Drawing.Size(152, 25);
             this.totalPriceChangeLabel.TabIndex = 11;
             this.totalPriceChangeLabel.Text = "Штраф/Возврат";
             this.totalPriceChangeLabel.Visible = false;
             // 
+            // fineFormulaLabel
+            // 
+            this.fineFormulaLabel.AutoSize = true;
+            this.fineFormulaLabel.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.fineFormulaLabel.Location = new System.Drawing.Point(141, 178);
+            this.fineFormulaLabel.Name = "fineFormulaLabel";
+            this.fineFormulaLabel.Size = new System.Drawing.Size(198, 12);
+            this.fineFormulaLabel.TabIndex = 12;
+            this.fineFormulaLabel.Text = "Штраф = MULTIPLIER*Просроченные дни";
+            // 
             // ReturnForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(534, 301);
+            this.Controls.Add(this.fineFormulaLabel);
             this.Controls.Add(this.totalPriceChangeLabel);
             this.Controls.Add(this.expectedEndLabel);
             this.Controls.Add(this.ownerNameLabel);
@@ -178,5 +190,6 @@ namespace videoprokat_winform
         private System.Windows.Forms.Label ownerNameLabel;
         private System.Windows.Forms.Label expectedEndLabel;
         private System.Windows.Forms.Label totalPriceChangeLabel;
+        private System.Windows.Forms.Label fineFormulaLabel;
     }
 }

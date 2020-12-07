@@ -21,14 +21,17 @@ namespace videoprokat_winform
 
         private void LeasingForm_Load(object sender, EventArgs e)
         {
-            movieNameLabel.Text = currentCopy.Movie.Title;
-            movieCommentLabel.Text = currentCopy.Commentary;
             startDatePicker.Value = DateTime.Now;
             endDatePicker.Value = DateTime.Now.AddDays(3);
             endDatePicker.MinDate = startDatePicker.Value.AddDays(1);
 
             using (VideoprokatContext db = new VideoprokatContext())
             {
+                MovieOriginal currentMovie;
+                currentMovie = db.MoviesOriginal.First(m => m.Id == currentCopy.MovieId);
+                movieNameLabel.Text = currentMovie.Title;
+                movieCommentLabel.Text = currentCopy.Commentary;
+
                 var clients = db.Clients.ToList();
                 clientsComboBox.DataSource = clients;
                 clientsComboBox.DisplayMember = "Name";
