@@ -13,6 +13,7 @@ namespace videoprokat_winform
     public partial class LeasingForm : Form
     {
         MovieCopy currentCopy;
+        MovieOriginal currentMovie;
         public LeasingForm(MovieCopy movieCopy)
         {
             InitializeComponent();
@@ -22,11 +23,10 @@ namespace videoprokat_winform
         private void LeasingForm_Load(object sender, EventArgs e)
         {
             startDatePicker.Value = DateTime.Now;
-            endDatePicker.Value = DateTime.Now.AddDays(3);
+            endDatePicker.Value = DateTime.Now.AddDays(2);
 
             using (VideoprokatContext db = new VideoprokatContext())
             {
-                MovieOriginal currentMovie;
                 currentMovie = db.MoviesOriginal.First(m => m.Id == currentCopy.MovieId);
                 movieNameLabel.Text = currentMovie.Title;
                 movieCommentLabel.Text = currentCopy.Commentary;
@@ -42,7 +42,7 @@ namespace videoprokat_winform
         {
             if (clientsComboBox.SelectedIndex > -1)
             {
-                if (startDatePicker.Value.Date <= endDatePicker.Value.Date)
+                if (startDatePicker.Value.Date < endDatePicker.Value.Date)
                 {
                     using (VideoprokatContext db = new VideoprokatContext())
                     {
@@ -57,17 +57,21 @@ namespace videoprokat_winform
                         leasing.LeasingExpectedEndDate = endDatePicker.Value.Date;
                         leasing.ClientId = clientId;
                         leasing.MovieCopyId = movieCopyId;
-                        leasing.ClientName = owner.Name;
                         leasing.TotalPrice = leasing.GetExpectedTotalPrice(currentCopy.PricePerDay);
 
-                        db.LeasedCopies.Add(leasing);
-                        db.SaveChanges();
+                        DialogResult result = MessageBox.Show($"Прокат {currentMovie.Title}, {currentCopy.Commentary} " +
+                            $"с {startDatePicker.Value.Date} по {endDatePicker.Value.Date} за {leasing.TotalPrice.ToString()}?", "Прокат", MessageBoxButtons.YesNo);
+                        if (result == DialogResult.Yes)
+                        {
+                            db.LeasedCopies.Add(leasing);
+                            db.SaveChanges();
+                        }
                     }
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("Конец проката не может быть раньше начала");
+                    MessageBox.Show("Дата оканчания проката не может быть раньше даты начала");
                 }
             }
             else
@@ -89,10 +93,6 @@ namespace videoprokat_winform
             {
                 decimal price = (int)((endDatePicker.Value.Date - startDatePicker.Value.Date).TotalDays) * currentCopy.PricePerDay;
                 priceLabel.Text = "Цена: " + price.ToString();
-            }
-            else if (startDatePicker.Value.Date == endDatePicker.Value.Date)
-            {
-                priceLabel.Text = "Цена: " + currentCopy.PricePerDay; // если берут и возвращают в этот же день, то оплачивается все равно 1 день
             }
             else
             {

@@ -82,7 +82,6 @@ namespace videoprokat_winform
                                       select r).ToList();
                 leasedCopies.DataSource = leasedByClient;
 
-                leasedCopies.Columns["ClientName"].Visible = false;
                 leasedCopies.Columns["MovieCopyId"].Visible = false;
                 leasedCopies.Columns["MovieCopy"].Visible = false;
                 leasedCopies.Columns["ClientId"].Visible = false;

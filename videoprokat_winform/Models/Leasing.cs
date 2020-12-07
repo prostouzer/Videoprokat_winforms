@@ -12,8 +12,7 @@ namespace videoprokat_winform.Models
         public DateTime LeasingExpectedEndDate { get; set; }
         public Nullable<DateTime> ReturnDate { get; set; }
         public decimal TotalPrice { get; set; }
-        // лучший способ вывода имени? через id?
-        public string ClientName { get; set; }
+
         public int MovieCopyId { get; set; }
         public MovieCopy MovieCopy { get; set; }
         public int ClientId { get; set; }
@@ -21,14 +20,7 @@ namespace videoprokat_winform.Models
 
         public decimal GetExpectedTotalPrice(decimal pricePerDay)
         {
-            if (LeasingStartDate.Date == LeasingExpectedEndDate.Date)
-            {
-                return Convert.ToDecimal(1 * pricePerDay); // если берут и возвращают в этот же день, то оплачивается все равно 1 день
-            }
-            else 
-            {
-                return Convert.ToDecimal((LeasingExpectedEndDate.Date - LeasingStartDate.Date).TotalDays) * pricePerDay;
-            } 
+            return Convert.ToDecimal((LeasingExpectedEndDate.Date - LeasingStartDate.Date).TotalDays) * pricePerDay;
         }
         public void ReturnOnTime()
         {

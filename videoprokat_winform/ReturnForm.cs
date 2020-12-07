@@ -50,7 +50,7 @@ namespace videoprokat_winform
             DialogResult dialogResult;
             if (returnDatePicker.Value.Date == currentLeasing.LeasingExpectedEndDate.Date) // on time
             {
-                dialogResult = MessageBox.Show("Возврат " + currentMovie.Title + ", " + currentCopy.Commentary + " в срок",
+                dialogResult = MessageBox.Show($"Возврат {currentMovie.Title}, {currentCopy.Commentary} в срок",
                     "Возврат в срок", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
@@ -61,7 +61,7 @@ namespace videoprokat_winform
             }
             else if (returnDatePicker.Value > currentLeasing.LeasingExpectedEndDate.Date) // delayed
             {
-                dialogResult = MessageBox.Show("Возврат " + currentMovie.Title + ", " + currentCopy.Commentary + ", ШТРАФ " + totalPriceChange.ToString(),
+                dialogResult = MessageBox.Show($"Возврат {currentMovie.Title}, {currentCopy.Commentary}, ШТРАФ {totalPriceChange.ToString()}",
                      "Поздний возврат", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
@@ -72,7 +72,7 @@ namespace videoprokat_winform
             }
             else // early
             {
-                dialogResult = MessageBox.Show("Возврат " + currentMovie.Title + ", " + currentCopy.Commentary + ", ВЕРНУТЬ " + (-1 * totalPriceChange).ToString(),
+                dialogResult = MessageBox.Show($"Возврат {currentMovie.Title}, {currentCopy.Commentary}, ВЕРНУТЬ {(-1 * totalPriceChange).ToString()}",
                      "Ранний возврат", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
