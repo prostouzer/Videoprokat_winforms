@@ -22,6 +22,8 @@ namespace videoprokat_winform
             mainMenu.Items[1].Click += OpenClientsForm; // "Клиенты"
             mainMenu.Items[2].Click += OpenImportMoviesForm;
 
+            moviesContextMenu.Items[0].Click += OpenCreateMovieForm;
+
             copiesContextMenu.Items[0].Click += OpenLeaseForm; // "Прокат"
             copiesContextMenu.Items[1].Click += OpenCreateCopyForm; // "Новая копия"
 
@@ -41,6 +43,12 @@ namespace videoprokat_winform
                     RedrawMoviesDgv();
                 }
             }
+        }
+        void OpenCreateMovieForm (object sender, EventArgs e)
+        {
+            MovieForm form = new MovieForm();
+            form.ShowDialog();
+            RedrawMoviesDgv();
         }
         void OpenClientsForm(object sender, EventArgs e)
         {
@@ -95,9 +103,24 @@ namespace videoprokat_winform
             {
                 db.MoviesOriginal.Load();
                 moviesDgv.DataSource = db.MoviesOriginal.Local.ToBindingList();
-
-                moviesDgv.Sort(moviesDgv.Columns["Title"], ListSortDirection.Ascending);
             }
+            moviesDgv.Columns["Id"].ReadOnly = true;
+            moviesDgv.Columns["Copies"].Visible = false;
+
+            moviesDgv.Sort(moviesDgv.Columns["Title"], ListSortDirection.Ascending);
+
+            moviesDgv.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+
+            moviesDgv.Columns["Id"].HeaderText = "ID";
+            moviesDgv.Columns["Title"].HeaderText = "Название";
+            moviesDgv.Columns["Description"].HeaderText = "Описание";
+            moviesDgv.Columns["YearReleased"].HeaderText = "Год выпуска";
+
+            moviesDgv.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            moviesDgv.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            moviesDgv.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            moviesDgv.Columns["YearReleased"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
         private void RedrawCopiesDgv()
         {
@@ -111,6 +134,20 @@ namespace videoprokat_winform
 
                 copiesDgv.DataSource = movieCopies;
             }
+            copiesDgv.Columns["Id"].ReadOnly = true;
+            copiesDgv.Columns["Available"].ReadOnly = true;
+            copiesDgv.Columns["MovieId"].Visible = false;
+            copiesDgv.Columns["Movie"].Visible = false;
+
+            copiesDgv.Columns["Id"].HeaderText = "ID";
+            copiesDgv.Columns["Commentary"].HeaderText = "Комментарий";
+            copiesDgv.Columns["Available"].HeaderText = "Доступен";
+            copiesDgv.Columns["PricePerDay"].HeaderText = "Цена/день";
+
+            copiesDgv.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            copiesDgv.Columns["Commentary"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            copiesDgv.Columns["Available"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            copiesDgv.Columns["PricePerDay"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
         private void RedrawLeasingsDgv()
         {
@@ -118,57 +155,37 @@ namespace videoprokat_winform
             {
                 int CurrentMovieCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
 
-                var movieCopyLeasingInfo = (from r in db.LeasedCopies
-                                            where r.MovieCopy.Id == CurrentMovieCopyId && r.ReturnDate == null
-                                            select r).ToList();
+                var movieCopyLeasingInfo = from leasing in db.LeasedCopies where leasing.MovieCopyId == CurrentMovieCopyId && leasing.ReturnDate == null
+                                           join client in db.Clients on leasing.ClientId equals client.Id
+                                           select new
+                                           {
+                                               id = leasing.Id,
+                                               startDate = leasing.LeasingStartDate,
+                                               expectedEndDate = leasing.LeasingExpectedEndDate,
+                                               totalPrice = leasing.TotalPrice,
+                                               clientName = client.Name
+                                           };
 
-                leasingsDgv.DataSource = movieCopyLeasingInfo;
+                leasingsDgv.DataSource = movieCopyLeasingInfo.ToList();
             }
+            leasingsDgv.Columns["Id"].Visible = false;
+
+            leasingsDgv.Columns["startDate"].HeaderText = "Дата начала";
+            leasingsDgv.Columns["expectedEndDate"].HeaderText = "Ожидаемый возврат";
+            leasingsDgv.Columns["totalPrice"].HeaderText = "Итоговая цена";
+            leasingsDgv.Columns["clientName"].HeaderText = "Клиент";
+
+            leasingsDgv.Columns["clientName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
         private void MainForm_Load(object sender, EventArgs e)
         {
-            //using (VideoprokatContext db = new VideoprokatContext())
-            //{
-            //    db.MoviesOriginal.Load();
-            //    moviesDgv.DataSource = db.MoviesOriginal.Local.ToBindingList();
-            //}
             RedrawMoviesDgv();
-
-            moviesDgv.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            moviesDgv.Columns["Copies"].Visible = false;
-
-            moviesDgv.Columns["Id"].ReadOnly = true;
-
-            moviesDgv.Columns["Id"].HeaderText = "ID";
-            moviesDgv.Columns["Title"].HeaderText = "Название";
-            moviesDgv.Columns["Description"].HeaderText = "Описание";
-            moviesDgv.Columns["YearReleased"].HeaderText = "Год выпуска";
-
-            moviesDgv.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            moviesDgv.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            moviesDgv.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            moviesDgv.Columns["YearReleased"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
         private void moviesDgv_SelectionChanged(object sender, EventArgs e) // из оригинального фильма загружаем в таблицу его копии
         {
             if (moviesDgv.CurrentRow != null)
             {
                 RedrawCopiesDgv();
-
-                copiesDgv.Columns["Id"].ReadOnly = true;
-                copiesDgv.Columns["Available"].ReadOnly = true;
-                copiesDgv.Columns["MovieId"].Visible = false;
-                copiesDgv.Columns["Movie"].Visible = false;
-
-                copiesDgv.Columns["Id"].HeaderText = "ID";
-                copiesDgv.Columns["Commentary"].HeaderText = "Комментарий";
-                copiesDgv.Columns["Available"].HeaderText = "Доступен";
-                copiesDgv.Columns["PricePerDay"].HeaderText = "Цена/день";
-
-                copiesDgv.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                copiesDgv.Columns["Commentary"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                copiesDgv.Columns["Available"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                copiesDgv.Columns["PricePerDay"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             }
         }
         private void copiesDgv_SelectionChanged(object sender, EventArgs e) // из копии фильма загружаем в таблицу инфу по аренде
@@ -176,20 +193,6 @@ namespace videoprokat_winform
             if (copiesDgv.SelectedRows.Count > 0)
             {
                 RedrawLeasingsDgv();
-
-                leasingsDgv.Columns["Id"].Visible = false;
-                leasingsDgv.Columns["MovieCopy"].Visible = false;
-                leasingsDgv.Columns["MovieCopyId"].Visible = false;
-                leasingsDgv.Columns["Client"].Visible = false;
-                leasingsDgv.Columns["ClientId"].Visible = false;
-
-                leasingsDgv.Columns["LeasingStartDate"].HeaderText = "Дата начала";
-                leasingsDgv.Columns["LeasingExpectedEndDate"].HeaderText = "Ожидаемый возврат";
-                leasingsDgv.Columns["ReturnDate"].HeaderText = "Фактический возврат";
-                leasingsDgv.Columns["TotalPrice"].HeaderText = "Итоговая цена";
-                leasingsDgv.Columns["ClientName"].HeaderText = "Клиент";
-
-                leasingsDgv.Columns["ClientName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
                 if ((bool)copiesDgv.CurrentRow.Cells["Available"].Value == false) // нельзя изменять цену за день если копия на данный момент в пользовании
                 {
@@ -206,15 +209,22 @@ namespace videoprokat_winform
         private void moviesDgv_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             DataGridViewRow currentRow = moviesDgv.CurrentRow;
-            int currentMovieId = (int)currentRow.Cells["Id"].Value;
             using (VideoprokatContext db = new VideoprokatContext())
             {
-                MovieOriginal currentMovie = db.MoviesOriginal.First(m => m.Id == currentMovieId);
-                currentMovie.Title = currentRow.Cells["Title"].Value.ToString();
-                currentMovie.Description = currentRow.Cells["Description"].Value.ToString();
-                currentMovie.YearReleased = Convert.ToInt32(currentRow.Cells["YearReleased"].Value);
+                if (currentRow.Cells["Id"].Value != null) // редактируется уже существующий фильм
+                {
+                    int currentMovieId = (int)currentRow.Cells["Id"].Value;
+                    MovieOriginal currentMovie = db.MoviesOriginal.First(m => m.Id == currentMovieId);
+                    currentMovie.Title = currentRow.Cells["Title"].Value.ToString();
+                    currentMovie.Description = currentRow.Cells["Description"].Value.ToString();
+                    currentMovie.YearReleased = Convert.ToInt32(currentRow.Cells["YearReleased"].Value);
 
-                db.SaveChanges();
+                    db.SaveChanges();
+                }
+                else // добавляется новый фильм
+                {
+                    MovieOriginal newMovie = new MovieOriginal { Title = currentRow.Cells["Title"].Value.ToString() };
+                }
             }
         }
 

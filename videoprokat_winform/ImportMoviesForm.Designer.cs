@@ -99,6 +99,7 @@ namespace videoprokat_winform
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "ImportMoviesForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Импорт фильмов";
             this.ResumeLayout(false);
             this.PerformLayout();

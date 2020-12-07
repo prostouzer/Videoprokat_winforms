@@ -14,11 +14,11 @@ namespace videoprokat_winform.Models
             get { return _rating; }
             set
             {
-                if (_rating > 100)
+                if (value > 100)
                 {
                     _rating = 100;
                 }
-                else if (_rating < 0)
+                else if (value < 0)
                 {
                     _rating = 0;
                 }

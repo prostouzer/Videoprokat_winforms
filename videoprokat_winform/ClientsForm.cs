@@ -101,5 +101,10 @@ namespace videoprokat_winform
                 leasedCopies.Columns["TotalPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
         }
+
+        private void ClientsForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            db.Dispose();
+        }
     }
 }

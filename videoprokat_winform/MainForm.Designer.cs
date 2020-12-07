@@ -37,6 +37,8 @@
             this.leasingContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.returnItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moviesDgv = new System.Windows.Forms.DataGridView();
+            this.moviesContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.searchBox = new System.Windows.Forms.ToolStripTextBox();
             this.clientsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,6 +48,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.leasingsDgv)).BeginInit();
             this.leasingContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.moviesDgv)).BeginInit();
+            this.moviesContextMenu.SuspendLayout();
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,7 +56,6 @@
             // 
             this.copiesDgv.AllowUserToAddRows = false;
             this.copiesDgv.AllowUserToDeleteRows = false;
-            this.copiesDgv.AllowUserToOrderColumns = true;
             this.copiesDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.copiesDgv.ContextMenuStrip = this.copiesContextMenu;
             this.copiesDgv.Location = new System.Drawing.Point(647, 27);
@@ -61,7 +63,7 @@
             this.copiesDgv.Name = "copiesDgv";
             this.copiesDgv.ReadOnly = true;
             this.copiesDgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.copiesDgv.Size = new System.Drawing.Size(559, 248);
+            this.copiesDgv.Size = new System.Drawing.Size(559, 288);
             this.copiesDgv.TabIndex = 1;
             this.copiesDgv.Text = "dataGridView2";
             this.copiesDgv.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.copiesDgv_CellEndEdit);
@@ -93,14 +95,15 @@
             // leasingsDgv
             // 
             this.leasingsDgv.AllowUserToAddRows = false;
+            this.leasingsDgv.AllowUserToDeleteRows = false;
             this.leasingsDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.leasingsDgv.ContextMenuStrip = this.leasingContextMenu;
-            this.leasingsDgv.Location = new System.Drawing.Point(647, 281);
+            this.leasingsDgv.Location = new System.Drawing.Point(647, 321);
             this.leasingsDgv.MultiSelect = false;
             this.leasingsDgv.Name = "leasingsDgv";
             this.leasingsDgv.ReadOnly = true;
             this.leasingsDgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.leasingsDgv.Size = new System.Drawing.Size(559, 156);
+            this.leasingsDgv.Size = new System.Drawing.Size(559, 116);
             this.leasingsDgv.TabIndex = 2;
             this.leasingsDgv.Text = "dataGridView3";
             this.leasingsDgv.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.leasingsDgv_DataError);
@@ -121,9 +124,11 @@
             // 
             // moviesDgv
             // 
+            this.moviesDgv.AllowUserToAddRows = false;
             this.moviesDgv.AllowUserToDeleteRows = false;
             this.moviesDgv.AllowUserToOrderColumns = true;
             this.moviesDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.moviesDgv.ContextMenuStrip = this.moviesContextMenu;
             this.moviesDgv.Location = new System.Drawing.Point(12, 27);
             this.moviesDgv.Name = "moviesDgv";
             this.moviesDgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -133,6 +138,19 @@
             this.moviesDgv.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.moviesDgv_CellEndEdit);
             this.moviesDgv.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.moviesDgv_DataError);
             this.moviesDgv.SelectionChanged += new System.EventHandler(this.moviesDgv_SelectionChanged);
+            // 
+            // moviesContextMenu
+            // 
+            this.moviesContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.moviesContextMenu.Name = "moviesContextMenu";
+            this.moviesContextMenu.Size = new System.Drawing.Size(168, 26);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(167, 22);
+            this.toolStripMenuItem1.Text = "Добавить фильм";
             // 
             // mainMenu
             // 
@@ -181,6 +199,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.leasingsDgv)).EndInit();
             this.leasingContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.moviesDgv)).EndInit();
+            this.moviesContextMenu.ResumeLayout(false);
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
             this.ResumeLayout(false);
@@ -202,6 +221,8 @@
         private System.Windows.Forms.ContextMenuStrip leasingContextMenu;
         private System.Windows.Forms.ToolStripMenuItem returnItem;
         private System.Windows.Forms.ToolStripMenuItem newCopyItem;
+        private System.Windows.Forms.ContextMenuStrip moviesContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
 

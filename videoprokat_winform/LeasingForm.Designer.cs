@@ -69,6 +69,7 @@ namespace videoprokat_winform
             this.startDatePicker.Name = "startDatePicker";
             this.startDatePicker.Size = new System.Drawing.Size(250, 23);
             this.startDatePicker.TabIndex = 2;
+            this.startDatePicker.ValueChanged += new System.EventHandler(this.startDatePicker_ValueChanged);
             // 
             // endDatePicker
             // 

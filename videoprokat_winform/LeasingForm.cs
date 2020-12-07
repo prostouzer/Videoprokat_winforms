@@ -23,7 +23,6 @@ namespace videoprokat_winform
         {
             startDatePicker.Value = DateTime.Now;
             endDatePicker.Value = DateTime.Now.AddDays(3);
-            endDatePicker.MinDate = startDatePicker.Value.AddDays(1);
 
             using (VideoprokatContext db = new VideoprokatContext())
             {
@@ -43,7 +42,7 @@ namespace videoprokat_winform
         {
             if (clientsComboBox.SelectedIndex > -1)
             {
-                if (startDatePicker.Value <= endDatePicker.Value)
+                if (startDatePicker.Value.Date <= endDatePicker.Value.Date)
                 {
                     using (VideoprokatContext db = new VideoprokatContext())
                     {
@@ -68,7 +67,7 @@ namespace videoprokat_winform
                 }
                 else
                 {
-                    MessageBox.Show("Конец проката должен быть позже начала");
+                    MessageBox.Show("Конец проката не может быть раньше начала");
                 }
             }
             else
@@ -91,7 +90,19 @@ namespace videoprokat_winform
                 decimal price = (int)((endDatePicker.Value.Date - startDatePicker.Value.Date).TotalDays) * currentCopy.PricePerDay;
                 priceLabel.Text = "Цена: " + price.ToString();
             }
+            else if (startDatePicker.Value.Date == endDatePicker.Value.Date)
+            {
+                priceLabel.Text = "Цена: " + currentCopy.PricePerDay; // если берут и возвращают в этот же день, то оплачивается все равно 1 день
+            }
             else
+            {
+                priceLabel.Text = "Цена: - ";
+            }
+        }
+
+        private void startDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+            if (startDatePicker.Value.Date > endDatePicker.Value.Date)
             {
                 priceLabel.Text = "Цена: - ";
             }

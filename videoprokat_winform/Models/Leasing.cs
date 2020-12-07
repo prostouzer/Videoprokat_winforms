@@ -19,11 +19,16 @@ namespace videoprokat_winform.Models
         public int ClientId { get; set; }
         public Client Client { get; set; }
 
-        //public Leasing() { }
-        //public decimal GetExpectedTotalPrice(DateTime leasingStartDate, DateTime leasingExpectedEndDate, MovieCopy movieCopy)
         public decimal GetExpectedTotalPrice(decimal pricePerDay)
         {
-            return Convert.ToDecimal((LeasingExpectedEndDate.Date - LeasingStartDate.Date).TotalDays) * pricePerDay;
+            if (LeasingStartDate.Date == LeasingExpectedEndDate.Date)
+            {
+                return Convert.ToDecimal(1 * pricePerDay); // если берут и возвращают в этот же день, то оплачивается все равно 1 день
+            }
+            else 
+            {
+                return Convert.ToDecimal((LeasingExpectedEndDate.Date - LeasingStartDate.Date).TotalDays) * pricePerDay;
+            } 
         }
         public void ReturnOnTime()
         {
@@ -46,23 +51,5 @@ namespace videoprokat_winform.Models
             MovieCopy.Available = true;
             ReturnDate = leasingReturnDate;
         }
-        //public void EndLeasing(DateTime returnDate, decimal multiplier = 0)
-        //{
-        //    MovieCopy.Available = true;
-        //    if (returnDate > LeasingExpectedEndDate) // вернули позже
-        //    {
-        //        ReturnDelayed(LeasingExpectedEndDate, returnDate, MovieCopy, multiplier);
-        //    }
-        //    else if (returnDate < LeasingExpectedEndDate) // вернули раньше
-        //    {
-        //        ReturnEarly(LeasingStartDate, returnDate, MovieCopy);
-        //    }
-        //    else // вернули в срок
-        //    {
-        //        // при returnDate = LeasingExpectedEndDate значение изначально присвоено в конструкторе
-        //        MovieCopy.Available = true;
-        //        ReturnDate = LeasingExpectedEndDate;
-        //    }
-        //}
     }
 }

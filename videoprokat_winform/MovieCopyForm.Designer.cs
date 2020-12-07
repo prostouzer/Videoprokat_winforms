@@ -114,6 +114,7 @@ namespace videoprokat_winform
             this.Controls.Add(this.label1);
             this.Controls.Add(this.movieNameLabel);
             this.Name = "MovieCopyForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Новая копия";
             this.Load += new System.EventHandler(this.MovieCopyForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.priceNumericUpDown)).EndInit();

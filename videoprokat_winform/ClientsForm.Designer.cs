@@ -110,7 +110,9 @@ namespace videoprokat_winform
             this.Controls.Add(this.clients);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "ClientsForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Клиенты";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ClientsForm_FormClosed);
             this.Load += new System.EventHandler(this.ClientsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.clients)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.leasedCopies)).EndInit();
