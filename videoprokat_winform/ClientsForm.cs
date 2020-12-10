@@ -37,7 +37,7 @@ namespace videoprokat_winform
         }
 
         int DefaultRating = 100;
-        private void button1_Click(object sender, EventArgs e)
+        private void addClientButton_Click(object sender, EventArgs e)
         {
             string newClientName = clientNameTextBox.Text.Trim();
             if (newClientName != "")

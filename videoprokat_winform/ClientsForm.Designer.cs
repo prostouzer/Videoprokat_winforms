@@ -32,7 +32,7 @@ namespace videoprokat_winform
             this.clients = new System.Windows.Forms.DataGridView();
             this.leasedCopies = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.addClientButton = new System.Windows.Forms.Button();
             this.clientNameTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.clients)).BeginInit();
@@ -41,6 +41,9 @@ namespace videoprokat_winform
             // 
             // clients
             // 
+            this.clients.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.clients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.clients.Location = new System.Drawing.Point(12, 12);
             this.clients.Name = "clients";
@@ -53,6 +56,8 @@ namespace videoprokat_winform
             // 
             // leasedCopies
             // 
+            this.leasedCopies.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.leasedCopies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.leasedCopies.Location = new System.Drawing.Point(12, 222);
             this.leasedCopies.Name = "leasedCopies";
@@ -63,6 +68,7 @@ namespace videoprokat_winform
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Arial", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label1.Location = new System.Drawing.Point(433, 25);
@@ -71,18 +77,21 @@ namespace videoprokat_winform
             this.label1.TabIndex = 2;
             this.label1.Text = "Добавить нового клиента";
             // 
-            // button1
+            // addClientButton
             // 
-            this.button1.Location = new System.Drawing.Point(400, 126);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(333, 90);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Добавить";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.addClientButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.addClientButton.Location = new System.Drawing.Point(400, 126);
+            this.addClientButton.Name = "addClientButton";
+            this.addClientButton.Size = new System.Drawing.Size(333, 90);
+            this.addClientButton.TabIndex = 3;
+            this.addClientButton.Text = "Добавить";
+            this.addClientButton.UseVisualStyleBackColor = true;
+            this.addClientButton.Click += new System.EventHandler(this.addClientButton_Click);
             // 
             // clientNameTextBox
             // 
+            this.clientNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.clientNameTextBox.Location = new System.Drawing.Point(400, 97);
             this.clientNameTextBox.Name = "clientNameTextBox";
             this.clientNameTextBox.Size = new System.Drawing.Size(333, 23);
@@ -90,6 +99,7 @@ namespace videoprokat_winform
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(544, 70);
             this.label2.Name = "label2";
@@ -104,11 +114,11 @@ namespace videoprokat_winform
             this.ClientSize = new System.Drawing.Size(745, 466);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.clientNameTextBox);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.addClientButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.leasedCopies);
             this.Controls.Add(this.clients);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MinimumSize = new System.Drawing.Size(761, 505);
             this.Name = "ClientsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Клиенты";
@@ -126,7 +136,7 @@ namespace videoprokat_winform
         private System.Windows.Forms.DataGridView clients;
         private System.Windows.Forms.DataGridView leasedCopies;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button addClientButton;
         private System.Windows.Forms.TextBox clientNameTextBox;
         private System.Windows.Forms.Label label2;
     }

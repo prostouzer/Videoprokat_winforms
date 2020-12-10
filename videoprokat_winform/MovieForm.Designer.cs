@@ -42,6 +42,8 @@ namespace videoprokat_winform
             // 
             // movieButton
             // 
+            this.movieButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.movieButton.Location = new System.Drawing.Point(12, 221);
             this.movieButton.Name = "movieButton";
             this.movieButton.Size = new System.Drawing.Size(505, 68);
@@ -63,6 +65,9 @@ namespace videoprokat_winform
             // 
             // movieTitleTextBox
             // 
+            this.movieTitleTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.movieTitleTextBox.Location = new System.Drawing.Point(12, 100);
             this.movieTitleTextBox.Name = "movieTitleTextBox";
             this.movieTitleTextBox.Size = new System.Drawing.Size(379, 23);
@@ -70,6 +75,7 @@ namespace videoprokat_winform
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(176, 82);
             this.label1.Name = "label1";
@@ -79,6 +85,9 @@ namespace videoprokat_winform
             // 
             // movieDescriptionTextBox
             // 
+            this.movieDescriptionTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.movieDescriptionTextBox.Location = new System.Drawing.Point(12, 146);
             this.movieDescriptionTextBox.Multiline = true;
             this.movieDescriptionTextBox.Name = "movieDescriptionTextBox";
@@ -87,6 +96,7 @@ namespace videoprokat_winform
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(236, 128);
             this.label2.Name = "label2";
@@ -96,6 +106,7 @@ namespace videoprokat_winform
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(440, 82);
             this.label3.Name = "label3";
@@ -105,6 +116,7 @@ namespace videoprokat_winform
             // 
             // yearReleasedNumericUpDown
             // 
+            this.yearReleasedNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.yearReleasedNumericUpDown.Location = new System.Drawing.Point(397, 100);
             this.yearReleasedNumericUpDown.Maximum = new decimal(new int[] {
             3000,
@@ -138,6 +150,7 @@ namespace videoprokat_winform
             this.Controls.Add(this.label1);
             this.Controls.Add(this.newMovieLabel);
             this.Controls.Add(this.movieButton);
+            this.MinimumSize = new System.Drawing.Size(550, 340);
             this.Name = "MovieForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Новый фильм";

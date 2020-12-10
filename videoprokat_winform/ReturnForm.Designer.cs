@@ -52,6 +52,9 @@ namespace videoprokat_winform
             // 
             // returnDatePicker
             // 
+            this.returnDatePicker.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.returnDatePicker.Location = new System.Drawing.Point(218, 134);
             this.returnDatePicker.Name = "returnDatePicker";
             this.returnDatePicker.Size = new System.Drawing.Size(304, 23);
@@ -70,6 +73,7 @@ namespace videoprokat_winform
             // 
             // returnDateLabel
             // 
+            this.returnDateLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.returnDateLabel.AutoSize = true;
             this.returnDateLabel.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.returnDateLabel.Location = new System.Drawing.Point(314, 106);
@@ -102,6 +106,9 @@ namespace videoprokat_winform
             // 
             // returnButton
             // 
+            this.returnButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.returnButton.Location = new System.Drawing.Point(12, 218);
             this.returnButton.Name = "returnButton";
             this.returnButton.Size = new System.Drawing.Size(510, 71);
@@ -123,6 +130,7 @@ namespace videoprokat_winform
             // 
             // expectedEndLabel
             // 
+            this.expectedEndLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.expectedEndLabel.AutoSize = true;
             this.expectedEndLabel.Location = new System.Drawing.Point(247, 160);
             this.expectedEndLabel.Name = "expectedEndLabel";
@@ -132,6 +140,7 @@ namespace videoprokat_winform
             // 
             // totalPriceChangeLabel
             // 
+            this.totalPriceChangeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.totalPriceChangeLabel.AutoSize = true;
             this.totalPriceChangeLabel.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.totalPriceChangeLabel.Location = new System.Drawing.Point(168, 190);
@@ -143,6 +152,7 @@ namespace videoprokat_winform
             // 
             // fineFormulaLabel
             // 
+            this.fineFormulaLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.fineFormulaLabel.AutoSize = true;
             this.fineFormulaLabel.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.fineFormulaLabel.Location = new System.Drawing.Point(141, 178);
@@ -167,7 +177,7 @@ namespace videoprokat_winform
             this.Controls.Add(this.startDateLabel);
             this.Controls.Add(this.returnDatePicker);
             this.Controls.Add(this.startDatePicker);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MinimumSize = new System.Drawing.Size(550, 340);
             this.Name = "ReturnForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Вернуть";

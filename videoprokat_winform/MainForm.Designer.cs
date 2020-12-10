@@ -56,9 +56,11 @@
             // 
             this.copiesDgv.AllowUserToAddRows = false;
             this.copiesDgv.AllowUserToDeleteRows = false;
+            this.copiesDgv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.copiesDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.copiesDgv.ContextMenuStrip = this.copiesContextMenu;
-            this.copiesDgv.Location = new System.Drawing.Point(647, 27);
+            this.copiesDgv.Location = new System.Drawing.Point(647, 30);
             this.copiesDgv.MultiSelect = false;
             this.copiesDgv.Name = "copiesDgv";
             this.copiesDgv.ReadOnly = true;
@@ -96,6 +98,7 @@
             // 
             this.leasingsDgv.AllowUserToAddRows = false;
             this.leasingsDgv.AllowUserToDeleteRows = false;
+            this.leasingsDgv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.leasingsDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.leasingsDgv.ContextMenuStrip = this.leasingContextMenu;
             this.leasingsDgv.Location = new System.Drawing.Point(647, 321);
@@ -127,6 +130,9 @@
             this.moviesDgv.AllowUserToAddRows = false;
             this.moviesDgv.AllowUserToDeleteRows = false;
             this.moviesDgv.AllowUserToOrderColumns = true;
+            this.moviesDgv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.moviesDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.moviesDgv.ContextMenuStrip = this.moviesContextMenu;
             this.moviesDgv.Location = new System.Drawing.Point(12, 27);
@@ -191,6 +197,7 @@
             this.Controls.Add(this.moviesDgv);
             this.Controls.Add(this.mainMenu);
             this.MainMenuStrip = this.mainMenu;
+            this.MinimumSize = new System.Drawing.Size(1234, 488);
             this.Name = "MainForm";
             this.Text = "Видеопрокат";
             this.Load += new System.EventHandler(this.MainForm_Load);

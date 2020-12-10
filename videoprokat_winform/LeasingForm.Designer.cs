@@ -65,6 +65,8 @@ namespace videoprokat_winform
             // 
             // startDatePicker
             // 
+            this.startDatePicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.startDatePicker.Location = new System.Drawing.Point(12, 103);
             this.startDatePicker.Name = "startDatePicker";
             this.startDatePicker.Size = new System.Drawing.Size(250, 23);
@@ -73,6 +75,9 @@ namespace videoprokat_winform
             // 
             // endDatePicker
             // 
+            this.endDatePicker.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.endDatePicker.Location = new System.Drawing.Point(267, 103);
             this.endDatePicker.Name = "endDatePicker";
             this.endDatePicker.Size = new System.Drawing.Size(255, 23);
@@ -90,6 +95,7 @@ namespace videoprokat_winform
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(360, 85);
             this.label4.Name = "label4";
@@ -99,6 +105,9 @@ namespace videoprokat_winform
             // 
             // leaseButton
             // 
+            this.leaseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.leaseButton.Location = new System.Drawing.Point(12, 221);
             this.leaseButton.Name = "leaseButton";
             this.leaseButton.Size = new System.Drawing.Size(505, 68);
@@ -109,6 +118,8 @@ namespace videoprokat_winform
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 178);
             this.label1.Name = "label1";
@@ -118,6 +129,8 @@ namespace videoprokat_winform
             // 
             // clientsComboBox
             // 
+            this.clientsComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.clientsComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.clientsComboBox.FormattingEnabled = true;
             this.clientsComboBox.Location = new System.Drawing.Point(67, 175);
@@ -128,6 +141,7 @@ namespace videoprokat_winform
             // 
             // priceLabel
             // 
+            this.priceLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.priceLabel.AutoSize = true;
             this.priceLabel.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.priceLabel.Location = new System.Drawing.Point(199, 138);
@@ -151,7 +165,7 @@ namespace videoprokat_winform
             this.Controls.Add(this.startDatePicker);
             this.Controls.Add(this.movieCommentLabel);
             this.Controls.Add(this.movieNameLabel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MinimumSize = new System.Drawing.Size(550, 340);
             this.Name = "LeasingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Прокат";

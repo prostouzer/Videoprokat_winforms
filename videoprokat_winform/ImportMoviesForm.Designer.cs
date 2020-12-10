@@ -38,6 +38,8 @@ namespace videoprokat_winform
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(171, 93);
             this.label1.Name = "label1";
@@ -57,6 +59,8 @@ namespace videoprokat_winform
             // 
             // loadMoviesButton
             // 
+            this.loadMoviesButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.loadMoviesButton.Enabled = false;
             this.loadMoviesButton.Location = new System.Drawing.Point(12, 390);
             this.loadMoviesButton.Name = "loadMoviesButton";
@@ -68,17 +72,23 @@ namespace videoprokat_winform
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.label2.AutoEllipsis = true;
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(14, 9);
+            this.label2.Location = new System.Drawing.Point(12, 8);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(440, 60);
             this.label2.TabIndex = 4;
             this.label2.Text = "Внимание! Фильмы должны быть разделены точкой с запятой, а их названия, \r\nописани" +
     "я и года выпуска должны быть разделены ДВУМЯ запятыми.\r\n\r\nПример: Название1,,Опи" +
     "сание1,,Год1;Название2,,Описание2,,Год2";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // moviesListView
             // 
+            this.moviesListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.moviesListView.HideSelection = false;
             this.moviesListView.Location = new System.Drawing.Point(12, 120);
             this.moviesListView.Name = "moviesListView";
@@ -97,7 +107,7 @@ namespace videoprokat_winform
             this.Controls.Add(this.loadMoviesButton);
             this.Controls.Add(this.chooseFileButton);
             this.Controls.Add(this.label1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MinimumSize = new System.Drawing.Size(480, 570);
             this.Name = "ImportMoviesForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Импорт фильмов";

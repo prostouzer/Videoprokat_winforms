@@ -51,6 +51,7 @@ namespace videoprokat_winform
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(158, 88);
             this.label1.Name = "label1";
@@ -60,6 +61,7 @@ namespace videoprokat_winform
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(417, 88);
             this.label2.Name = "label2";
@@ -69,6 +71,8 @@ namespace videoprokat_winform
             // 
             // commentTextBox
             // 
+            this.commentTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.commentTextBox.Location = new System.Drawing.Point(12, 115);
             this.commentTextBox.Name = "commentTextBox";
             this.commentTextBox.Size = new System.Drawing.Size(370, 23);
@@ -76,6 +80,9 @@ namespace videoprokat_winform
             // 
             // leaseButton
             // 
+            this.leaseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.leaseButton.Location = new System.Drawing.Point(17, 221);
             this.leaseButton.Name = "leaseButton";
             this.leaseButton.Size = new System.Drawing.Size(505, 68);
@@ -86,6 +93,7 @@ namespace videoprokat_winform
             // 
             // priceNumericUpDown
             // 
+            this.priceNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.priceNumericUpDown.DecimalPlaces = 2;
             this.priceNumericUpDown.Location = new System.Drawing.Point(388, 116);
             this.priceNumericUpDown.Maximum = new decimal(new int[] {
@@ -113,6 +121,7 @@ namespace videoprokat_winform
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.movieNameLabel);
+            this.MinimumSize = new System.Drawing.Size(550, 340);
             this.Name = "MovieCopyForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Новая копия";
