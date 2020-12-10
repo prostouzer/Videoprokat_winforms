@@ -20,17 +20,31 @@ namespace videoprokat_winform
         {
             if (movieTitleTextBox.Text.Trim() != "")
             {
-                using (VideoprokatContext db = new VideoprokatContext())
+                DialogResult result;
+                if (movieDescriptionTextBox.Text.Trim() != "") // сообщение с описанием фильма
                 {
-                    MovieOriginal newMovie = new MovieOriginal
+                    result = MessageBox.Show($"Добавить фильм {movieTitleTextBox.Text.Trim()}, {movieDescriptionTextBox.Text.Trim()}, {yearReleasedNumericUpDown.Value} года?",
+                        "Добавить фильм",  MessageBoxButtons.YesNo);
+                }
+                else // сообщение без описания фильма, чтобы не выводил лишнюю запятую
+                {
+                    result = MessageBox.Show($"Добавить фильм {movieTitleTextBox.Text.Trim()}, {yearReleasedNumericUpDown.Value} года?", 
+                        "Добавить фильм", MessageBoxButtons.YesNo);
+                }
+                if (result == DialogResult.Yes)
+                {
+                    using (VideoprokatContext db = new VideoprokatContext())
                     {
-                        Title = movieTitleTextBox.Text.Trim(),
-                        Description = movieDescriptionTextBox.Text.Trim(),
-                        YearReleased = Convert.ToInt32(yearReleasedNumericUpDown.Value)
-                    };
-                    db.MoviesOriginal.Add(newMovie);
-                    db.SaveChanges();
-                    this.Close();
+                        MovieOriginal newMovie = new MovieOriginal
+                        {
+                            Title = movieTitleTextBox.Text.Trim(),
+                            Description = movieDescriptionTextBox.Text.Trim(),
+                            YearReleased = Convert.ToInt32(yearReleasedNumericUpDown.Value)
+                        };
+                        db.MoviesOriginal.Add(newMovie);
+                        db.SaveChanges();
+                        this.Close();
+                    }
                 }
             }
             else

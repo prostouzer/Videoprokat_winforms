@@ -65,9 +65,9 @@ namespace videoprokat_winform
                         {
                             db.LeasedCopies.Add(leasing);
                             db.SaveChanges();
+                            this.Close();
                         }
                     }
-                    this.Close();
                 }
                 else
                 {

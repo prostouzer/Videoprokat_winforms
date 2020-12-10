@@ -77,28 +77,43 @@ namespace videoprokat_winform
                 currentClientId = Convert.ToInt32(clients.CurrentRow.Cells["Id"].Value);
                 Client currentClient = new Client();
                 currentClient = db.Clients.First(c => c.Id == currentClientId);
-                var leasedByClient = (from r in db.LeasedCopies
-                                      where r.ClientId == currentClient.Id
-                                      select r).ToList();
-                leasedCopies.DataSource = leasedByClient;
 
-                leasedCopies.Columns["MovieCopyId"].Visible = false;
-                leasedCopies.Columns["MovieCopy"].Visible = false;
-                leasedCopies.Columns["ClientId"].Visible = false;
-                leasedCopies.Columns["Client"].Visible = false;
-
-                leasedCopies.Columns["Id"].HeaderText = "ID";
-                leasedCopies.Columns["LeasingStartDate"].HeaderText = "Дата начала";
-                leasedCopies.Columns["LeasingExpectedEndDate"].HeaderText = "Ожидаемый возврат";
-                leasedCopies.Columns["ReturnDate"].HeaderText = "Фактический возврат";
-                leasedCopies.Columns["TotalPrice"].HeaderText = "Итоговая цена";
-
-                leasedCopies.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                leasedCopies.Columns["LeasingStartDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                leasedCopies.Columns["LeasingExpectedEndDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                leasedCopies.Columns["ReturnDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                leasedCopies.Columns["TotalPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                var leasedByClient = from leasing in db.LeasedCopies
+                                     where leasing.ClientId == currentClient.Id
+                                     join movie in db.MoviesOriginal on leasing.MovieCopy.MovieId equals movie.Id
+                                     join movieCopy in db.MoviesCopies on leasing.MovieCopyId equals movieCopy.Id
+                                     select new
+                                     {
+                                         Id = leasing.Id,
+                                         MovieTitle = movie.Title,
+                                         MovieCommentary = movieCopy.Commentary,
+                                         StartDate = leasing.LeasingStartDate,
+                                         ExpectedEndDate = leasing.LeasingExpectedEndDate,
+                                         ReturnDate = leasing.ReturnDate,
+                                         TotalPrice = leasing.TotalPrice,
+                                     };
+                leasedCopies.DataSource = leasedByClient.ToList();
+                RedrawLeasedCopiesDgv();
             }
+        }
+
+        private void RedrawLeasedCopiesDgv()
+        {
+            leasedCopies.Columns["Id"].HeaderText = "ID";
+            leasedCopies.Columns["MovieTitle"].HeaderText = "Фильм";
+            leasedCopies.Columns["MovieCommentary"].HeaderText = "Комментарий";
+            leasedCopies.Columns["StartDate"].HeaderText = "Дата начала";
+            leasedCopies.Columns["ExpectedEndDate"].HeaderText = "Ожидаемый возврат";
+            leasedCopies.Columns["ReturnDate"].HeaderText = "Фактический возврат";
+            leasedCopies.Columns["TotalPrice"].HeaderText = "Итоговая цена";
+
+            leasedCopies.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            leasedCopies.Columns["MovieTitle"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            leasedCopies.Columns["MovieCommentary"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            leasedCopies.Columns["StartDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            leasedCopies.Columns["ExpectedEndDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            leasedCopies.Columns["ReturnDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            leasedCopies.Columns["TotalPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
 
         private void ClientsForm_FormClosed(object sender, FormClosedEventArgs e)
