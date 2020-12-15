@@ -13,5 +13,14 @@ namespace videoprokat_winform.Models
 
         public int MovieId { get; set; }
         public MovieOriginal Movie { get; set; }
+
+        private MovieCopy() { }
+        public MovieCopy(int movieId, string commentary, decimal pricePerDay)
+        {
+            MovieId = movieId;
+            Commentary = commentary;
+            PricePerDay = pricePerDay;
+            Available = true;
+        }
     }
 }

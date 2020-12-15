@@ -1,7 +1,7 @@
 ﻿
 namespace videoprokat_winform
 {
-    partial class ClientsForm
+    partial class CustomersForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,30 +29,30 @@ namespace videoprokat_winform
         /// </summary>
         private void InitializeComponent()
         {
-            this.clients = new System.Windows.Forms.DataGridView();
+            this.customers = new System.Windows.Forms.DataGridView();
             this.leasedCopies = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
-            this.addClientButton = new System.Windows.Forms.Button();
-            this.clientNameTextBox = new System.Windows.Forms.TextBox();
+            this.addCustomerButton = new System.Windows.Forms.Button();
+            this.customerNameTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.clients)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.leasedCopies)).BeginInit();
             this.SuspendLayout();
             // 
-            // clients
+            // customers
             // 
-            this.clients.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.customers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.clients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.clients.Location = new System.Drawing.Point(12, 12);
-            this.clients.Name = "clients";
-            this.clients.RowTemplate.Height = 25;
-            this.clients.Size = new System.Drawing.Size(382, 204);
-            this.clients.TabIndex = 0;
-            this.clients.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.clients_CellEndEdit);
-            this.clients.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.clients_DataError);
-            this.clients.SelectionChanged += new System.EventHandler(this.clients_SelectionChanged);
+            this.customers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.customers.Location = new System.Drawing.Point(12, 12);
+            this.customers.Name = "customers";
+            this.customers.RowTemplate.Height = 25;
+            this.customers.Size = new System.Drawing.Size(382, 204);
+            this.customers.TabIndex = 0;
+            this.customers.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.customers_CellEndEdit);
+            this.customers.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.customers_DataError);
+            this.customers.SelectionChanged += new System.EventHandler(this.customers_SelectionChanged);
             // 
             // leasedCopies
             // 
@@ -77,25 +77,25 @@ namespace videoprokat_winform
             this.label1.TabIndex = 2;
             this.label1.Text = "Добавить нового клиента";
             // 
-            // addClientButton
+            // addCustomerButton
             // 
-            this.addClientButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.addCustomerButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.addClientButton.Location = new System.Drawing.Point(400, 126);
-            this.addClientButton.Name = "addClientButton";
-            this.addClientButton.Size = new System.Drawing.Size(333, 90);
-            this.addClientButton.TabIndex = 3;
-            this.addClientButton.Text = "Добавить";
-            this.addClientButton.UseVisualStyleBackColor = true;
-            this.addClientButton.Click += new System.EventHandler(this.addClientButton_Click);
+            this.addCustomerButton.Location = new System.Drawing.Point(400, 126);
+            this.addCustomerButton.Name = "addCustomerButton";
+            this.addCustomerButton.Size = new System.Drawing.Size(333, 90);
+            this.addCustomerButton.TabIndex = 3;
+            this.addCustomerButton.Text = "Добавить";
+            this.addCustomerButton.UseVisualStyleBackColor = true;
+            this.addCustomerButton.Click += new System.EventHandler(this.addCustomerButton_Click);
             // 
-            // clientNameTextBox
+            // customerNameTextBox
             // 
-            this.clientNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.clientNameTextBox.Location = new System.Drawing.Point(400, 97);
-            this.clientNameTextBox.Name = "clientNameTextBox";
-            this.clientNameTextBox.Size = new System.Drawing.Size(333, 23);
-            this.clientNameTextBox.TabIndex = 4;
+            this.customerNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.customerNameTextBox.Location = new System.Drawing.Point(400, 97);
+            this.customerNameTextBox.Name = "customerNameTextBox";
+            this.customerNameTextBox.Size = new System.Drawing.Size(333, 23);
+            this.customerNameTextBox.TabIndex = 4;
             // 
             // label2
             // 
@@ -107,24 +107,24 @@ namespace videoprokat_winform
             this.label2.TabIndex = 5;
             this.label2.Text = "Имя";
             // 
-            // ClientsForm
+            // CustomersForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(745, 466);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.clientNameTextBox);
-            this.Controls.Add(this.addClientButton);
+            this.Controls.Add(this.customerNameTextBox);
+            this.Controls.Add(this.addCustomerButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.leasedCopies);
-            this.Controls.Add(this.clients);
+            this.Controls.Add(this.customers);
             this.MinimumSize = new System.Drawing.Size(761, 505);
-            this.Name = "ClientsForm";
+            this.Name = "CustomersForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Клиенты";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ClientsForm_FormClosed);
-            this.Load += new System.EventHandler(this.ClientsForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.clients)).EndInit();
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CustomersForm_FormClosed);
+            this.Load += new System.EventHandler(this.CustomersForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.customers)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.leasedCopies)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -133,11 +133,11 @@ namespace videoprokat_winform
 
         #endregion
 
-        private System.Windows.Forms.DataGridView clients;
+        private System.Windows.Forms.DataGridView customers;
         private System.Windows.Forms.DataGridView leasedCopies;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button addClientButton;
-        private System.Windows.Forms.TextBox clientNameTextBox;
+        private System.Windows.Forms.Button addCustomerButton;
+        private System.Windows.Forms.TextBox customerNameTextBox;
         private System.Windows.Forms.Label label2;
     }
 }

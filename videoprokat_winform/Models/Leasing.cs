@@ -15,8 +15,19 @@ namespace videoprokat_winform.Models
 
         public int MovieCopyId { get; set; }
         public MovieCopy MovieCopy { get; set; }
-        public int ClientId { get; set; }
-        public Client Client { get; set; }
+        public int CustomerId { get; set; }
+        public Customer Customer { get; set; }
+
+        private Leasing() { }
+        public Leasing(DateTime leasingStartDate, DateTime leasingExpectedEndDate, int customerId, int movieCopyId,
+            decimal pricePerDay)
+        {
+            LeasingStartDate = leasingStartDate;
+            LeasingExpectedEndDate = leasingExpectedEndDate;
+            TotalPrice = GetExpectedTotalPrice(pricePerDay);
+            CustomerId = customerId;
+            MovieCopyId = movieCopyId;
+        }
 
         public decimal GetExpectedTotalPrice(decimal pricePerDay)
         {

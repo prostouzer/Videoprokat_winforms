@@ -37,7 +37,7 @@ namespace videoprokat_winform
             this.label4 = new System.Windows.Forms.Label();
             this.leaseButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.clientsComboBox = new System.Windows.Forms.ComboBox();
+            this.customersComboBox = new System.Windows.Forms.ComboBox();
             this.priceLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -127,17 +127,17 @@ namespace videoprokat_winform
             this.label1.TabIndex = 7;
             this.label1.Text = "Клиент:";
             // 
-            // clientsComboBox
+            // customersComboBox
             // 
-            this.clientsComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.customersComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.clientsComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.clientsComboBox.FormattingEnabled = true;
-            this.clientsComboBox.Location = new System.Drawing.Point(67, 175);
-            this.clientsComboBox.Name = "clientsComboBox";
-            this.clientsComboBox.Size = new System.Drawing.Size(450, 23);
-            this.clientsComboBox.TabIndex = 9;
-            this.clientsComboBox.Format += new System.Windows.Forms.ListControlConvertEventHandler(this.clientsComboBox_Format);
+            this.customersComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.customersComboBox.FormattingEnabled = true;
+            this.customersComboBox.Location = new System.Drawing.Point(67, 175);
+            this.customersComboBox.Name = "customersComboBox";
+            this.customersComboBox.Size = new System.Drawing.Size(450, 23);
+            this.customersComboBox.TabIndex = 9;
+            this.customersComboBox.Format += new System.Windows.Forms.ListControlConvertEventHandler(this.customersComboBox_Format);
             // 
             // priceLabel
             // 
@@ -156,7 +156,7 @@ namespace videoprokat_winform
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(534, 301);
             this.Controls.Add(this.priceLabel);
-            this.Controls.Add(this.clientsComboBox);
+            this.Controls.Add(this.customersComboBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.leaseButton);
             this.Controls.Add(this.label4);
@@ -185,7 +185,7 @@ namespace videoprokat_winform
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button leaseButton;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox clientsComboBox;
+        private System.Windows.Forms.ComboBox customersComboBox;
         private System.Windows.Forms.Label priceLabel;
     }
 }

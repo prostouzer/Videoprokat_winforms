@@ -16,7 +16,7 @@ namespace videoprokat_winform.Models
 
         }
 
-        public DbSet<Client> Clients { get; set; }
+        public DbSet<Customer> Customers { get; set; }
         public DbSet<MovieOriginal> MoviesOriginal { get; set; }
         public DbSet<MovieCopy> MoviesCopies { get; set; }
         public DbSet<Leasing> LeasedCopies { get; set; }

@@ -15,7 +15,7 @@ namespace videoprokat_winform
         Leasing currentLeasing;
         MovieCopy currentCopy;
         MovieOriginal currentMovie;
-        Client currentOwner;
+        Customer currentOwner;
 
         VideoprokatContext db = new VideoprokatContext();
         public ReturnForm(Leasing leasing)
@@ -25,7 +25,7 @@ namespace videoprokat_winform
             currentLeasing = db.LeasedCopies.First(l => l.Id == leasing.Id);
             currentCopy = db.MoviesCopies.First(c => c.Id == leasing.MovieCopyId);
             currentMovie = db.MoviesOriginal.First(m => m.Id == currentCopy.MovieId);
-            currentOwner = db.Clients.First(o => o.Id == leasing.ClientId);
+            currentOwner = db.Customers.First(o => o.Id == leasing.CustomerId);
         }
 
         private void ReturnForm_Load(object sender, EventArgs e)

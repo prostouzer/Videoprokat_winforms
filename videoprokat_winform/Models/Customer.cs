@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace videoprokat_winform.Models
 {
-    public class Client
+    public class Customer
     {
+        private float defaultRating = 100;
+
         float _rating;
         public int Id { get; set; }
         public string Name { get; set; }
@@ -27,6 +30,13 @@ namespace videoprokat_winform.Models
                     _rating = value;
                 }
             }
+        }
+
+        private Customer(){} // для чтения для Entity Framework; private не даст вызвать пустой конструктор из кода
+        public Customer(string name)
+        {
+            Name = name;
+            Rating = defaultRating;
         }
     }
 }

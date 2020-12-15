@@ -35,12 +35,8 @@ namespace videoprokat_winform
                 {
                     using (VideoprokatContext db = new VideoprokatContext())
                     {
-                        MovieOriginal newMovie = new MovieOriginal
-                        {
-                            Title = movieTitleTextBox.Text.Trim(),
-                            Description = movieDescriptionTextBox.Text.Trim(),
-                            YearReleased = Convert.ToInt32(yearReleasedNumericUpDown.Value)
-                        };
+                        MovieOriginal newMovie = new MovieOriginal(movieTitleTextBox.Text.Trim(),
+                            movieDescriptionTextBox.Text.Trim(), (int) yearReleasedNumericUpDown.Value);
                         db.MoviesOriginal.Add(newMovie);
                         db.SaveChanges();
                         this.Close();

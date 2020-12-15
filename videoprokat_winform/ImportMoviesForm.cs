@@ -68,7 +68,7 @@ namespace videoprokat_winform
                                 string description = movieValues[1];
                                 int yearReleased = Convert.ToInt32(movieValues[2]);
 
-                                MovieOriginal newMovie = new MovieOriginal { Title = title, Description = description, YearReleased = yearReleased };
+                                MovieOriginal newMovie = new MovieOriginal(title, description, yearReleased);
 
                                 moviesList.Add(newMovie);
                             }

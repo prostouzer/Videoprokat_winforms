@@ -11,75 +11,76 @@ using System.Data.Entity;
 
 namespace videoprokat_winform
 {
-    public partial class ClientsForm : Form
+    public partial class CustomersForm : Form
     {
         VideoprokatContext db;
-        public ClientsForm()
+        public CustomersForm()
         {
             InitializeComponent();
         }
 
-        private void ClientsForm_Load(object sender, EventArgs e)
+        private void CustomersForm_Load(object sender, EventArgs e)
         {
             db = new VideoprokatContext();
-            db.Clients.Load();
+            db.Customers.Load();
 
-            clients.DataSource = db.Clients.Local.ToList();
-            clients.Columns["Id"].ReadOnly = true;
+            customers.DataSource = db.Customers.Local.ToList();
+            customers.Columns["Id"].ReadOnly = true;
 
-            clients.Columns["Id"].HeaderText = "ID";
-            clients.Columns["Name"].HeaderText = "Имя";
-            clients.Columns["Rating"].HeaderText = "Рейтинг";
+            customers.Columns["Id"].HeaderText = "ID";
+            customers.Columns["Name"].HeaderText = "Имя";
+            customers.Columns["Rating"].HeaderText = "Рейтинг";
 
-            clients.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            clients.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            clients.Columns["Rating"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            customers.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            customers.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            customers.Columns["Rating"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
 
-        int DefaultRating = 100;
-        private void addClientButton_Click(object sender, EventArgs e)
+        private void addCustomerButton_Click(object sender, EventArgs e)
         {
-            string newClientName = clientNameTextBox.Text.Trim();
-            if (newClientName != "")
+            string newCustomerName = customerNameTextBox.Text.Trim();
+            if (newCustomerName != "")
             {
-                Client client = new Client();
-                client.Name = newClientName;
-                client.Rating = DefaultRating;
+                DialogResult result = MessageBox.Show($"Добавить {newCustomerName}?", "Новый клиент",
+                    MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    Customer customer = new Customer(newCustomerName);
 
-                db.Clients.Add(client);
-                db.SaveChanges();
-                clients.DataSource = db.Clients.Local.ToList();
+                    db.Customers.Add(customer);
+                    db.SaveChanges();
+                    customers.DataSource = db.Customers.Local.ToList();
 
-                clientNameTextBox.Text = "";
+                    customerNameTextBox.Text = "";
+                }
             }
             else
             {
                 MessageBox.Show("Введите имя нового клиента");
-                clientNameTextBox.Text = "";
+                customerNameTextBox.Text = "";
             }
         }
 
-        private void clients_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private void customers_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             db.SaveChanges();
         }
 
-        private void clients_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        private void customers_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             MessageBox.Show("Неправильный формат данных");
         }
 
-        private void clients_SelectionChanged(object sender, EventArgs e)
+        private void customers_SelectionChanged(object sender, EventArgs e)
         {
-            int currentClientId = -1;
-            if (clients.CurrentRow != null)
+            int currentCustomerId = -1;
+            if (customers.CurrentRow != null)
             {
-                currentClientId = Convert.ToInt32(clients.CurrentRow.Cells["Id"].Value);
-                Client currentClient = new Client();
-                currentClient = db.Clients.First(c => c.Id == currentClientId);
+                currentCustomerId = Convert.ToInt32(customers.CurrentRow.Cells["Id"].Value);
+                Customer currentCustomer = db.Customers.First(c => c.Id == currentCustomerId);
 
-                var leasedByClient = from leasing in db.LeasedCopies
-                                     where leasing.ClientId == currentClient.Id
+                var leasedByCustomer = from leasing in db.LeasedCopies
+                                     where leasing.CustomerId == currentCustomer.Id
                                      join movie in db.MoviesOriginal on leasing.MovieCopy.MovieId equals movie.Id
                                      join movieCopy in db.MoviesCopies on leasing.MovieCopyId equals movieCopy.Id
                                      select new
@@ -92,7 +93,7 @@ namespace videoprokat_winform
                                          ReturnDate = leasing.ReturnDate,
                                          TotalPrice = leasing.TotalPrice,
                                      };
-                leasedCopies.DataSource = leasedByClient.ToList();
+                leasedCopies.DataSource = leasedByCustomer.ToList();
                 RedrawLeasedCopiesDgv();
             }
         }
@@ -116,7 +117,7 @@ namespace videoprokat_winform
             leasedCopies.Columns["TotalPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
 
-        private void ClientsForm_FormClosed(object sender, FormClosedEventArgs e)
+        private void CustomersForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             db.Dispose();
         }

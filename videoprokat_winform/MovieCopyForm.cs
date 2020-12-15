@@ -31,11 +31,7 @@ namespace videoprokat_winform
                     ", с ценой " + priceNumericUpDown.Value.ToString() + " руб. за день?", "Новая копия", MessageBoxButtons.YesNo) ;
                 if (dialogResult == DialogResult.Yes)
                 {
-                    MovieCopy copy = new MovieCopy();
-                    copy.MovieId = currentMovie.Id;
-                    copy.Available = true;
-                    copy.Commentary = commentTextBox.Text;
-                    copy.PricePerDay = priceNumericUpDown.Value;
+                    MovieCopy copy = new MovieCopy(currentMovie.Id, commentTextBox.Text, priceNumericUpDown.Value);
                     using (VideoprokatContext db = new VideoprokatContext())
                     {
                         db.MoviesCopies.Add(copy);

@@ -19,13 +19,10 @@ namespace videoprokat_winform
             InitializeComponent();
 
             mainMenu.Items[0].TextChanged += FilterMovies; // "Поиск"
-            mainMenu.Items[1].Click += OpenClientsForm; // "Клиенты"
+            mainMenu.Items[1].Click += OpenCustomersForm; // "Клиенты"
             mainMenu.Items[2].Click += OpenImportMoviesForm;
 
-            moviesContextMenu.Items[0].Click += OpenCreateMovieForm;
-
             copiesContextMenu.Items[0].Click += OpenLeaseForm; // "Прокат"
-            copiesContextMenu.Items[1].Click += OpenCreateCopyForm; // "Новая копия"
 
             leasingContextMenu.Items[0].Click += OpenReturnForm; // "Вернуть"
         }
@@ -44,15 +41,9 @@ namespace videoprokat_winform
                 }
             }
         }
-        void OpenCreateMovieForm (object sender, EventArgs e)
+        void OpenCustomersForm(object sender, EventArgs e)
         {
-            MovieForm form = new MovieForm();
-            form.ShowDialog();
-            RedrawMoviesDgv();
-        }
-        void OpenClientsForm(object sender, EventArgs e)
-        {
-            ClientsForm form = new ClientsForm();
+            CustomersForm form = new CustomersForm();
             form.ShowDialog();
         }
         void OpenImportMoviesForm(object sender, EventArgs e)
@@ -73,23 +64,12 @@ namespace videoprokat_winform
             RedrawCopiesDgv();
             RedrawLeasingsDgv();
         }
-        void OpenCreateCopyForm(object sender, EventArgs e)
-        {
-            using (VideoprokatContext db = new VideoprokatContext())
-            {
-                int currentMovieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
-                MovieOriginal movie = db.MoviesOriginal.First(m => m.Id == currentMovieId);
-                MovieCopyForm form = new MovieCopyForm(movie);
-                form.ShowDialog();
-            }
-            RedrawCopiesDgv();
-        }
         void OpenReturnForm(object sender, EventArgs e)
         {
             using (VideoprokatContext db = new VideoprokatContext())
             {
-                int CurrentLeasingId = Convert.ToInt32(leasingsDgv.CurrentRow.Cells["Id"].Value);
-                Leasing leasing = db.LeasedCopies.First(l => l.Id == CurrentLeasingId);
+                int currentLeasingId = Convert.ToInt32(leasingsDgv.CurrentRow.Cells["Id"].Value);
+                Leasing leasing = db.LeasedCopies.First(l => l.Id == currentLeasingId);
                 ReturnForm form = new ReturnForm(leasing);
                 form.ShowDialog();
             }
@@ -155,15 +135,16 @@ namespace videoprokat_winform
             {
                 int CurrentMovieCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
 
-                var movieCopyLeasingInfo = from leasing in db.LeasedCopies where leasing.MovieCopyId == CurrentMovieCopyId && leasing.ReturnDate == null
-                                           join client in db.Clients on leasing.ClientId equals client.Id
+                var movieCopyLeasingInfo = from leasing in db.LeasedCopies
+                                           where leasing.MovieCopyId == CurrentMovieCopyId && leasing.ReturnDate == null
+                                           join customer in db.Customers on leasing.CustomerId equals customer.Id
                                            select new
                                            {
                                                id = leasing.Id,
                                                startDate = leasing.LeasingStartDate,
                                                expectedEndDate = leasing.LeasingExpectedEndDate,
                                                totalPrice = leasing.TotalPrice,
-                                               clientName = client.Name
+                                               customerName = customer.Name
                                            };
 
                 leasingsDgv.DataSource = movieCopyLeasingInfo.ToList();
@@ -173,9 +154,9 @@ namespace videoprokat_winform
             leasingsDgv.Columns["startDate"].HeaderText = "Дата начала";
             leasingsDgv.Columns["expectedEndDate"].HeaderText = "Ожидаемый возврат";
             leasingsDgv.Columns["totalPrice"].HeaderText = "Итоговая цена";
-            leasingsDgv.Columns["clientName"].HeaderText = "Клиент";
+            leasingsDgv.Columns["customerName"].HeaderText = "Клиент";
 
-            leasingsDgv.Columns["clientName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            leasingsDgv.Columns["customerName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -186,6 +167,11 @@ namespace videoprokat_winform
             if (moviesDgv.CurrentRow != null)
             {
                 RedrawCopiesDgv();
+                newMovieCopyButton.Enabled = true;
+            }
+            else
+            {
+                newMovieCopyButton.Enabled = false;
             }
         }
         private void copiesDgv_SelectionChanged(object sender, EventArgs e) // из копии фильма загружаем в таблицу инфу по аренде
@@ -211,20 +197,13 @@ namespace videoprokat_winform
             DataGridViewRow currentRow = moviesDgv.CurrentRow;
             using (VideoprokatContext db = new VideoprokatContext())
             {
-                if (currentRow.Cells["Id"].Value != null) // редактируется уже существующий фильм
-                {
-                    int currentMovieId = (int)currentRow.Cells["Id"].Value;
-                    MovieOriginal currentMovie = db.MoviesOriginal.First(m => m.Id == currentMovieId);
-                    currentMovie.Title = currentRow.Cells["Title"].Value.ToString();
-                    currentMovie.Description = currentRow.Cells["Description"].Value.ToString();
-                    currentMovie.YearReleased = Convert.ToInt32(currentRow.Cells["YearReleased"].Value);
+                int currentMovieId = (int)currentRow.Cells["Id"].Value;
+                MovieOriginal currentMovie = db.MoviesOriginal.First(m => m.Id == currentMovieId);
+                currentMovie.Title = currentRow.Cells["Title"].Value.ToString();
+                currentMovie.Description = currentRow.Cells["Description"].Value.ToString();
+                currentMovie.YearReleased = Convert.ToInt32(currentRow.Cells["YearReleased"].Value);
 
-                    db.SaveChanges();
-                }
-                else // добавляется новый фильм
-                {
-                    MovieOriginal newMovie = new MovieOriginal { Title = currentRow.Cells["Title"].Value.ToString() };
-                }
+                db.SaveChanges();
             }
         }
 
@@ -299,6 +278,24 @@ namespace videoprokat_winform
                     leasingContextMenu.Items[0].Enabled = false; // "Вернуть"
                 }
             }
+        }
+        private void newMovieCopyButton_Click(object sender, EventArgs e)
+        {
+            using (VideoprokatContext db = new VideoprokatContext())
+            {
+                int currentMovieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
+                MovieOriginal movie = db.MoviesOriginal.First(m => m.Id == currentMovieId);
+                MovieCopyForm form = new MovieCopyForm(movie);
+                form.ShowDialog();
+            }
+            RedrawCopiesDgv();
+        }
+
+        private void newMovieButton_Click(object sender, EventArgs e)
+        {
+            MovieForm form = new MovieForm();
+            form.ShowDialog();
+            RedrawMoviesDgv();
         }
     }
 }

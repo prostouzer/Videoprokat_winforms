@@ -32,23 +32,21 @@
             this.copiesDgv = new System.Windows.Forms.DataGridView();
             this.copiesContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.leasingItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newCopyItem = new System.Windows.Forms.ToolStripMenuItem();
             this.leasingsDgv = new System.Windows.Forms.DataGridView();
             this.leasingContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.returnItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moviesDgv = new System.Windows.Forms.DataGridView();
-            this.moviesContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.searchBox = new System.Windows.Forms.ToolStripTextBox();
-            this.clientsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.customersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importMoviesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newMovieCopyButton = new System.Windows.Forms.Button();
+            this.newMovieButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.copiesDgv)).BeginInit();
             this.copiesContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.leasingsDgv)).BeginInit();
             this.leasingContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.moviesDgv)).BeginInit();
-            this.moviesContextMenu.SuspendLayout();
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -76,23 +74,16 @@
             // copiesContextMenu
             // 
             this.copiesContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.leasingItem,
-            this.newCopyItem});
+            this.leasingItem});
             this.copiesContextMenu.Name = "copiesContextMenu";
-            this.copiesContextMenu.Size = new System.Drawing.Size(206, 48);
+            this.copiesContextMenu.Size = new System.Drawing.Size(115, 26);
             // 
             // leasingItem
             // 
             this.leasingItem.Enabled = false;
             this.leasingItem.Name = "leasingItem";
-            this.leasingItem.Size = new System.Drawing.Size(205, 22);
+            this.leasingItem.Size = new System.Drawing.Size(114, 22);
             this.leasingItem.Text = "Прокат";
-            // 
-            // newCopyItem
-            // 
-            this.newCopyItem.Name = "newCopyItem";
-            this.newCopyItem.Size = new System.Drawing.Size(205, 22);
-            this.newCopyItem.Text = "Добавить новую копию";
             // 
             // leasingsDgv
             // 
@@ -134,35 +125,21 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.moviesDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.moviesDgv.ContextMenuStrip = this.moviesContextMenu;
             this.moviesDgv.Location = new System.Drawing.Point(12, 27);
             this.moviesDgv.Name = "moviesDgv";
             this.moviesDgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.moviesDgv.Size = new System.Drawing.Size(629, 410);
+            this.moviesDgv.Size = new System.Drawing.Size(629, 337);
             this.moviesDgv.TabIndex = 0;
             this.moviesDgv.Text = "dataGridView1";
             this.moviesDgv.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.moviesDgv_CellEndEdit);
             this.moviesDgv.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.moviesDgv_DataError);
             this.moviesDgv.SelectionChanged += new System.EventHandler(this.moviesDgv_SelectionChanged);
             // 
-            // moviesContextMenu
-            // 
-            this.moviesContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
-            this.moviesContextMenu.Name = "moviesContextMenu";
-            this.moviesContextMenu.Size = new System.Drawing.Size(168, 26);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(167, 22);
-            this.toolStripMenuItem1.Text = "Добавить фильм";
-            // 
             // mainMenu
             // 
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.searchBox,
-            this.clientsMenuItem,
+            this.customersMenuItem,
             this.importMoviesMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
@@ -175,11 +152,11 @@
             this.searchBox.Name = "searchBox";
             this.searchBox.Size = new System.Drawing.Size(100, 23);
             // 
-            // clientsMenuItem
+            // customersMenuItem
             // 
-            this.clientsMenuItem.Name = "clientsMenuItem";
-            this.clientsMenuItem.Size = new System.Drawing.Size(67, 23);
-            this.clientsMenuItem.Text = "Клиенты";
+            this.customersMenuItem.Name = "customersMenuItem";
+            this.customersMenuItem.Size = new System.Drawing.Size(67, 23);
+            this.customersMenuItem.Text = "Клиенты";
             // 
             // importMoviesMenuItem
             // 
@@ -187,11 +164,36 @@
             this.importMoviesMenuItem.Size = new System.Drawing.Size(117, 23);
             this.importMoviesMenuItem.Text = "Импорт фильмов";
             // 
+            // newMovieCopyButton
+            // 
+            this.newMovieCopyButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.newMovieCopyButton.Enabled = false;
+            this.newMovieCopyButton.Location = new System.Drawing.Point(226, 370);
+            this.newMovieCopyButton.Name = "newMovieCopyButton";
+            this.newMovieCopyButton.Size = new System.Drawing.Size(415, 67);
+            this.newMovieCopyButton.TabIndex = 5;
+            this.newMovieCopyButton.Text = "Новая копия фильма";
+            this.newMovieCopyButton.UseVisualStyleBackColor = true;
+            this.newMovieCopyButton.Click += new System.EventHandler(this.newMovieCopyButton_Click);
+            // 
+            // newMovieButton
+            // 
+            this.newMovieButton.Location = new System.Drawing.Point(12, 370);
+            this.newMovieButton.Name = "newMovieButton";
+            this.newMovieButton.Size = new System.Drawing.Size(208, 67);
+            this.newMovieButton.TabIndex = 6;
+            this.newMovieButton.Text = "Новый фильм";
+            this.newMovieButton.UseVisualStyleBackColor = true;
+            this.newMovieButton.Click += new System.EventHandler(this.newMovieButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1218, 449);
+            this.Controls.Add(this.newMovieButton);
+            this.Controls.Add(this.newMovieCopyButton);
             this.Controls.Add(this.leasingsDgv);
             this.Controls.Add(this.copiesDgv);
             this.Controls.Add(this.moviesDgv);
@@ -206,7 +208,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.leasingsDgv)).EndInit();
             this.leasingContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.moviesDgv)).EndInit();
-            this.moviesContextMenu.ResumeLayout(false);
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
             this.ResumeLayout(false);
@@ -224,12 +225,11 @@
         private System.Windows.Forms.ToolStripMenuItem importMoviesMenuItem;
         private System.Windows.Forms.ContextMenuStrip copiesContextMenu;
         private System.Windows.Forms.ToolStripMenuItem leasingItem;
-        private System.Windows.Forms.ToolStripMenuItem clientsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem customersMenuItem;
         private System.Windows.Forms.ContextMenuStrip leasingContextMenu;
         private System.Windows.Forms.ToolStripMenuItem returnItem;
-        private System.Windows.Forms.ToolStripMenuItem newCopyItem;
-        private System.Windows.Forms.ContextMenuStrip moviesContextMenu;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.Button newMovieCopyButton;
+        private System.Windows.Forms.Button newMovieButton;
     }
 }
 
