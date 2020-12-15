@@ -122,7 +122,6 @@ namespace videoprokat_winform
             this.Name = "CustomersForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Клиенты";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CustomersForm_FormClosed);
             this.Load += new System.EventHandler(this.CustomersForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.customers)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.leasedCopies)).EndInit();

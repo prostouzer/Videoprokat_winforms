@@ -12,12 +12,14 @@ namespace videoprokat_winform
 {
     public partial class LeasingForm : Form
     {
+        VideoprokatContext db;
         MovieCopy currentCopy;
         MovieOriginal currentMovie;
-        public LeasingForm(MovieCopy movieCopy)
+        public LeasingForm(VideoprokatContext context, MovieCopy movieCopy)
         {
             InitializeComponent();
             currentCopy = movieCopy;
+            db = context;
         }
 
         private void LeasingForm_Load(object sender, EventArgs e)
@@ -25,17 +27,14 @@ namespace videoprokat_winform
             startDatePicker.Value = DateTime.Now;
             endDatePicker.Value = DateTime.Now.AddDays(2);
 
-            using (VideoprokatContext db = new VideoprokatContext())
-            {
-                currentMovie = db.MoviesOriginal.First(m => m.Id == currentCopy.MovieId);
-                movieNameLabel.Text = currentMovie.Title;
-                movieCommentLabel.Text = currentCopy.Commentary;
+            currentMovie = db.MoviesOriginal.First(m => m.Id == currentCopy.MovieId);
+            movieNameLabel.Text = currentMovie.Title;
+            movieCommentLabel.Text = currentCopy.Commentary;
 
-                var customers = db.Customers.ToList();
-                customersComboBox.DataSource = customers;
-                customersComboBox.DisplayMember = "Name";
-                customersComboBox.ValueMember = "Id";
-            }
+            var customers = db.Customers.ToList();
+            customersComboBox.DataSource = customers;
+            customersComboBox.DisplayMember = "Name";
+            customersComboBox.ValueMember = "Id";
         }
 
         private void leaseButton_Click(object sender, EventArgs e)
@@ -44,25 +43,22 @@ namespace videoprokat_winform
             {
                 if (startDatePicker.Value.Date < endDatePicker.Value.Date)
                 {
-                    using (VideoprokatContext db = new VideoprokatContext())
+                    int customerId = Convert.ToInt32(customersComboBox.SelectedValue);
+                    int movieCopyId = currentCopy.Id;
+                    Customer owner = db.Customers.First(r => r.Id == customerId);
+                    MovieCopy movieCopy = db.MoviesCopies.First(r => r.Id == movieCopyId);
+                    movieCopy.Available = false;
+
+                    Leasing leasing = new Leasing(startDatePicker.Value.Date, endDatePicker.Value.Date, customerId,
+                        movieCopyId, currentCopy.PricePerDay);
+
+                    DialogResult result = MessageBox.Show($"Прокат {currentMovie.Title}, {currentCopy.Commentary} " +
+                        $"с {startDatePicker.Value.Date} по {endDatePicker.Value.Date} за {leasing.TotalPrice.ToString()}?", "Прокат", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
                     {
-                        int customerId = Convert.ToInt32(customersComboBox.SelectedValue);
-                        int movieCopyId = currentCopy.Id;
-                        Customer owner = db.Customers.First(r => r.Id == customerId);
-                        MovieCopy movieCopy = db.MoviesCopies.First(r => r.Id == movieCopyId);
-                        movieCopy.Available = false;
-
-                        Leasing leasing = new Leasing(startDatePicker.Value.Date, endDatePicker.Value.Date, customerId,
-                            movieCopyId, currentCopy.PricePerDay);
-
-                        DialogResult result = MessageBox.Show($"Прокат {currentMovie.Title}, {currentCopy.Commentary} " +
-                            $"с {startDatePicker.Value.Date} по {endDatePicker.Value.Date} за {leasing.TotalPrice.ToString()}?", "Прокат", MessageBoxButtons.YesNo);
-                        if (result == DialogResult.Yes)
-                        {
-                            db.LeasedCopies.Add(leasing);
-                            db.SaveChanges();
-                            this.Close();
-                        }
+                        db.LeasedCopies.Add(leasing);
+                        db.SaveChanges();
+                        this.Close();
                     }
                 }
                 else

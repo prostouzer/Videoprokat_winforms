@@ -181,7 +181,6 @@ namespace videoprokat_winform
             this.Name = "ReturnForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Вернуть";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ReturnForm_FormClosed);
             this.Load += new System.EventHandler(this.ReturnForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

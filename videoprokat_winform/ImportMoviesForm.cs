@@ -12,9 +12,11 @@ namespace videoprokat_winform
 {
     public partial class ImportMoviesForm : Form
     {
-        public ImportMoviesForm()
+        VideoprokatContext db;
+        public ImportMoviesForm(VideoprokatContext context)
         {
             InitializeComponent();
+            db = context;
         }
 
         string filePath;
@@ -97,14 +99,11 @@ namespace videoprokat_winform
             DialogResult result = MessageBox.Show("Загрузить полученные фильмы в базу данных?", "Подтверждение", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                using (VideoprokatContext db = new VideoprokatContext())
+                foreach (MovieOriginal movie in moviesList)
                 {
-                    foreach (MovieOriginal movie in moviesList)
-                    {
-                        db.MoviesOriginal.Add(movie);
-                    }
-                    db.SaveChanges();
+                    db.MoviesOriginal.Add(movie);
                 }
+                db.SaveChanges();
                 this.Close();
             }
         }

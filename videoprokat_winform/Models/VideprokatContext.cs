@@ -5,7 +5,7 @@ using System.Text;
 
 namespace videoprokat_winform.Models
 {
-    class VideoprokatContext : DbContext
+    public class VideoprokatContext : DbContext
     {
         static VideoprokatContext()
         {

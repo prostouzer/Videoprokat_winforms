@@ -14,6 +14,7 @@ namespace videoprokat_winform
 {
     public partial class MainForm : Form
     {
+        private VideoprokatContext db;
         public MainForm()
         {
             InitializeComponent();
@@ -25,65 +26,55 @@ namespace videoprokat_winform
             copiesContextMenu.Items[0].Click += OpenLeaseForm; // "Прокат"
 
             leasingContextMenu.Items[0].Click += OpenReturnForm; // "Вернуть"
+
+            db = new VideoprokatContext();
         }
         void FilterMovies(object sender, EventArgs e)
         {
-            using (VideoprokatContext db = new VideoprokatContext())
+            var filteredData = db.MoviesOriginal.Where(m => m.Title.Contains(searchBox.Text)).ToList();
+            if (filteredData.Count() > 0 && searchBox.Text != "")
             {
-                var filteredData = db.MoviesOriginal.Where(m => m.Title.Contains(searchBox.Text)).ToList();
-                if (filteredData.Count() > 0 && searchBox.Text != "")
-                {
-                    moviesDgv.DataSource = filteredData;
-                }
-                else
-                {
-                    RedrawMoviesDgv();
-                }
+                moviesDgv.DataSource = filteredData;
+            }
+            else
+            {
+                RedrawMoviesDgv();
             }
         }
         void OpenCustomersForm(object sender, EventArgs e)
         {
-            CustomersForm form = new CustomersForm();
+            CustomersForm form = new CustomersForm(db);
             form.ShowDialog();
         }
         void OpenImportMoviesForm(object sender, EventArgs e)
         {
-            ImportMoviesForm form = new ImportMoviesForm();
+            ImportMoviesForm form = new ImportMoviesForm(db);
             form.ShowDialog();
             RedrawMoviesDgv();
         }
         void OpenLeaseForm(object sender, EventArgs e)
         {
-            using (VideoprokatContext db = new VideoprokatContext())
-            {
-                int currentCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
-                MovieCopy movieCopy = db.MoviesCopies.First(c => c.Id == currentCopyId);
-                LeasingForm form = new LeasingForm(movieCopy);
-                form.ShowDialog();
-            }
+            int currentCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
+            MovieCopy movieCopy = db.MoviesCopies.First(c => c.Id == currentCopyId);
+            LeasingForm form = new LeasingForm(db, movieCopy);
+            form.ShowDialog();
             RedrawCopiesDgv();
             RedrawLeasingsDgv();
         }
         void OpenReturnForm(object sender, EventArgs e)
         {
-            using (VideoprokatContext db = new VideoprokatContext())
-            {
-                int currentLeasingId = Convert.ToInt32(leasingsDgv.CurrentRow.Cells["Id"].Value);
-                Leasing leasing = db.LeasedCopies.First(l => l.Id == currentLeasingId);
-                ReturnForm form = new ReturnForm(leasing);
-                form.ShowDialog();
-            }
+            int currentLeasingId = Convert.ToInt32(leasingsDgv.CurrentRow.Cells["Id"].Value);
+            Leasing leasing = db.LeasedCopies.First(l => l.Id == currentLeasingId);
+            ReturnForm form = new ReturnForm(db, leasing);
+            form.ShowDialog();
             RedrawCopiesDgv();
             RedrawLeasingsDgv();
         }
 
         private void RedrawMoviesDgv()
         {
-            using (VideoprokatContext db = new VideoprokatContext())
-            {
-                db.MoviesOriginal.Load();
-                moviesDgv.DataSource = db.MoviesOriginal.Local.ToBindingList();
-            }
+            db.MoviesOriginal.Load();
+            moviesDgv.DataSource = db.MoviesOriginal.Local.ToBindingList();
             moviesDgv.Columns["Id"].ReadOnly = true;
             moviesDgv.Columns["Copies"].Visible = false;
 
@@ -104,16 +95,14 @@ namespace videoprokat_winform
         }
         private void RedrawCopiesDgv()
         {
-            using (VideoprokatContext db = new VideoprokatContext())
-            {
-                int CurrentMovieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
+            int CurrentMovieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
 
-                var movieCopies = (from r in db.MoviesCopies
-                                   where r.MovieId == CurrentMovieId
-                                   select r).ToList();
+            var movieCopies = (from r in db.MoviesCopies
+                               where r.MovieId == CurrentMovieId
+                               select r).ToList();
 
-                copiesDgv.DataSource = movieCopies;
-            }
+            copiesDgv.DataSource = movieCopies;
+
             copiesDgv.Columns["Id"].ReadOnly = true;
             copiesDgv.Columns["Available"].ReadOnly = true;
             copiesDgv.Columns["MovieId"].Visible = false;
@@ -131,24 +120,21 @@ namespace videoprokat_winform
         }
         private void RedrawLeasingsDgv()
         {
-            using (VideoprokatContext db = new VideoprokatContext())
-            {
-                int CurrentMovieCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
+            int CurrentMovieCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
 
-                var movieCopyLeasingInfo = from leasing in db.LeasedCopies
-                                           where leasing.MovieCopyId == CurrentMovieCopyId && leasing.ReturnDate == null
-                                           join customer in db.Customers on leasing.CustomerId equals customer.Id
-                                           select new
-                                           {
-                                               id = leasing.Id,
-                                               startDate = leasing.LeasingStartDate,
-                                               expectedEndDate = leasing.LeasingExpectedEndDate,
-                                               totalPrice = leasing.TotalPrice,
-                                               customerName = customer.Name
-                                           };
+            var movieCopyLeasingInfo = from leasing in db.LeasedCopies
+                                       where leasing.MovieCopyId == CurrentMovieCopyId && leasing.ReturnDate == null
+                                       join customer in db.Customers on leasing.CustomerId equals customer.Id
+                                       select new
+                                       {
+                                           id = leasing.Id,
+                                           startDate = leasing.LeasingStartDate,
+                                           expectedEndDate = leasing.LeasingExpectedEndDate,
+                                           totalPrice = leasing.TotalPrice,
+                                           customerName = customer.Name
+                                       };
 
-                leasingsDgv.DataSource = movieCopyLeasingInfo.ToList();
-            }
+            leasingsDgv.DataSource = movieCopyLeasingInfo.ToList();
             leasingsDgv.Columns["Id"].Visible = false;
 
             leasingsDgv.Columns["startDate"].HeaderText = "Дата начала";
@@ -194,17 +180,7 @@ namespace videoprokat_winform
 
         private void moviesDgv_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            DataGridViewRow currentRow = moviesDgv.CurrentRow;
-            using (VideoprokatContext db = new VideoprokatContext())
-            {
-                int currentMovieId = (int)currentRow.Cells["Id"].Value;
-                MovieOriginal currentMovie = db.MoviesOriginal.First(m => m.Id == currentMovieId);
-                currentMovie.Title = currentRow.Cells["Title"].Value.ToString();
-                currentMovie.Description = currentRow.Cells["Description"].Value.ToString();
-                currentMovie.YearReleased = Convert.ToInt32(currentRow.Cells["YearReleased"].Value);
-
-                db.SaveChanges();
-            }
+            db.SaveChanges();
         }
 
         private void moviesDgv_DataError(object sender, DataGridViewDataErrorEventArgs e)
@@ -214,16 +190,7 @@ namespace videoprokat_winform
 
         private void copiesDgv_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            DataGridViewRow currentRow = copiesDgv.CurrentRow;
-            int currentCopyId = (int)currentRow.Cells["Id"].Value;
-            using (VideoprokatContext db = new VideoprokatContext())
-            {
-                MovieCopy currentCopy = db.MoviesCopies.First(m => m.Id == currentCopyId);
-                currentCopy.Commentary = currentRow.Cells["Commentary"].Value.ToString();
-                currentCopy.PricePerDay = (decimal)currentRow.Cells["PricePerDay"].Value;
-
-                db.SaveChanges();
-            }
+            db.SaveChanges();
         }
 
         private void copiesDgv_DataError(object sender, DataGridViewDataErrorEventArgs e)
@@ -281,21 +248,23 @@ namespace videoprokat_winform
         }
         private void newMovieCopyButton_Click(object sender, EventArgs e)
         {
-            using (VideoprokatContext db = new VideoprokatContext())
-            {
-                int currentMovieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
-                MovieOriginal movie = db.MoviesOriginal.First(m => m.Id == currentMovieId);
-                MovieCopyForm form = new MovieCopyForm(movie);
-                form.ShowDialog();
-            }
+            int currentMovieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
+            MovieOriginal movie = db.MoviesOriginal.First(m => m.Id == currentMovieId);
+            MovieCopyForm form = new MovieCopyForm(db, movie);
+            form.ShowDialog();
             RedrawCopiesDgv();
         }
 
         private void newMovieButton_Click(object sender, EventArgs e)
         {
-            MovieForm form = new MovieForm();
+            MovieForm form = new MovieForm(db);
             form.ShowDialog();
             RedrawMoviesDgv();
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            db.Dispose();
         }
     }
 }

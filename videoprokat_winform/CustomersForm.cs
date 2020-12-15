@@ -14,14 +14,14 @@ namespace videoprokat_winform
     public partial class CustomersForm : Form
     {
         VideoprokatContext db;
-        public CustomersForm()
+        public CustomersForm(VideoprokatContext context)
         {
             InitializeComponent();
+            db = context;
         }
 
         private void CustomersForm_Load(object sender, EventArgs e)
         {
-            db = new VideoprokatContext();
             db.Customers.Load();
 
             customers.DataSource = db.Customers.Local.ToList();
@@ -115,11 +115,6 @@ namespace videoprokat_winform
             leasedCopies.Columns["ExpectedEndDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             leasedCopies.Columns["ReturnDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             leasedCopies.Columns["TotalPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-        }
-
-        private void CustomersForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            db.Dispose();
         }
     }
 }

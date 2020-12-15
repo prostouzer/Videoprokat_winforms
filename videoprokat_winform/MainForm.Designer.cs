@@ -58,12 +58,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.copiesDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.copiesDgv.ContextMenuStrip = this.copiesContextMenu;
-            this.copiesDgv.Location = new System.Drawing.Point(647, 30);
+            this.copiesDgv.Location = new System.Drawing.Point(647, 27);
             this.copiesDgv.MultiSelect = false;
             this.copiesDgv.Name = "copiesDgv";
-            this.copiesDgv.ReadOnly = true;
             this.copiesDgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.copiesDgv.Size = new System.Drawing.Size(559, 288);
+            this.copiesDgv.Size = new System.Drawing.Size(559, 291);
             this.copiesDgv.TabIndex = 1;
             this.copiesDgv.Text = "dataGridView2";
             this.copiesDgv.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.copiesDgv_CellEndEdit);
@@ -179,6 +178,7 @@
             // 
             // newMovieButton
             // 
+            this.newMovieButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.newMovieButton.Location = new System.Drawing.Point(12, 370);
             this.newMovieButton.Name = "newMovieButton";
             this.newMovieButton.Size = new System.Drawing.Size(208, 67);
@@ -202,6 +202,7 @@
             this.MinimumSize = new System.Drawing.Size(1234, 488);
             this.Name = "MainForm";
             this.Text = "Видеопрокат";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.copiesDgv)).EndInit();
             this.copiesContextMenu.ResumeLayout(false);

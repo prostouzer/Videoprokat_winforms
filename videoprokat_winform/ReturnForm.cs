@@ -12,16 +12,16 @@ namespace videoprokat_winform
 {
     public partial class ReturnForm : Form
     {
+        VideoprokatContext db;
         Leasing currentLeasing;
         MovieCopy currentCopy;
         MovieOriginal currentMovie;
         Customer currentOwner;
-
-        VideoprokatContext db = new VideoprokatContext();
-        public ReturnForm(Leasing leasing)
+        public ReturnForm(VideoprokatContext context, Leasing leasing)
         {
             InitializeComponent();
 
+            db = context;
             currentLeasing = db.LeasedCopies.First(l => l.Id == leasing.Id);
             currentCopy = db.MoviesCopies.First(c => c.Id == leasing.MovieCopyId);
             currentMovie = db.MoviesOriginal.First(m => m.Id == currentCopy.MovieId);
@@ -48,7 +48,7 @@ namespace videoprokat_winform
         private void returnButton_Click(object sender, EventArgs e)
         {
             DialogResult dialogResult;
-            if (returnDatePicker.Value.Date == currentLeasing.LeasingExpectedEndDate.Date) // on time
+            if (returnDatePicker.Value.Date == currentLeasing.LeasingExpectedEndDate.Date) // вовремя
             {
                 dialogResult = MessageBox.Show($"Возврат {currentMovie.Title}, {currentCopy.Commentary} в срок",
                     "Возврат в срок", MessageBoxButtons.YesNo);
@@ -59,7 +59,7 @@ namespace videoprokat_winform
                     this.Close();
                 }
             }
-            else if (returnDatePicker.Value > currentLeasing.LeasingExpectedEndDate.Date) // delayed
+            else if (returnDatePicker.Value > currentLeasing.LeasingExpectedEndDate.Date) // позже времени
             {
                 dialogResult = MessageBox.Show($"Возврат {currentMovie.Title}, {currentCopy.Commentary}, ШТРАФ {totalPriceChange.ToString()}",
                      "Поздний возврат", MessageBoxButtons.YesNo);
@@ -70,7 +70,7 @@ namespace videoprokat_winform
                     this.Close();
                 }
             }
-            else // early
+            else // раньше времени
             {
                 dialogResult = MessageBox.Show($"Возврат {currentMovie.Title}, {currentCopy.Commentary}, ВЕРНУТЬ {(-1 * totalPriceChange).ToString()}",
                      "Ранний возврат", MessageBoxButtons.YesNo);
@@ -110,11 +110,6 @@ namespace videoprokat_winform
                 totalPriceChange = currentCopy.PricePerDay * (decimal)-daysDiff; // getting LESS money from leasing
                 totalPriceChangeLabel.Text = "Возврат: " + (-1 * totalPriceChange).ToString(); // -1 to prevent ~"Возврат -100"
             }
-        }
-
-        private void ReturnForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            db.Dispose();
         }
     }
 }

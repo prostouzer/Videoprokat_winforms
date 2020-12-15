@@ -11,9 +11,11 @@ namespace videoprokat_winform
 {
     public partial class MovieForm : Form
     {
-        public MovieForm()
+        VideoprokatContext db;
+        public MovieForm(VideoprokatContext context)
         {
             InitializeComponent();
+            db = context;
         }
 
         private void movieButton_Click(object sender, EventArgs e)
@@ -24,23 +26,20 @@ namespace videoprokat_winform
                 if (movieDescriptionTextBox.Text.Trim() != "") // сообщение с описанием фильма
                 {
                     result = MessageBox.Show($"Добавить фильм {movieTitleTextBox.Text.Trim()}, {movieDescriptionTextBox.Text.Trim()}, {yearReleasedNumericUpDown.Value} года?",
-                        "Добавить фильм",  MessageBoxButtons.YesNo);
+                        "Добавить фильм", MessageBoxButtons.YesNo);
                 }
                 else // сообщение без описания фильма, чтобы не выводил лишнюю запятую
                 {
-                    result = MessageBox.Show($"Добавить фильм {movieTitleTextBox.Text.Trim()}, {yearReleasedNumericUpDown.Value} года?", 
+                    result = MessageBox.Show($"Добавить фильм {movieTitleTextBox.Text.Trim()}, {yearReleasedNumericUpDown.Value} года?",
                         "Добавить фильм", MessageBoxButtons.YesNo);
                 }
                 if (result == DialogResult.Yes)
                 {
-                    using (VideoprokatContext db = new VideoprokatContext())
-                    {
-                        MovieOriginal newMovie = new MovieOriginal(movieTitleTextBox.Text.Trim(),
-                            movieDescriptionTextBox.Text.Trim(), (int) yearReleasedNumericUpDown.Value);
-                        db.MoviesOriginal.Add(newMovie);
-                        db.SaveChanges();
-                        this.Close();
-                    }
+                    MovieOriginal newMovie = new MovieOriginal(movieTitleTextBox.Text.Trim(),
+                        movieDescriptionTextBox.Text.Trim(), (int)yearReleasedNumericUpDown.Value);
+                    db.MoviesOriginal.Add(newMovie);
+                    db.SaveChanges();
+                    this.Close();
                 }
             }
             else
