@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using videoprokat_winform.Presenters;
 
 namespace videoprokat_winform
 {
@@ -17,7 +18,9 @@ namespace videoprokat_winform
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            //Application.Run(new MainForm());
+            var presenter = new MainFormPresenter(new MainForm());
+            presenter.Run();
         }
     }
 }
