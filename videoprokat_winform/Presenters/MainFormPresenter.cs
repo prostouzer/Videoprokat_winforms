@@ -17,18 +17,6 @@ namespace videoprokat_winform.Presenters
         public MainFormPresenter(IMainFormView view)
         {
             _view = view;
-            //_view.FilterMovies += () => FilterMovies();
-            //_view.OpenCustomersForm += () => OpenCustomersForm();
-            //_view.OpenImportMoviesForm += () => OpenImportMoviesForm();
-
-            //_view.OpenLeasingForm += () => OpenLeasingForm();
-            //_view.OpenReturnForm += () => OpenReturnForm();
-            //_view.OpenMovieForm += () => OpenMovieForm();
-            //_view.OpenMovieCopyForm += () => OpenMovieCopyForm();
-
-            //_view.RedrawMoviesDgv += () => RedrawMoviesDgv();
-            //_view.RedrawCopiesDgv += () => RedrawCopiesDgv();
-            //_view.RedrawLeasingsDgv += () => RedrawLeasingsDgv();
 
         }
         public void Run()
@@ -144,10 +132,10 @@ namespace videoprokat_winform.Presenters
         }
         public void RedrawLeasingsDgv()
         {
-            int CurrentMovieCopyId = Convert.ToInt32(_view.CopiesDgv.CurrentRow.Cells["Id"].Value);
+            int currentMovieCopyId = Convert.ToInt32(_view.CopiesDgv.CurrentRow.Cells["Id"].Value);
 
             var movieCopyLeasingInfo = from leasing in db.LeasedCopies
-                where leasing.MovieCopyId == CurrentMovieCopyId && leasing.ReturnDate == null
+                where leasing.MovieCopyId == currentMovieCopyId && leasing.ReturnDate == null
                 join customer in db.Customers on leasing.CustomerId equals customer.Id
                 select new
                 {

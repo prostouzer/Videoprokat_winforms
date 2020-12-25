@@ -31,6 +31,8 @@ namespace videoprokat_winform
             InitializeComponent();
 
             _presenter = new MainFormPresenter(this);
+            _presenter.db = new VideoprokatContext();
+
             mainMenu.Items[0].TextChanged += _presenter.FilterMovies; // "Поиск"
             mainMenu.Items[1].Click += _presenter.OpenCustomersForm; // "Клиенты"
             mainMenu.Items[2].Click += _presenter.OpenImportMoviesForm; // "Импорт фильмов"
@@ -38,8 +40,6 @@ namespace videoprokat_winform
             copiesContextMenu.Items[0].Click += _presenter.OpenLeasingForm; // "Прокат"
 
             leasingContextMenu.Items[0].Click += _presenter.OpenReturnForm; // "Вернуть"
-
-            _presenter.db = new VideoprokatContext();
         }
         private void MainForm_Load(object sender, EventArgs e)
         {
