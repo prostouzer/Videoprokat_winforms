@@ -50,7 +50,6 @@ namespace videoprokat_winform
             this.movieButton.TabIndex = 8;
             this.movieButton.Text = "Добавить";
             this.movieButton.UseVisualStyleBackColor = true;
-            this.movieButton.Click += new System.EventHandler(this.movieButton_Click);
             // 
             // newMovieLabel
             // 

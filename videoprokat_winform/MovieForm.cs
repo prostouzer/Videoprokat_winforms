@@ -6,19 +6,22 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using videoprokat_winform.Models;
+using videoprokat_winform.Views;
 
 namespace videoprokat_winform
 {
-    public partial class MovieForm : Form
+    public partial class MovieForm : Form, IMovieFormView
     {
-        VideoprokatContext db;
-        public MovieForm(VideoprokatContext context)
+        public event Action<string, string, int> OnAddMovie;
+
+        public MovieForm()
         {
             InitializeComponent();
-            db = context;
-        }
 
-        private void movieButton_Click(object sender, EventArgs e)
+            movieButton.Click += (sender, args) => OnAddMovie?.Invoke(movieTitleTextBox.Text.Trim(),
+                movieDescriptionTextBox.Text.Trim(), Convert.ToInt32(yearReleasedNumericUpDown.Value));
+        }
+        public bool ConfirmNewMovie()
         {
             if (movieTitleTextBox.Text.Trim() != "")
             {
@@ -35,17 +38,14 @@ namespace videoprokat_winform
                 }
                 if (result == DialogResult.Yes)
                 {
-                    MovieOriginal newMovie = new MovieOriginal(movieTitleTextBox.Text.Trim(),
-                        movieDescriptionTextBox.Text.Trim(), (int)yearReleasedNumericUpDown.Value);
-                    db.MoviesOriginal.Add(newMovie);
-                    db.SaveChanges();
-                    this.Close();
+                    return true;
                 }
             }
             else
             {
                 MessageBox.Show("Укажите название фильма");
             }
+            return false;
         }
     }
 }

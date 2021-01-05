@@ -65,10 +65,6 @@
             this.copiesDgv.Size = new System.Drawing.Size(559, 291);
             this.copiesDgv.TabIndex = 1;
             this.copiesDgv.Text = "dataGridView2";
-            this.copiesDgv.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.copiesDgv_CellEndEdit);
-            this.copiesDgv.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.copiesDgv_DataError);
-            this.copiesDgv.SelectionChanged += new System.EventHandler(this.copiesDgv_SelectionChanged);
-            this.copiesDgv.MouseUp += new System.Windows.Forms.MouseEventHandler(this.copiesDgv_MouseUp);
             // 
             // copiesContextMenu
             // 
@@ -99,8 +95,6 @@
             this.leasingsDgv.Size = new System.Drawing.Size(559, 116);
             this.leasingsDgv.TabIndex = 2;
             this.leasingsDgv.Text = "dataGridView3";
-            this.leasingsDgv.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.leasingsDgv_DataError);
-            this.leasingsDgv.MouseUp += new System.Windows.Forms.MouseEventHandler(this.leasingsDgv_MouseUp);
             // 
             // leasingContextMenu
             // 
@@ -130,9 +124,6 @@
             this.moviesDgv.Size = new System.Drawing.Size(629, 337);
             this.moviesDgv.TabIndex = 0;
             this.moviesDgv.Text = "dataGridView1";
-            this.moviesDgv.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.moviesDgv_CellEndEdit);
-            this.moviesDgv.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.moviesDgv_DataError);
-            this.moviesDgv.SelectionChanged += new System.EventHandler(this.moviesDgv_SelectionChanged);
             // 
             // mainMenu
             // 
@@ -174,7 +165,6 @@
             this.newMovieCopyButton.TabIndex = 5;
             this.newMovieCopyButton.Text = "Новая копия фильма";
             this.newMovieCopyButton.UseVisualStyleBackColor = true;
-            this.newMovieCopyButton.Click += new System.EventHandler(this.newMovieCopyButton_Click);
             // 
             // newMovieButton
             // 
@@ -185,7 +175,6 @@
             this.newMovieButton.TabIndex = 6;
             this.newMovieButton.Text = "Новый фильм";
             this.newMovieButton.UseVisualStyleBackColor = true;
-            this.newMovieButton.Click += new System.EventHandler(this.newMovieButton_Click);
             // 
             // MainForm
             // 
@@ -202,8 +191,6 @@
             this.MinimumSize = new System.Drawing.Size(1234, 488);
             this.Name = "MainForm";
             this.Text = "Видеопрокат";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
-            this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.copiesDgv)).EndInit();
             this.copiesContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.leasingsDgv)).EndInit();
