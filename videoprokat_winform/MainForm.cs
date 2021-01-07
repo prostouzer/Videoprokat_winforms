@@ -26,7 +26,7 @@ namespace videoprokat_winform
 
         public event Action OnFormLoad;
 
-        public event Action<int> OnUpdateMovie;
+        public event Action<int, string, string, int> OnUpdateMovie;
         public event Action<int> OnUpdateCopy;
 
         public new void Show()
@@ -42,6 +42,8 @@ namespace videoprokat_winform
 
             mainMenu.Items[0].TextChanged += (sender, args) => OnFilterMovies?.Invoke(mainMenu.Items[0].Text.Trim()); // Поиск фильма
             moviesDgv.DataError += (sender, args) => ShowWrongFormatError();
+            moviesDgv.CellValueChanged += (sender, args) => OnUpdateMovie?.Invoke
+                    (Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value), moviesDgv.CurrentRow.Cells["Title"].Value.ToString(), moviesDgv.CurrentRow.Cells["Description"].Value.ToString(), Convert.ToInt32(moviesDgv.CurrentRow.Cells["YearReleased"].Value));
             //mainMenu.Items[1].Click += On; // "Клиенты"
             //mainMenu.Items[2].Click += _mainFormPresenter.OpenImportMoviesForm; // "Импорт фильмов"
 

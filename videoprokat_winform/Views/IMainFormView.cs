@@ -19,6 +19,8 @@ namespace videoprokat_winform.Views
         //event Action OnOpenLeasingForm;
         //event Action OnOpenReturnForm;
 
+        event Action<int, string, string, int> OnUpdateMovie;
+
         event Action OnFormLoad;
         void RedrawMoviesDgv(List<MovieOriginal> moviesList);
         void RedrawCopiesDgv(VideoprokatContext db);

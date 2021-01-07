@@ -24,8 +24,18 @@ namespace videoprokat_winform.Presenters
             _mainFormView.OnFormLoad += LoadMainForm;
 
             _mainFormView.OnFilterMovies += FilterMovies;
+            _mainFormView.OnUpdateMovie += UpdateMovie;
         }
+        public void UpdateMovie(int movieId, string title, string description, int yearReleased)
+        {
+            MovieOriginal movie = _context.MoviesOriginal.First(m => m.Id == movieId);
+            movie.Title = title;
+            movie.Description = description;
+            movie.YearReleased = yearReleased;
+            _context.SaveChanges(); // надо ли?
 
+            _mainFormView.RedrawMoviesDgv(_context.MoviesOriginal.ToList());
+        }
         public void Run()
         {
             _mainFormView.Show();
