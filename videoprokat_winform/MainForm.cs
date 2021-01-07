@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using videoprokat_winform.Models;
-using videoprokat_winform.Presenters;
 using videoprokat_winform.Views;
 
 namespace videoprokat_winform
@@ -18,12 +17,17 @@ namespace videoprokat_winform
     {
         //event Action OnOpenCustomersForm;
         //event Action OnOpenImportMoviesForm;
-
         public event Action OnOpenMovieForm;
+
+        public event Action<string> OnFilterMovies;
         //event Action OnOpenMovieCopyForm;
         //event Action OnOpenLeasingForm;
         //event Action OnOpenReturnForm;
+
         public event Action OnFormLoad;
+
+        public event Action<int> OnUpdateMovie;
+        public event Action<int> OnUpdateCopy;
 
         public new void Show()
         {
@@ -33,9 +37,11 @@ namespace videoprokat_winform
         {
             InitializeComponent();
 
-            newMovieButton.Click += (sender, args) => OnOpenMovieForm?.Invoke();
+            newMovieButton.Click += (sender, args) => OnOpenMovieForm?.Invoke(); 
             this.Load += (sender, args) => OnFormLoad.Invoke();
-            //mainMenu.Items[0].TextChanged += OnSearchMovie; // "Поиск"
+
+            mainMenu.Items[0].TextChanged += (sender, args) => OnFilterMovies?.Invoke(mainMenu.Items[0].Text.Trim()); // Поиск фильма
+            moviesDgv.DataError += (sender, args) => ShowWrongFormatError();
             //mainMenu.Items[1].Click += On; // "Клиенты"
             //mainMenu.Items[2].Click += _mainFormPresenter.OpenImportMoviesForm; // "Импорт фильмов"
 
@@ -44,14 +50,17 @@ namespace videoprokat_winform
             //leasingContextMenu.Items[0].Click += _mainFormPresenter.OpenReturnForm; // "Вернуть"
         }
 
-        public void RedrawMoviesDgv(VideoprokatContext db)
+        public void ShowWrongFormatError()
         {
-            db.MoviesOriginal.Load();
-            moviesDgv.DataSource = db.MoviesOriginal.Local.ToBindingList();
+            MessageBox.Show("Неправильный формат данных");
+        }
+        public void RedrawMoviesDgv(List<MovieOriginal> moviesList)
+        {
+            moviesDgv.DataSource = moviesList;
             moviesDgv.Columns["Id"].ReadOnly = true;
             moviesDgv.Columns["Copies"].Visible = false;
 
-            moviesDgv.Sort(moviesDgv.Columns["Title"], ListSortDirection.Ascending);
+            //moviesDgv.Sort(moviesDgv.Columns["Title"], ListSortDirection.Ascending); // несортируемый List
 
             moviesDgv.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
@@ -116,6 +125,7 @@ namespace videoprokat_winform
 
             leasingsDgv.Columns["customerName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
+
         //private void moviesDgv_SelectionChanged(object sender, EventArgs e) // из оригинального фильма загружаем в таблицу его копии
         //{
         //    if (MoviesDgv.CurrentRow != null)
@@ -156,11 +166,6 @@ namespace videoprokat_winform
         //    MessageBox.Show("Неправильный формат данных");
         //}
 
-        //private void copiesDgv_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-        //{
-        //    _mainFormPresenter.db.SaveChanges();
-        //}
-
         //private void copiesDgv_DataError(object sender, DataGridViewDataErrorEventArgs e)
         //{
         //    MessageBox.Show("Неправильный формат данных");
@@ -169,6 +174,11 @@ namespace videoprokat_winform
         //private void leasingsDgv_DataError(object sender, DataGridViewDataErrorEventArgs e)
         //{
         //    MessageBox.Show("Неправильный формат данных");
+        //}
+
+        //private void copiesDgv_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    _mainFormPresenter.db.SaveChanges();
         //}
 
         //private void copiesDgv_MouseUp(object sender, MouseEventArgs e)

@@ -21,6 +21,10 @@ namespace videoprokat_winform
             movieButton.Click += (sender, args) => OnAddMovie?.Invoke(movieTitleTextBox.Text.Trim(),
                 movieDescriptionTextBox.Text.Trim(), Convert.ToInt32(yearReleasedNumericUpDown.Value));
         }
+        public new void Show()
+        {
+            ShowDialog();
+        }
         public bool ConfirmNewMovie()
         {
             if (movieTitleTextBox.Text.Trim() != "")

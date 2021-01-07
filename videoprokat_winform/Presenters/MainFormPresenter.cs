@@ -22,7 +22,10 @@ namespace videoprokat_winform.Presenters
 
             _mainFormView.OnOpenMovieForm += OpenMovieForm;
             _mainFormView.OnFormLoad += LoadMainForm;
+
+            _mainFormView.OnFilterMovies += FilterMovies;
         }
+
         public void Run()
         {
             _mainFormView.Show();
@@ -30,11 +33,24 @@ namespace videoprokat_winform.Presenters
         public void OpenMovieForm()
         {
             _movieFormPresenter.Run(_context);
-            _mainFormView.RedrawMoviesDgv(_context);
+            _mainFormView.RedrawMoviesDgv(_context.MoviesOriginal.ToList());
         }
         public void LoadMainForm()
         {
-            _mainFormView.RedrawMoviesDgv(_context);
+            _context.MoviesOriginal.Load();
+            _mainFormView.RedrawMoviesDgv(_context.MoviesOriginal.ToList());
+        }
+        public void FilterMovies(string filter)
+        {
+            List<MovieOriginal> filteredMovies = _context.MoviesOriginal.Where(m => m.Title.Contains(filter)).ToList();
+            if (filteredMovies.Count() > 0 && filter != "")
+            {
+                _mainFormView.RedrawMoviesDgv(filteredMovies);
+            }
+            else
+            {
+                _mainFormView.RedrawMoviesDgv(_context.MoviesOriginal.ToList());
+            }
         }
 
         //public void FilterMovies(object sender, EventArgs e)
