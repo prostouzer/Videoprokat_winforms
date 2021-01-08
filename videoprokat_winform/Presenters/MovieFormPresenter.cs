@@ -19,11 +19,11 @@ namespace videoprokat_winform.Presenters
             _movieFormView.OnAddMovie += AddMovie;
         }
 
-        public void AddMovie(string title, string description, int yearReleased)
+        public void AddMovie(MovieOriginal movie)
         {
             if (_movieFormView.ConfirmNewMovie())
             {
-                _context.MoviesOriginal.Add(new MovieOriginal(title, description, yearReleased));
+                _context.MoviesOriginal.Add(movie);
                 _context.SaveChanges();
                 _movieFormView.Close();
             }

@@ -37,6 +37,12 @@ namespace videoprokat_winform
         {
             InitializeComponent();
 
+            var year = 100;
+            var str = string.Format("Man is {0} year", year);
+            var str2 = $"Man is {year} year";
+            MessageBox.Show(str, "str");
+            MessageBox.Show(str2, "str2");
+
             newMovieButton.Click += (sender, args) => OnOpenMovieForm?.Invoke(); 
             this.Load += (sender, args) => OnFormLoad.Invoke();
 
@@ -56,6 +62,7 @@ namespace videoprokat_winform
         {
             MessageBox.Show("Неправильный формат данных");
         }
+        
         public void RedrawMoviesDgv(List<MovieOriginal> moviesList)
         {
             moviesDgv.DataSource = moviesList;
@@ -76,6 +83,7 @@ namespace videoprokat_winform
             moviesDgv.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             moviesDgv.Columns["YearReleased"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
+
         public void RedrawCopiesDgv(VideoprokatContext db)
         {
             int currentMovieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);

@@ -12,14 +12,22 @@ namespace videoprokat_winform
 {
     public partial class MovieForm : Form, IMovieFormView
     {
-        public event Action<string, string, int> OnAddMovie;
+        public event Action<MovieOriginal> OnAddMovie;
 
         public MovieForm()
         {
             InitializeComponent();
 
-            movieButton.Click += (sender, args) => OnAddMovie?.Invoke(movieTitleTextBox.Text.Trim(),
-                movieDescriptionTextBox.Text.Trim(), Convert.ToInt32(yearReleasedNumericUpDown.Value));
+            //movieButton.Click += (sender, args) => OnAddMovie?.Invoke(movieTitleTextBox.Text.Trim(),
+            //    movieDescriptionTextBox.Text.Trim(), Convert.ToInt32(yearReleasedNumericUpDown.Value));
+            movieButton.Click += (sender, args) =>
+            {
+                var title = movieTitleTextBox.Text.Trim();
+                var description = movieDescriptionTextBox.Text.Trim();
+                var yearReleased = Convert.ToInt32(yearReleasedNumericUpDown.Value);
+                var movie = new MovieOriginal(title, description, yearReleased);
+                OnAddMovie?.Invoke(movie);
+            };
         }
         public new void Show()
         {

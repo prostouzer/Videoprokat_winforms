@@ -15,6 +15,7 @@ namespace videoprokat_winform.Presenters
         private readonly IMainFormView _mainFormView;
         private readonly MovieFormPresenter _movieFormPresenter;
         private readonly VideoprokatContext _context = new VideoprokatContext();
+
         public MainFormPresenter(IMainFormView mainFormView, MovieFormPresenter movieFormPresenter)
         {
             _mainFormView = mainFormView;
@@ -26,6 +27,7 @@ namespace videoprokat_winform.Presenters
             _mainFormView.OnFilterMovies += FilterMovies;
             _mainFormView.OnUpdateMovie += UpdateMovie;
         }
+
         public void UpdateMovie(int movieId, string title, string description, int yearReleased)
         {
             MovieOriginal movie = _context.MoviesOriginal.First(m => m.Id == movieId);
@@ -36,20 +38,24 @@ namespace videoprokat_winform.Presenters
 
             _mainFormView.RedrawMoviesDgv(_context.MoviesOriginal.ToList());
         }
+
         public void Run()
         {
             _mainFormView.Show();
         }
+
         public void OpenMovieForm()
         {
             _movieFormPresenter.Run(_context);
             _mainFormView.RedrawMoviesDgv(_context.MoviesOriginal.ToList());
         }
+
         public void LoadMainForm()
         {
             _context.MoviesOriginal.Load();
             _mainFormView.RedrawMoviesDgv(_context.MoviesOriginal.ToList());
         }
+
         public void FilterMovies(string filter)
         {
             List<MovieOriginal> filteredMovies = _context.MoviesOriginal.Where(m => m.Title.Contains(filter)).ToList();
