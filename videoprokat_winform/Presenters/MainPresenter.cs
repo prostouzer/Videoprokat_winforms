@@ -29,7 +29,9 @@ namespace videoprokat_winform.Presenters
             _mainView.OnOpenMovieCopy += OpenMovieCopy;
 
             _mainView.OnFilterMovies += FilterMovies;
-            _mainView.OnUpdateMovie += UpdateMovie;
+
+            _mainView.OnMovieSelectionChanged += MovieSelectionChanged;
+            _mainView.OnMovieCopySelectionChanged += MovieCopySelectionChanged;
         }
 
         public void Run()
@@ -41,20 +43,26 @@ namespace videoprokat_winform.Presenters
         {
             _moviePresenter._context = _context;
             _moviePresenter.Run();
-            _mainView.RedrawMoviesDgv(_context.MoviesOriginal.ToList());
+            _mainView.RedrawMovies(_context.MoviesOriginal.ToList());
         }
 
-        public void OpenMovieCopy()
+        public void OpenMovieCopy(int movieId)
         {
+            var movie = _context.MoviesOriginal.First(m => m.Id == movieId);
             _movieCopyPresenter._context = _context;
-            _movieCopyPresenter.Run();
-            _mainView.RedrawMoviesDgv(_context.MoviesOriginal.ToList()); // перерисовать Movies или Copies?
+            _movieCopyPresenter.Run(movie);
+
+            List<MovieCopy> copiesList = _context.MoviesCopies.Where(c => c.MovieId == _mainView.CurrentMovieId).ToList();
+            _mainView.RedrawCopies(copiesList);
         }
 
         public void LoadMain()
         {
-            _context.MoviesOriginal.Load();
-            _mainView.RedrawMoviesDgv(_context.MoviesOriginal.ToList());
+            List<MovieOriginal> moviesList = _context.MoviesOriginal.ToList();
+            if (moviesList.Count>0) _mainView.RedrawMovies(_context.MoviesOriginal.ToList());
+
+            _mainView.OnUpdateMovie += UpdateMovie;
+            _mainView.OnUpdateMovieCopy += UpdateMovieCopy; // из конструктора выдает ошибку null reference
         }
 
         public void FilterMovies(string filter)
@@ -62,20 +70,41 @@ namespace videoprokat_winform.Presenters
             List<MovieOriginal> filteredMovies = _context.MoviesOriginal.Where(m => m.Title.Contains(filter)).ToList();
             if (filteredMovies.Count() > 0 && filter != "")
             {
-                _mainView.RedrawMoviesDgv(filteredMovies);
+                _mainView.RedrawMovies(filteredMovies);
             }
             else
             {
-                _mainView.RedrawMoviesDgv(_context.MoviesOriginal.ToList());
+                _mainView.RedrawMovies(_context.MoviesOriginal.ToList());
             }
         }
+
         public void UpdateMovie(int movieId, MovieOriginal updatedMovie)
         {
             MovieOriginal movie = _context.MoviesOriginal.First(m => m.Id == movieId);
             movie = updatedMovie;
-            _context.SaveChanges(); // надо ли?
+            _context.SaveChanges();
+            _mainView.RedrawMovies(_context.MoviesOriginal.ToList());
+        }
 
-            _mainView.RedrawMoviesDgv(_context.MoviesOriginal.ToList());
+        public void UpdateMovieCopy(int movieCopyId, MovieCopy updatedMovieCopy)
+        {
+            MovieCopy copy = _context.MoviesCopies.First(c => c.Id == movieCopyId);
+            copy = updatedMovieCopy;
+            _context.SaveChanges();
+
+            List<MovieCopy> copiesList = _context.MoviesCopies.Where(c => c.MovieId == copy.MovieId).ToList();
+            _mainView.RedrawCopies(copiesList);
+        }
+
+        public void MovieSelectionChanged(int movieId) // Поменяли фильм, отрисовываем его копии
+        {
+            List<MovieCopy> movieCopies = _context.MoviesCopies.Where(c => c.MovieId == movieId).ToList();
+            if (movieCopies.Count>0) _mainView.RedrawCopies(movieCopies);
+        }
+        public void MovieCopySelectionChanged(int movieCopyId) // Поменяли копию, отрисовываем ее аренды (прокаты)
+        {
+            List<Leasing> leasings = _context.LeasedCopies.Where(l => l.MovieCopyId == movieCopyId).ToList();
+            if (leasings.Count>0) _mainView.RedrawLeasings(leasings);
         }
 
         //public void OpenImportMoviesForm(object sender, EventArgs e)

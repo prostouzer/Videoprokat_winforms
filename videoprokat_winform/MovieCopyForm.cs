@@ -12,14 +12,23 @@ namespace videoprokat_winform
 {
     public partial class MovieCopyForm : Form, IMovieCopyView
     {
-        public MovieOriginal _currentMovie;
-        public MovieOriginal currentMovie { get => _currentMovie; set => _currentMovie = value; }
+        private MovieOriginal _currentMovie;
+        public MovieOriginal currentMovie { get => _currentMovie;
+            set => _currentMovie = value;
+        }
         public event Action<MovieCopy> OnAddMovieCopy;
         public MovieCopyForm()
         {
             InitializeComponent();
 
-            leaseButton.Click += (sender, args) => OnAddMovieCopy?.Invoke(new MovieCopy(currentMovie.Id, commentTextBox.Text.Trim(), priceNumericUpDown.Value));
+            leaseButton.Click += (sender, args) =>
+            {
+                var movieId = _currentMovie.Id;
+                var commentary = commentTextBox.Text.Trim();
+                var pricePerDay = priceNumericUpDown.Value;
+                var copy = new MovieCopy(movieId, commentary, pricePerDay);
+                OnAddMovieCopy?.Invoke(copy);
+            };
         }
 
         public new void Show()

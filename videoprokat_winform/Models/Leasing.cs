@@ -8,8 +8,8 @@ namespace videoprokat_winform.Models
     public class Leasing
     {
         public int Id { get; set; }
-        public DateTime LeasingStartDate { get; set; }
-        public DateTime LeasingExpectedEndDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime ExpectedEndDate { get; set; }
         public Nullable<DateTime> ReturnDate { get; set; }
         public decimal TotalPrice { get; set; }
 
@@ -19,11 +19,11 @@ namespace videoprokat_winform.Models
         public Customer Customer { get; set; }
 
         private Leasing() { }
-        public Leasing(DateTime leasingStartDate, DateTime leasingExpectedEndDate, int customerId, int movieCopyId,
+        public Leasing(DateTime startDate, DateTime expectedEndDate, int customerId, int movieCopyId,
             decimal pricePerDay)
         {
-            LeasingStartDate = leasingStartDate;
-            LeasingExpectedEndDate = leasingExpectedEndDate;
+            StartDate = startDate;
+            ExpectedEndDate = expectedEndDate;
             TotalPrice = GetExpectedTotalPrice(pricePerDay);
             CustomerId = customerId;
             MovieCopyId = movieCopyId;
@@ -31,16 +31,16 @@ namespace videoprokat_winform.Models
 
         public decimal GetExpectedTotalPrice(decimal pricePerDay)
         {
-            return Convert.ToDecimal((LeasingExpectedEndDate.Date - LeasingStartDate.Date).TotalDays) * pricePerDay;
+            return Convert.ToDecimal((ExpectedEndDate.Date - StartDate.Date).TotalDays) * pricePerDay;
         }
         public void ReturnOnTime()
         {
             MovieCopy.Available = true;
-            ReturnDate = LeasingExpectedEndDate;
+            ReturnDate = ExpectedEndDate;
         }
         public void ReturnDelayed(DateTime leasingReturnDate, decimal fineMultiplier = 2) // multiplier > 1 
         {
-            double delayedDaysDiff = (leasingReturnDate.Date - LeasingExpectedEndDate.Date).TotalDays;
+            double delayedDaysDiff = (leasingReturnDate.Date - ExpectedEndDate.Date).TotalDays;
             decimal totalPriceChange = (MovieCopy.PricePerDay * (decimal)delayedDaysDiff) * fineMultiplier; // getting MORE money from leasing
             TotalPrice += totalPriceChange;
             MovieCopy.Available = true;
@@ -48,7 +48,7 @@ namespace videoprokat_winform.Models
         }
         public void ReturnEarly(DateTime leasingReturnDate)
         {
-            double daysDiff = (LeasingExpectedEndDate.Date - leasingReturnDate.Date).TotalDays;
+            double daysDiff = (ExpectedEndDate.Date - leasingReturnDate.Date).TotalDays;
             decimal totalPriceChange = MovieCopy.PricePerDay * (decimal)daysDiff; // getting LESS money from leasing
             TotalPrice -= totalPriceChange;
             MovieCopy.Available = true;

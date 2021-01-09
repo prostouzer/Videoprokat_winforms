@@ -124,6 +124,7 @@
             this.moviesDgv.Size = new System.Drawing.Size(629, 337);
             this.moviesDgv.TabIndex = 0;
             this.moviesDgv.Text = "dataGridView1";
+            this.moviesDgv.SelectionChanged += new System.EventHandler(this.moviesDgv_SelectionChanged);
             // 
             // mainMenu
             // 

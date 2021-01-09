@@ -36,10 +36,10 @@ namespace videoprokat_winform
 
             movieCommentLabel.Text = currentCopy.Commentary;
 
-            startDatePicker.Value = currentLeasing.LeasingStartDate;
+            startDatePicker.Value = currentLeasing.StartDate;
             returnDatePicker.Value = DateTime.Now;
-            returnDatePicker.MinDate = currentLeasing.LeasingStartDate;
-            expectedEndLabel.Text = "Ожидается: " + currentLeasing.LeasingExpectedEndDate.ToShortDateString();
+            returnDatePicker.MinDate = currentLeasing.StartDate;
+            expectedEndLabel.Text = "Ожидается: " + currentLeasing.ExpectedEndDate.ToShortDateString();
         }
 
         decimal totalPriceChange;
@@ -48,7 +48,7 @@ namespace videoprokat_winform
         private void returnButton_Click(object sender, EventArgs e)
         {
             DialogResult dialogResult;
-            if (returnDatePicker.Value.Date == currentLeasing.LeasingExpectedEndDate.Date) // вовремя
+            if (returnDatePicker.Value.Date == currentLeasing.ExpectedEndDate.Date) // вовремя
             {
                 dialogResult = MessageBox.Show($"Возврат {currentMovie.Title}, {currentCopy.Commentary} в срок",
                     "Возврат в срок", MessageBoxButtons.YesNo);
@@ -59,7 +59,7 @@ namespace videoprokat_winform
                     this.Close();
                 }
             }
-            else if (returnDatePicker.Value > currentLeasing.LeasingExpectedEndDate.Date) // позже времени
+            else if (returnDatePicker.Value > currentLeasing.ExpectedEndDate.Date) // позже времени
             {
                 dialogResult = MessageBox.Show($"Возврат {currentMovie.Title}, {currentCopy.Commentary}, ШТРАФ {totalPriceChange.ToString()}",
                      "Поздний возврат", MessageBoxButtons.YesNo);
@@ -85,18 +85,18 @@ namespace videoprokat_winform
 
         private void returnDate_ValueChanged(object sender, EventArgs e)
         {
-            if (returnDatePicker.Value.Date == currentLeasing.LeasingExpectedEndDate.Date) // on time
+            if (returnDatePicker.Value.Date == currentLeasing.ExpectedEndDate.Date) // on time
             {
                 totalPriceChangeLabel.Visible = false;
                 returnDateLabel.ForeColor = SystemColors.ControlText;
             }
-            else if (returnDatePicker.Value.Date > currentLeasing.LeasingExpectedEndDate.Date) // delayed
+            else if (returnDatePicker.Value.Date > currentLeasing.ExpectedEndDate.Date) // delayed
             {
                 returnDateLabel.ForeColor = Color.Red;
                 totalPriceChangeLabel.ForeColor = Color.Red;
                 totalPriceChangeLabel.Visible = true;
 
-                daysDiff = (returnDatePicker.Value.Date - currentLeasing.LeasingExpectedEndDate.Date).TotalDays;
+                daysDiff = (returnDatePicker.Value.Date - currentLeasing.ExpectedEndDate.Date).TotalDays;
                 totalPriceChange = (currentCopy.PricePerDay * (decimal)daysDiff) * fineMultiplier;// getting MORE money from leasing
                 totalPriceChangeLabel.Text = "Штраф: " + totalPriceChange.ToString();
             }
@@ -106,7 +106,7 @@ namespace videoprokat_winform
                 totalPriceChangeLabel.ForeColor = Color.Green;
                 totalPriceChangeLabel.Visible = true;
 
-                daysDiff = (currentLeasing.LeasingExpectedEndDate.Date - returnDatePicker.Value.Date).TotalDays;
+                daysDiff = (currentLeasing.ExpectedEndDate.Date - returnDatePicker.Value.Date).TotalDays;
                 totalPriceChange = currentCopy.PricePerDay * (decimal)-daysDiff; // getting LESS money from leasing
                 totalPriceChangeLabel.Text = "Возврат: " + (-1 * totalPriceChange).ToString(); // -1 to prevent ~"Возврат -100"
             }

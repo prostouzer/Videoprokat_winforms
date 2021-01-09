@@ -89,7 +89,6 @@ namespace videoprokat_winform
             this.leaseButton.TabIndex = 7;
             this.leaseButton.Text = "Добавить";
             this.leaseButton.UseVisualStyleBackColor = true;
-            this.leaseButton.Click += new System.EventHandler(this.leaseButton_Click);
             // 
             // priceNumericUpDown
             // 

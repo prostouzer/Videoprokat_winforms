@@ -10,20 +10,25 @@ namespace videoprokat_winform.Views
 {
     interface IMainView : IView
     {
+        int CurrentMovieId { get; }
         //event Action OnOpenCustomers;
         //event Action OnOpenImportMovies;
         //event Action OnOpenLeasing;
         event Action OnOpenMovie;
-        event Action OnOpenMovieCopy;
+        event Action<int> OnOpenMovieCopy;
         //event Action OnOpenReturn;
+
+        event Action<int> OnMovieSelectionChanged;
+        event Action<int> OnMovieCopySelectionChanged;
 
         event Action<string> OnFilterMovies;
 
         event Action<int, MovieOriginal> OnUpdateMovie;
+        event Action<int, MovieCopy> OnUpdateMovieCopy;
 
         event Action OnLoad;
-        void RedrawMoviesDgv(List<MovieOriginal> moviesList);
-        void RedrawCopiesDgv(VideoprokatContext db);
-        void RedrawLeasingsDgv(VideoprokatContext db);
+        void RedrawMovies(List<MovieOriginal> moviesList);
+        void RedrawCopies(List<MovieCopy> movieCopiesList);
+        void RedrawLeasings(List<Leasing> leasingsList);
     }
 }

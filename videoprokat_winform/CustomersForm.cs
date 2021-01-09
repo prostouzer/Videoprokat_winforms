@@ -88,8 +88,8 @@ namespace videoprokat_winform
                                          Id = leasing.Id,
                                          MovieTitle = movie.Title,
                                          MovieCommentary = movieCopy.Commentary,
-                                         StartDate = leasing.LeasingStartDate,
-                                         ExpectedEndDate = leasing.LeasingExpectedEndDate,
+                                         StartDate = leasing.StartDate,
+                                         ExpectedEndDate = leasing.ExpectedEndDate,
                                          ReturnDate = leasing.ReturnDate,
                                          TotalPrice = leasing.TotalPrice,
                                      };
