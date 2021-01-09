@@ -37,11 +37,11 @@ namespace videoprokat_winform
         {
             InitializeComponent();
 
-            newMovieButton.Click += (sender, args) => OnOpenMovie?.Invoke(); 
+            newMovieButton.Click += (sender, args) => OnOpenMovie?.Invoke(); // Добавить новый фильм
+            newMovieCopyButton.Click += (sender, args) => OnOpenMovieCopy?.Invoke(); // Добавить новую копию фильма
             this.Load += (sender, args) => OnLoad?.Invoke();
 
             mainMenu.Items[0].TextChanged += (sender, args) => OnFilterMovies?.Invoke(mainMenu.Items[0].Text.Trim()); // Поиск фильма
-            moviesDgv.DataError += (sender, args) => ShowWrongFormatError();
             moviesDgv.CellValueChanged += (sender, args) =>
             {
                 var movieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
@@ -51,6 +51,7 @@ namespace videoprokat_winform
                 var updatedMovie = new MovieOriginal(title, description, yearReleased);
                 OnUpdateMovie?.Invoke(movieId, updatedMovie);
             };
+            moviesDgv.DataError += (sender, args) => ShowWrongFormatError();
 
             //mainMenu.Items[1].Click += On; // "Клиенты"
             //mainMenu.Items[2].Click += _mainFormPresenter.OpenImportMoviesForm; // "Импорт фильмов"

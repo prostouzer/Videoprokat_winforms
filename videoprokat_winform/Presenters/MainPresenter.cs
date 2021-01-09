@@ -14,12 +14,14 @@ namespace videoprokat_winform.Presenters
     {
         private readonly IMainView _mainView;
         private readonly MoviePresenter _moviePresenter;
+        private readonly MovieCopyPresenter _movieCopyPresenter;
         private readonly VideoprokatContext _context = new VideoprokatContext();
 
-        public MainPresenter(IMainView mainView, MoviePresenter moviePresenter)
+        public MainPresenter(IMainView mainView, MoviePresenter moviePresenter, MovieCopyPresenter movieCopyPresenter)
         {
             _mainView = mainView;
             _moviePresenter = moviePresenter;
+            _movieCopyPresenter = movieCopyPresenter;
 
             _mainView.OnLoad += LoadMain;
 
@@ -44,7 +46,9 @@ namespace videoprokat_winform.Presenters
 
         public void OpenMovieCopy()
         {
-
+            _movieCopyPresenter._context = _context;
+            _movieCopyPresenter.Run();
+            _mainView.RedrawMoviesDgv(_context.MoviesOriginal.ToList()); // перерисовать Movies или Copies?
         }
 
         public void LoadMain()
