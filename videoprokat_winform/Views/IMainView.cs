@@ -8,20 +8,20 @@ using videoprokat_winform.Models;
 
 namespace videoprokat_winform.Views
 {
-    interface IMainFormView : IView
+    interface IMainView : IView
     {
-        //event Action OnOpenCustomersForm;
-        //event Action OnOpenImportMoviesForm;
-        event Action OnOpenMovieForm;
+        //event Action OnOpenCustomers;
+        //event Action OnOpenImportMovies;
+        //event Action OnOpenLeasing;
+        event Action OnOpenMovie;
+        event Action OnOpenMovieCopy;
+        //event Action OnOpenReturn;
 
         event Action<string> OnFilterMovies;
-        //event Action OnOpenMovieCopyForm;
-        //event Action OnOpenLeasingForm;
-        //event Action OnOpenReturnForm;
 
-        event Action<int, string, string, int> OnUpdateMovie;
+        event Action<int, MovieOriginal> OnUpdateMovie;
 
-        event Action OnFormLoad;
+        event Action OnLoad;
         void RedrawMoviesDgv(List<MovieOriginal> moviesList);
         void RedrawCopiesDgv(VideoprokatContext db);
         void RedrawLeasingsDgv(VideoprokatContext db);

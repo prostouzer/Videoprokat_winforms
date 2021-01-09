@@ -13,20 +13,20 @@ using videoprokat_winform.Views;
 
 namespace videoprokat_winform
 {
-    public partial class MainForm : Form, IMainFormView
+    public partial class MainForm : Form, IMainView
     {
         //event Action OnOpenCustomersForm;
         //event Action OnOpenImportMoviesForm;
-        public event Action OnOpenMovieForm;
+        public event Action OnOpenMovie;
+        public event Action OnOpenMovieCopy;
 
         public event Action<string> OnFilterMovies;
-        //event Action OnOpenMovieCopyForm;
-        //event Action OnOpenLeasingForm;
-        //event Action OnOpenReturnForm;
+        //event Action OnOpenLeasing;
+        //event Action OnOpenReturn;
 
-        public event Action OnFormLoad;
+        public new event Action OnLoad;
 
-        public event Action<int, string, string, int> OnUpdateMovie;
+        public event Action<int, MovieOriginal> OnUpdateMovie;
         public event Action<int> OnUpdateCopy;
 
         public new void Show()
@@ -37,19 +37,21 @@ namespace videoprokat_winform
         {
             InitializeComponent();
 
-            var year = 100;
-            var str = string.Format("Man is {0} year", year);
-            var str2 = $"Man is {year} year";
-            MessageBox.Show(str, "str");
-            MessageBox.Show(str2, "str2");
-
-            newMovieButton.Click += (sender, args) => OnOpenMovieForm?.Invoke(); 
-            this.Load += (sender, args) => OnFormLoad.Invoke();
+            newMovieButton.Click += (sender, args) => OnOpenMovie?.Invoke(); 
+            this.Load += (sender, args) => OnLoad?.Invoke();
 
             mainMenu.Items[0].TextChanged += (sender, args) => OnFilterMovies?.Invoke(mainMenu.Items[0].Text.Trim()); // Поиск фильма
             moviesDgv.DataError += (sender, args) => ShowWrongFormatError();
-            moviesDgv.CellValueChanged += (sender, args) => OnUpdateMovie?.Invoke
-                    (Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value), moviesDgv.CurrentRow.Cells["Title"].Value.ToString(), moviesDgv.CurrentRow.Cells["Description"].Value.ToString(), Convert.ToInt32(moviesDgv.CurrentRow.Cells["YearReleased"].Value));
+            moviesDgv.CellValueChanged += (sender, args) =>
+            {
+                var movieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
+                var title = moviesDgv.CurrentRow.Cells["Title"].Value.ToString();
+                var description = moviesDgv.CurrentRow.Cells["Description"].Value.ToString();
+                var yearReleased = Convert.ToInt32(moviesDgv.CurrentRow.Cells["YearReleased"].Value);
+                var updatedMovie = new MovieOriginal(title, description, yearReleased);
+                OnUpdateMovie?.Invoke(movieId, updatedMovie);
+            };
+
             //mainMenu.Items[1].Click += On; // "Клиенты"
             //mainMenu.Items[2].Click += _mainFormPresenter.OpenImportMoviesForm; // "Импорт фильмов"
 
@@ -241,7 +243,7 @@ namespace videoprokat_winform
 
         //private void newMovieButton_Click(object sender, EventArgs e)
         //{
-        //    _mainFormPresenter.OpenMovieForm();
+        //    _mainFormPresenter.OpenMovie();
         //}
 
         //private void MainForm_FormClosed(object sender, FormClosedEventArgs e)

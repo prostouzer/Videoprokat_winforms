@@ -10,7 +10,7 @@ using videoprokat_winform.Views;
 
 namespace videoprokat_winform
 {
-    public partial class MovieForm : Form, IMovieFormView
+    public partial class MovieForm : Form, IMovieView
     {
         public event Action<MovieOriginal> OnAddMovie;
 
@@ -18,8 +18,6 @@ namespace videoprokat_winform
         {
             InitializeComponent();
 
-            //movieButton.Click += (sender, args) => OnAddMovie?.Invoke(movieTitleTextBox.Text.Trim(),
-            //    movieDescriptionTextBox.Text.Trim(), Convert.ToInt32(yearReleasedNumericUpDown.Value));
             movieButton.Click += (sender, args) =>
             {
                 var title = movieTitleTextBox.Text.Trim();

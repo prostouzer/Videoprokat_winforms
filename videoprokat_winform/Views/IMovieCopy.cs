@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using videoprokat_winform.Models;
 
 namespace videoprokat_winform.Views
 {
-    interface IPresenter
+    interface IMovieCopy
     {
-        void Run();
+        event Action<int> OnAddMovieCopy;
     }
 }

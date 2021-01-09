@@ -19,8 +19,8 @@ namespace videoprokat_winform
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new MainForm());
-            var movieFormPresenter = new MovieFormPresenter();
-            var mainFormPresenter = new MainFormPresenter(new MainForm(), movieFormPresenter);
+            var movieFormPresenter = new MoviePresenter();
+            var mainFormPresenter = new MainPresenter(new MainForm(), movieFormPresenter);
 
             mainFormPresenter.Run();
         }

@@ -5,7 +5,7 @@ using videoprokat_winform.Models;
 
 namespace videoprokat_winform.Views
 {
-    interface IMovieFormView : IView
+    interface IMovieView : IView
     {
         //event Action<string, string, int> OnAddMovie;
         event Action<MovieOriginal> OnAddMovie;
