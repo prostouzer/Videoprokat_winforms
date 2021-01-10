@@ -24,7 +24,7 @@ namespace videoprokat_winform
         public event Action<int> OnOpenMovieCopy;
 
         public event Action<string> OnFilterMovies;
-        //event Action OnOpenLeasing;
+        public event Action<int> OnOpenLeasing;
         //event Action OnOpenReturn;
 
         public event Action<int> OnMovieSelectionChanged;
@@ -43,11 +43,13 @@ namespace videoprokat_winform
         {
             InitializeComponent();
 
-            newMovieButton.Click += (sender, args) => OnOpenMovie?.Invoke(); // Добавить новый фильм
-            newMovieCopyButton.Click += (sender, args) => OnOpenMovieCopy?.Invoke(Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value)); // Добавить новую копию фильма
             this.Load += (sender, args) => OnLoad?.Invoke();
 
+            newMovieButton.Click += (sender, args) => OnOpenMovie?.Invoke(); // Добавить новый фильм
+            newMovieCopyButton.Click += (sender, args) => OnOpenMovieCopy?.Invoke(Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value)); // Добавить новую копию фильма
+
             mainMenu.Items[0].TextChanged += (sender, args) => OnFilterMovies?.Invoke(mainMenu.Items[0].Text.Trim()); // Поиск фильма
+
             moviesDgv.CellValueChanged += (sender, args) =>
             {
                 var movieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
@@ -73,10 +75,11 @@ namespace videoprokat_winform
                 OnMovieSelectionChanged?.Invoke(Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value));
             copiesDgv.SelectionChanged += (sender, args) =>
                 OnMovieCopySelectionChanged?.Invoke(Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value));
+
             //mainMenu.Items[1].Click += On; // "Клиенты"
             //mainMenu.Items[2].Click += _mainFormPresenter.OpenImportMoviesForm; // "Импорт фильмов"
 
-            //copiesContextMenu.Items[0].Click += _mainFormPresenter.OpenLeasingForm; // "Прокат"
+            copiesContextMenu.Items[0].Click += (sender, args) => OnOpenLeasing?.Invoke(Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value)); // "Прокат"
 
             //leasingContextMenu.Items[0].Click += _mainFormPresenter.OpenReturnForm; // "Вернуть"
         }
@@ -85,7 +88,7 @@ namespace videoprokat_winform
         {
             MessageBox.Show("Неправильный формат данных");
         }
-        
+
         public void RedrawMovies(List<MovieOriginal> moviesList)
         {
             moviesDgv.DataSource = moviesList;
@@ -126,10 +129,24 @@ namespace videoprokat_winform
             copiesDgv.Columns["Available"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             copiesDgv.Columns["PricePerDay"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
-        public void RedrawLeasings(List<Leasing> leasingsList)
+        public void RedrawLeasings(List<Leasing> leasingsList, List<Customer> customers)
         {
-            leasingsDgv.DataSource = leasingsList;
-            leasingsDgv.Columns["Id"].Visible = false;
+            int currentMovieCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
+            var movieCopyLeasingInfo =
+                from leasing in leasingsList
+                where leasing.MovieCopyId == currentMovieCopyId && leasing.ReturnDate == null
+                join customer in customers on leasing.CustomerId equals customer.Id
+                select new
+                {
+                    id = leasing.Id,
+                    startDate = leasing.StartDate,
+                    expectedEndDate = leasing.ExpectedEndDate,
+                    totalPrice = leasing.TotalPrice,
+                    customerName = customer.Name
+                };
+
+            leasingsDgv.DataSource = movieCopyLeasingInfo.ToList();
+            leasingsDgv.Columns["id"].Visible = false;
 
             leasingsDgv.Columns["StartDate"].HeaderText = "Дата начала";
             leasingsDgv.Columns["ExpectedEndDate"].HeaderText = "Ожидаемый возврат";
@@ -151,117 +168,63 @@ namespace videoprokat_winform
             }
         }
 
-        //private void moviesDgv_SelectionChanged(object sender, EventArgs e) // из оригинального фильма загружаем в таблицу его копии
-        //{
-        //    if (MoviesDgv.CurrentRow != null)
-        //    {
-        //        _mainFormPresenter.RedrawCopiesDgv();
-        //        newMovieCopyButton.Enabled = true;
-        //    }
-        //    else
-        //    {
-        //        newMovieCopyButton.Enabled = false;
-        //    }
-        //}
-        //private void copiesDgv_SelectionChanged(object sender, EventArgs e) // из копии фильма загружаем в таблицу инфу по аренде
-        //{
-        //    if (CopiesDgv.SelectedRows.Count > 0)
-        //    {
-        //        _mainFormPresenter.RedrawLeasingsDgv();
+        private void copiesDgv_SelectionChanged(object sender, EventArgs e)
+        {
+            if (copiesDgv.SelectedRows.Count > 0)
+            {
+                if ((bool)copiesDgv.CurrentRow.Cells["Available"].Value == false) // нельзя изменять цену за день если копия на данный момент в пользовании
+                {
+                    copiesDgv.Columns["PricePerDay"].ReadOnly = true;
+                }
+                else
+                {
+                    copiesDgv.Columns["PricePerDay"].ReadOnly = false;
+                }
+            }
+        }
 
-        //        if ((bool)CopiesDgv.CurrentRow.Cells["Available"].Value == false) // нельзя изменять цену за день если копия на данный момент в пользовании
-        //        {
-        //            CopiesDgv.Columns["PricePerDay"].ReadOnly = true;
-        //        }
-        //        else
-        //        {
-        //            CopiesDgv.Columns["PricePerDay"].ReadOnly = false;
-        //        }
+        private void copiesDgv_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (copiesDgv.SelectedCells.Count > 0)
+                {
+                    if ((bool)copiesDgv.CurrentRow.Cells["Available"].Value == true)
+                    {
+                        copiesContextMenu.Items[0].Enabled = true; // "Прокат"
+                    }
+                    else
+                    {
+                        copiesContextMenu.Items[0].Enabled = false; // "Прокат"
+                    }
+                }
+                else
+                {
+                    copiesContextMenu.Items[0].Enabled = false; // "Прокат"
+                }
+            }
+        }
 
-        //    }
-        //}
-
-        //private void moviesDgv_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-        //{
-        //    _mainFormPresenter.db.SaveChanges();
-        //}
-
-        //private void moviesDgv_DataError(object sender, DataGridViewDataErrorEventArgs e)
-        //{
-        //    MessageBox.Show("Неправильный формат данных");
-        //}
-
-        //private void copiesDgv_DataError(object sender, DataGridViewDataErrorEventArgs e)
-        //{
-        //    MessageBox.Show("Неправильный формат данных");
-        //}
-
-        //private void leasingsDgv_DataError(object sender, DataGridViewDataErrorEventArgs e)
-        //{
-        //    MessageBox.Show("Неправильный формат данных");
-        //}
-
-        //private void copiesDgv_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-        //{
-        //    _mainFormPresenter.db.SaveChanges();
-        //}
-
-        //private void copiesDgv_MouseUp(object sender, MouseEventArgs e)
-        //{
-        //    if (e.Button == MouseButtons.Right)
-        //    {
-        //        if (CopiesDgv.SelectedCells.Count > 0)
-        //        {
-        //            if ((bool)CopiesDgv.CurrentRow.Cells["Available"].Value == true)
-        //            {
-        //                copiesContextMenu.Items[0].Enabled = true; // "Прокат"
-        //            }
-        //            else
-        //            {
-        //                copiesContextMenu.Items[0].Enabled = false; // "Прокат"
-        //            }
-        //        }
-        //        else
-        //        {
-        //            copiesContextMenu.Items[0].Enabled = false; // "Прокат"
-        //        }
-        //    }
-        //}
-
-        //private void leasingsDgv_MouseUp(object sender, MouseEventArgs e)
-        //{
-        //    if (e.Button == MouseButtons.Right)
-        //    {
-        //        if (LeasingsDgv.SelectedCells.Count > 0)
-        //        {
-        //            if ((bool)CopiesDgv.CurrentRow.Cells["Available"].Value == false)
-        //            {
-        //                leasingContextMenu.Items[0].Enabled = true; // "Вернуть"
-        //            }
-        //            else
-        //            {
-        //                leasingContextMenu.Items[0].Enabled = false; // "Вернуть"
-        //            }
-        //        }
-        //        else
-        //        {
-        //            leasingContextMenu.Items[0].Enabled = false; // "Вернуть"
-        //        }
-        //    }
-        //}
-        //private void newMovieCopyButton_Click(object sender, EventArgs e)
-        //{
-        //    _mainFormPresenter.OpenMovieCopyForm();
-        //}
-
-        //private void newMovieButton_Click(object sender, EventArgs e)
-        //{
-        //    _mainFormPresenter.OpenMovie();
-        //}
-
-        //private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
-        //{
-        //    _mainFormPresenter.db.Dispose();
-        //}
+        private void leasingsDgv_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (leasingsDgv.SelectedCells.Count > 0)
+                {
+                    if ((bool)copiesDgv.CurrentRow.Cells["Available"].Value == false)
+                    {
+                        leasingContextMenu.Items[0].Enabled = true; // "Вернуть"
+                    }
+                    else
+                    {
+                        leasingContextMenu.Items[0].Enabled = false; // "Вернуть"
+                    }
+                }
+                else
+                {
+                    leasingContextMenu.Items[0].Enabled = false; // "Вернуть"
+                }
+            }
+        }
     }
 }

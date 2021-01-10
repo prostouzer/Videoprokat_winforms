@@ -13,7 +13,7 @@ namespace videoprokat_winform.Views
         int CurrentMovieId { get; }
         //event Action OnOpenCustomers;
         //event Action OnOpenImportMovies;
-        //event Action OnOpenLeasing;
+        event Action<int> OnOpenLeasing;
         event Action OnOpenMovie;
         event Action<int> OnOpenMovieCopy;
         //event Action OnOpenReturn;
@@ -29,6 +29,6 @@ namespace videoprokat_winform.Views
         event Action OnLoad;
         void RedrawMovies(List<MovieOriginal> moviesList);
         void RedrawCopies(List<MovieCopy> movieCopiesList);
-        void RedrawLeasings(List<Leasing> leasingsList);
+        void RedrawLeasings(List<Leasing> leasingsList, List<Customer> customersList); // второй лист клиентов для того, чтобы отображать еще CustomerName на выводе (исп. join)
     }
 }

@@ -14,7 +14,9 @@ namespace videoprokat_winform.Presenters
         public void Run(MovieOriginal movie)
         {
             _movieCopyView = new MovieCopyForm();
+
             _movieCopyView.currentMovie = movie;
+
             _movieCopyView.OnAddMovieCopy += AddMovieCopy;
 
             _movieCopyView.Show();

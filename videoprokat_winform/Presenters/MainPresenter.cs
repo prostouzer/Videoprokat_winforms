@@ -15,18 +15,24 @@ namespace videoprokat_winform.Presenters
         private readonly IMainView _mainView;
         private readonly MoviePresenter _moviePresenter;
         private readonly MovieCopyPresenter _movieCopyPresenter;
+        private readonly LeasingPresenter _leasingPresenter;
         private readonly VideoprokatContext _context = new VideoprokatContext();
 
-        public MainPresenter(IMainView mainView, MoviePresenter moviePresenter, MovieCopyPresenter movieCopyPresenter)
+        public MainPresenter(IMainView mainView, MoviePresenter moviePresenter, MovieCopyPresenter movieCopyPresenter, LeasingPresenter leasingPresenter)
         {
             _mainView = mainView;
             _moviePresenter = moviePresenter;
             _movieCopyPresenter = movieCopyPresenter;
+            _leasingPresenter = leasingPresenter;
 
             _mainView.OnLoad += LoadMain;
 
+            _mainView.OnUpdateMovie += UpdateMovie;
+
+            _mainView.OnUpdateMovieCopy += UpdateMovieCopy; // из конструктора выдает ошибку null reference
             _mainView.OnOpenMovie += OpenMovie;
             _mainView.OnOpenMovieCopy += OpenMovieCopy;
+            _mainView.OnOpenLeasing += OpenLeasing;
 
             _mainView.OnFilterMovies += FilterMovies;
 
@@ -56,10 +62,25 @@ namespace videoprokat_winform.Presenters
             _mainView.RedrawCopies(copiesList);
         }
 
+        public void OpenLeasing(int movieCopyId)
+        {
+            var movieCopy = _context.MoviesCopies.First(c => c.Id == movieCopyId);
+            var movie = _context.MoviesOriginal.First(m => m.Id == movieCopy.MovieId);
+            _leasingPresenter._context = _context;
+            _leasingPresenter.Run(movie, movieCopy);
+
+            List<MovieCopy> movieCopies = _context.MoviesCopies.Where(c => c.MovieId == movie.Id).ToList();
+            _mainView.RedrawCopies(movieCopies);
+
+            List<Leasing> leasings = _context.LeasedCopies.Where(l => l.MovieCopyId == movieCopy.Id).ToList();
+            List<Customer> customers = _context.Customers.ToList();
+            _mainView.RedrawLeasings(leasings, customers);
+        }
+
         public void LoadMain()
         {
             List<MovieOriginal> moviesList = _context.MoviesOriginal.ToList();
-            if (moviesList.Count>0) _mainView.RedrawMovies(_context.MoviesOriginal.ToList());
+            if (moviesList.Count > 0) _mainView.RedrawMovies(_context.MoviesOriginal.ToList());
 
             _mainView.OnUpdateMovie += UpdateMovie;
             _mainView.OnUpdateMovieCopy += UpdateMovieCopy; // из конструктора выдает ошибку null reference
@@ -101,10 +122,13 @@ namespace videoprokat_winform.Presenters
             List<MovieCopy> movieCopies = _context.MoviesCopies.Where(c => c.MovieId == movieId).ToList();
             if (movieCopies.Count>0) _mainView.RedrawCopies(movieCopies);
         }
+
         public void MovieCopySelectionChanged(int movieCopyId) // Поменяли копию, отрисовываем ее аренды (прокаты)
         {
             List<Leasing> leasings = _context.LeasedCopies.Where(l => l.MovieCopyId == movieCopyId).ToList();
-            if (leasings.Count>0) _mainView.RedrawLeasings(leasings);
+            List<Customer> customers = _context.Customers.ToList();
+            //if (leasings.Count>0) 
+                _mainView.RedrawLeasings(leasings, customers);
         }
 
         //public void OpenImportMoviesForm(object sender, EventArgs e)
@@ -114,15 +138,6 @@ namespace videoprokat_winform.Presenters
         //    RedrawMoviesDgv();
         //}
 
-        //public void OpenLeasingForm(object sender, EventArgs e)
-        //{
-        //    int currentCopyId = Convert.ToInt32(_mainView.CopiesDgv.CurrentRow.Cells["Id"].Value);
-        //    MovieCopy movieCopy = _context.MoviesCopies.First(c => c.Id == currentCopyId);
-        //    LeasingForm form = new LeasingForm(_context, movieCopy);
-        //    form.ShowDialog();
-        //    RedrawCopiesDgv();
-        //    RedrawLeasingsDgv();
-        //}
         //public void OpenReturnForm(object sender, EventArgs e)
         //{
         //    int currentLeasingId = Convert.ToInt32(_mainView.LeasingsDgv.CurrentRow.Cells["Id"].Value);
@@ -132,13 +147,5 @@ namespace videoprokat_winform.Presenters
         //    RedrawCopiesDgv();
         //    RedrawLeasingsDgv();
         //}
-
-        //public void OpenMovieCopyForm()
-        //{
-        //    int currentMovieId = Convert.ToInt32(_mainView.MoviesDgv.CurrentRow.Cells["Id"].Value);
-        //    MovieOriginal movie = _context.MoviesOriginal.First(m => m.Id == currentMovieId);
-        //    MovieCopyForm form = new MovieCopyForm(_context, movie);
-        //    form.ShowDialog();
-        //    RedrawCopiesDgv();
     }
 }

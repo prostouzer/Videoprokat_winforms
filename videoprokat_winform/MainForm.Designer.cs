@@ -65,6 +65,8 @@
             this.copiesDgv.Size = new System.Drawing.Size(559, 291);
             this.copiesDgv.TabIndex = 1;
             this.copiesDgv.Text = "dataGridView2";
+            this.copiesDgv.SelectionChanged += new System.EventHandler(this.copiesDgv_SelectionChanged);
+            this.copiesDgv.MouseUp += new System.Windows.Forms.MouseEventHandler(this.copiesDgv_MouseUp);
             // 
             // copiesContextMenu
             // 
@@ -95,6 +97,7 @@
             this.leasingsDgv.Size = new System.Drawing.Size(559, 116);
             this.leasingsDgv.TabIndex = 2;
             this.leasingsDgv.Text = "dataGridView3";
+            this.leasingsDgv.MouseUp += new System.Windows.Forms.MouseEventHandler(this.leasingsDgv_MouseUp);
             // 
             // leasingContextMenu
             // 

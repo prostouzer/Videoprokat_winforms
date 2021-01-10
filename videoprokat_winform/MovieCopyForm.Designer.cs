@@ -33,7 +33,7 @@ namespace videoprokat_winform
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.commentTextBox = new System.Windows.Forms.TextBox();
-            this.leaseButton = new System.Windows.Forms.Button();
+            this.addMovieButton = new System.Windows.Forms.Button();
             this.priceNumericUpDown = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.priceNumericUpDown)).BeginInit();
             this.SuspendLayout();
@@ -78,17 +78,17 @@ namespace videoprokat_winform
             this.commentTextBox.Size = new System.Drawing.Size(370, 23);
             this.commentTextBox.TabIndex = 4;
             // 
-            // leaseButton
+            // addMovieButton
             // 
-            this.leaseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.addMovieButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.leaseButton.Location = new System.Drawing.Point(17, 221);
-            this.leaseButton.Name = "leaseButton";
-            this.leaseButton.Size = new System.Drawing.Size(505, 68);
-            this.leaseButton.TabIndex = 7;
-            this.leaseButton.Text = "Добавить";
-            this.leaseButton.UseVisualStyleBackColor = true;
+            this.addMovieButton.Location = new System.Drawing.Point(17, 221);
+            this.addMovieButton.Name = "addMovieButton";
+            this.addMovieButton.Size = new System.Drawing.Size(505, 68);
+            this.addMovieButton.TabIndex = 7;
+            this.addMovieButton.Text = "Добавить";
+            this.addMovieButton.UseVisualStyleBackColor = true;
             // 
             // priceNumericUpDown
             // 
@@ -115,7 +115,7 @@ namespace videoprokat_winform
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(534, 301);
             this.Controls.Add(this.priceNumericUpDown);
-            this.Controls.Add(this.leaseButton);
+            this.Controls.Add(this.addMovieButton);
             this.Controls.Add(this.commentTextBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -137,7 +137,7 @@ namespace videoprokat_winform
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox commentTextBox;
-        private System.Windows.Forms.Button leaseButton;
+        private System.Windows.Forms.Button addMovieButton;
         private System.Windows.Forms.NumericUpDown priceNumericUpDown;
     }
 }

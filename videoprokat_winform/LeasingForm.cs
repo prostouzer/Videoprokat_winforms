@@ -7,58 +7,63 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using videoprokat_winform.Models;
+using videoprokat_winform.Views;
 
 namespace videoprokat_winform
 {
-    public partial class LeasingForm : Form
+    public partial class LeasingForm : Form, ILeasingView
     {
-        VideoprokatContext db;
-        MovieCopy currentCopy;
-        MovieOriginal currentMovie;
-        public LeasingForm(VideoprokatContext context, MovieCopy movieCopy)
+        private MovieOriginal _currentMovie;
+        private MovieCopy _currentMovieCopy;
+
+        public MovieOriginal currentMovie
+        {
+            get => _currentMovie;
+            set => _currentMovie = value;
+        }
+
+        public MovieCopy currentMovieCopy
+        {
+            get => _currentMovieCopy;
+            set => _currentMovieCopy = value;
+        }
+
+        public event Action<Leasing> OnLeaseMovieCopy;
+
+        public LeasingForm()
         {
             InitializeComponent();
-            currentCopy = movieCopy;
-            db = context;
+
+            leaseButton.Click += (sender, args) =>
+            {
+                var startDate = startDatePicker.Value.Date;
+                var endDate = endDatePicker.Value.Date;
+                var customerId = Convert.ToInt32(customersComboBox.SelectedValue);
+                var movieCopyId = currentMovieCopy.Id;
+                var pricePerDay = currentMovieCopy.PricePerDay;
+                Leasing leasing = new Leasing(startDate, endDate, customerId, movieCopyId, pricePerDay);
+                OnLeaseMovieCopy?.Invoke(leasing);
+            };
         }
 
-        private void LeasingForm_Load(object sender, EventArgs e)
+        public new void Show()
         {
-            startDatePicker.Value = DateTime.Now;
-            endDatePicker.Value = DateTime.Now.AddDays(2);
-
-            currentMovie = db.MoviesOriginal.First(m => m.Id == currentCopy.MovieId);
-            movieNameLabel.Text = currentMovie.Title;
-            movieCommentLabel.Text = currentCopy.Commentary;
-
-            var customers = db.Customers.ToList();
-            customersComboBox.DataSource = customers;
-            customersComboBox.DisplayMember = "Name";
-            customersComboBox.ValueMember = "Id";
+            ShowDialog();
         }
 
-        private void leaseButton_Click(object sender, EventArgs e)
+        public bool ConfirmNewLeasing()
         {
             if (customersComboBox.SelectedIndex > -1)
             {
                 if (startDatePicker.Value.Date < endDatePicker.Value.Date)
                 {
-                    int customerId = Convert.ToInt32(customersComboBox.SelectedValue);
-                    int movieCopyId = currentCopy.Id;
-                    Customer owner = db.Customers.First(r => r.Id == customerId);
-                    MovieCopy movieCopy = db.MoviesCopies.First(r => r.Id == movieCopyId);
-                    movieCopy.Available = false;
-
-                    Leasing leasing = new Leasing(startDatePicker.Value.Date, endDatePicker.Value.Date, customerId,
-                        movieCopyId, currentCopy.PricePerDay);
-
-                    DialogResult result = MessageBox.Show($"Прокат {currentMovie.Title}, {currentCopy.Commentary} " +
+                    Leasing leasing = new Leasing(startDatePicker.Value.Date, endDatePicker.Value.Date, Convert.ToInt32(customersComboBox.SelectedValue),
+                                        currentMovieCopy.Id, currentMovieCopy.PricePerDay);
+                    DialogResult result = MessageBox.Show($"Прокат {currentMovie.Title}, {currentMovieCopy.Commentary} " +
                         $"с {startDatePicker.Value.Date} по {endDatePicker.Value.Date} за {leasing.TotalPrice.ToString()}?", "Прокат", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
-                        db.LeasedCopies.Add(leasing);
-                        db.SaveChanges();
-                        this.Close();
+                        return true;
                     }
                 }
                 else
@@ -70,6 +75,24 @@ namespace videoprokat_winform
             {
                 MessageBox.Show("Укажите клиента");
             }
+
+            return false;
+        }
+
+        public void PopulateWithCustomers(List<Customer> customers)
+        {
+            customersComboBox.DataSource = customers;
+            customersComboBox.DisplayMember = "Name";
+            customersComboBox.ValueMember = "Id";
+        }
+
+        private void LeasingForm_Load(object sender, EventArgs e)
+        {
+            startDatePicker.Value = DateTime.Now;
+            endDatePicker.Value = DateTime.Now.AddDays(2);
+
+            movieNameLabel.Text = currentMovie.Title;
+            movieCommentLabel.Text = currentMovieCopy.Commentary;
         }
 
         private void customersComboBox_Format(object sender, ListControlConvertEventArgs e)
@@ -79,21 +102,22 @@ namespace videoprokat_winform
             e.Value = id + ", " + name;
         }
 
+        private void startDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+            setPriceLabelText();
+        }
+
         private void endDatePicker_ValueChanged(object sender, EventArgs e)
         {
             setPriceLabelText();
         }
 
-        private void startDatePicker_ValueChanged(object sender, EventArgs e)
-        {
-            setPriceLabelText();
-        }
         private void setPriceLabelText()
         {
             if (endDatePicker.Value.Date > startDatePicker.Value.Date)
             {
                 decimal price = (int)((endDatePicker.Value.Date - startDatePicker.Value.Date).TotalDays) *
-                                currentCopy.PricePerDay;
+                                currentMovieCopy.PricePerDay;
                 priceLabel.Text = "Цена: " + price.ToString();
             }
             else

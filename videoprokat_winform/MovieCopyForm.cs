@@ -21,7 +21,7 @@ namespace videoprokat_winform
         {
             InitializeComponent();
 
-            leaseButton.Click += (sender, args) =>
+            addMovieButton.Click += (sender, args) =>
             {
                 var movieId = _currentMovie.Id;
                 var commentary = commentTextBox.Text.Trim();
@@ -36,6 +36,11 @@ namespace videoprokat_winform
             this.ShowDialog();
         }
 
+        private void MovieCopyForm_Load(object sender, EventArgs e)
+        {
+            movieNameLabel.Text = currentMovie.Title;
+        }
+
         public bool ConfirmNewMovieCopy()
         {
             if (commentTextBox.Text.Trim() != "" && priceNumericUpDown.Value > 0)
@@ -43,7 +48,8 @@ namespace videoprokat_winform
                 DialogResult dialogResult;
                 dialogResult = MessageBox.Show("Создать новую копию фильма " + currentMovie.Title + ", " + commentTextBox.Text.Trim() +
                     ", с ценой " + priceNumericUpDown.Value.ToString() + " руб. за день?", "Новая копия", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes) return true;
+                if (dialogResult == DialogResult.Yes) 
+                    return true;
             }
             else
             {
@@ -51,31 +57,5 @@ namespace videoprokat_winform
             }
             return false;
         }
-
-        private void MovieCopyForm_Load(object sender, EventArgs e)
-        {
-            movieNameLabel.Text = currentMovie.Title;
-        }
-
-        //private void leaseButton_Click(object sender, EventArgs e)
-        //{
-        //    if (commentTextBox.Text.Trim() != "" && priceNumericUpDown.Value > 0)
-        //    {
-        //        DialogResult dialogResult;
-        //        dialogResult = MessageBox.Show("Создать новую копию фильма " + currentMovie.Title + ", " + commentTextBox.Text.Trim() +
-        //            ", с ценой " + priceNumericUpDown.Value.ToString() + " руб. за день?", "Новая копия", MessageBoxButtons.YesNo);
-        //        if (dialogResult == DialogResult.Yes)
-        //        {
-        //            MovieCopy copy = new MovieCopy(currentMovie.Id, commentTextBox.Text, priceNumericUpDown.Value);
-        //            db.MoviesCopies.Add(copy);
-        //            db.SaveChanges();
-        //            this.Close();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Заполните поле комментария");
-        //    }
-        //}
     }
 }
