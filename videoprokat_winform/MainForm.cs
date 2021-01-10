@@ -25,7 +25,7 @@ namespace videoprokat_winform
 
         public event Action<string> OnFilterMovies;
         public event Action<int> OnOpenLeasing;
-        //event Action OnOpenReturn;
+        public event Action<int> OnOpenReturn;
 
         public event Action<int> OnMovieSelectionChanged;
         public event Action<int> OnMovieCopySelectionChanged;
@@ -82,7 +82,7 @@ namespace videoprokat_winform
 
             copiesContextMenu.Items[0].Click += (sender, args) => OnOpenLeasing?.Invoke(Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value)); // "Прокат"
 
-            //leasingContextMenu.Items[0].Click += _mainFormPresenter.OpenReturnForm; // "Вернуть"
+            leasingContextMenu.Items[0].Click += (sender, args) => OnOpenReturn?.Invoke(Convert.ToInt32(leasingsDgv.CurrentRow.Cells["Id"].Value)); // "Вернуть"
         }
 
         public void ShowDataError()

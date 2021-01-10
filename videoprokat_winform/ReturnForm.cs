@@ -7,109 +7,127 @@ using System.Text;
 using System.Windows.Forms;
 using videoprokat_winform.Models;
 using System.Linq;
+using videoprokat_winform.Views;
 
 namespace videoprokat_winform
 {
-    public partial class ReturnForm : Form
+    public partial class ReturnForm : Form, IReturnView
     {
-        VideoprokatContext db;
-        Leasing currentLeasing;
-        MovieCopy currentCopy;
-        MovieOriginal currentMovie;
-        Customer currentOwner;
-        public ReturnForm(VideoprokatContext context, Leasing leasing)
+        private MovieOriginal _currentMovie;
+        private MovieCopy _currentCopy;
+        private Customer _currentCustomer;
+        private Leasing _currentLeasing;
+        private decimal _fineMultiplier = 2;
+        public MovieOriginal CurrentMovie { get => _currentMovie; set => _currentMovie = value; }
+        public MovieCopy CurrentCopy { get => _currentCopy; set => _currentCopy = value; }
+        public Customer CurrentCustomer { get => _currentCustomer; set => _currentCustomer = value; }
+        public Leasing CurrentLeasing { get => _currentLeasing; set => _currentLeasing = value; }
+        public decimal FineMultiplier { get => _fineMultiplier; set => _fineMultiplier = value; }
+
+        private decimal TotalPriceChange { get => GetTotalPriceChangeAndDisplay(); }
+
+        public event Action<DateTime> OnReturnEarly;
+        public event Action OnReturnOnTime;
+        public event Action<DateTime, decimal> OnReturnDelayed;
+
+        public ReturnForm()
         {
             InitializeComponent();
 
-            db = context;
-            currentLeasing = db.LeasedCopies.First(l => l.Id == leasing.Id);
-            currentCopy = db.MoviesCopies.First(c => c.Id == leasing.MovieCopyId);
-            currentMovie = db.MoviesOriginal.First(m => m.Id == currentCopy.MovieId);
-            currentOwner = db.Customers.First(o => o.Id == leasing.CustomerId);
+            returnButton.Click += (sender, args) =>
+            {
+                if (returnDatePicker.Value.Date < CurrentLeasing.ExpectedEndDate.Date) OnReturnEarly?.Invoke(returnDatePicker.Value.Date);
+                if (returnDatePicker.Value.Date == CurrentLeasing.ExpectedEndDate.Date) OnReturnOnTime?.Invoke();
+                if (returnDatePicker.Value.Date > CurrentLeasing.ExpectedEndDate.Date) OnReturnDelayed?.Invoke(returnDatePicker.Value.Date, FineMultiplier);
+            };
+        }
+        public new void Show()
+        {
+            ShowDialog();
         }
 
-        private void ReturnForm_Load(object sender, EventArgs e)
+        public bool ConfirmReturnEarly()
         {
-            ownerNameLabel.Text = currentOwner.Name + ", рейтинг " + currentOwner.Rating.ToString();
-            movieNameLabel.Text = currentMovie.Title;
-            fineFormulaLabel.Text = $"Штраф = {fineMultiplier.ToString()} * цена/день * количество просроченных дней";
-
-            movieCommentLabel.Text = currentCopy.Commentary;
-
-            startDatePicker.Value = currentLeasing.StartDate;
-            returnDatePicker.Value = DateTime.Now;
-            returnDatePicker.MinDate = currentLeasing.StartDate;
-            expectedEndLabel.Text = "Ожидается: " + currentLeasing.ExpectedEndDate.ToShortDateString();
+            var dialogResult = MessageBox.Show($"Возврат {CurrentMovie.Title}, {CurrentCopy.Commentary}, ВЕРНУТЬ {(-1 * TotalPriceChange).ToString()}",
+                         "Ранний возврат", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                return true;
+            }
+            return false;
         }
 
-        decimal totalPriceChange;
-        double daysDiff;
-        decimal fineMultiplier = 2;
-        private void returnButton_Click(object sender, EventArgs e)
+        public bool ConfirmReturnOnTime()
         {
-            DialogResult dialogResult;
-            if (returnDatePicker.Value.Date == currentLeasing.ExpectedEndDate.Date) // вовремя
+            var dialogResult = MessageBox.Show($"Возврат {CurrentMovie.Title}, {CurrentCopy.Commentary} в срок",
+                "Возврат в срок", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
             {
-                dialogResult = MessageBox.Show($"Возврат {currentMovie.Title}, {currentCopy.Commentary} в срок",
-                    "Возврат в срок", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    currentLeasing.ReturnOnTime();
-                    db.SaveChanges();
-                    this.Close();
-                }
+                return true;
             }
-            else if (returnDatePicker.Value > currentLeasing.ExpectedEndDate.Date) // позже времени
-            {
-                dialogResult = MessageBox.Show($"Возврат {currentMovie.Title}, {currentCopy.Commentary}, ШТРАФ {totalPriceChange.ToString()}",
-                     "Поздний возврат", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    currentLeasing.ReturnDelayed(returnDatePicker.Value, fineMultiplier);
-                    db.SaveChanges();
-                    this.Close();
-                }
-            }
-            else // раньше времени
-            {
-                dialogResult = MessageBox.Show($"Возврат {currentMovie.Title}, {currentCopy.Commentary}, ВЕРНУТЬ {(-1 * totalPriceChange).ToString()}",
-                     "Ранний возврат", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    currentLeasing.ReturnEarly(returnDatePicker.Value);
-                    db.SaveChanges();
-                    this.Close();
-                }
-            }
+            return false;
         }
 
-        private void returnDate_ValueChanged(object sender, EventArgs e)
+        public bool ConfirmReturnDelayed()
         {
-            if (returnDatePicker.Value.Date == currentLeasing.ExpectedEndDate.Date) // on time
+            var dialogResult = MessageBox.Show($"Возврат {CurrentMovie.Title}, {CurrentCopy.Commentary}, ШТРАФ {TotalPriceChange.ToString()}",
+                             "Поздний возврат", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private decimal GetTotalPriceChangeAndDisplay()
+        {
+            if (returnDatePicker.Value.Date == CurrentLeasing.ExpectedEndDate.Date) // вернули вовремя
             {
                 totalPriceChangeLabel.Visible = false;
                 returnDateLabel.ForeColor = SystemColors.ControlText;
+                return -1;
             }
-            else if (returnDatePicker.Value.Date > currentLeasing.ExpectedEndDate.Date) // delayed
+            else if (returnDatePicker.Value.Date > CurrentLeasing.ExpectedEndDate.Date) // вернули позже
             {
                 returnDateLabel.ForeColor = Color.Red;
                 totalPriceChangeLabel.ForeColor = Color.Red;
                 totalPriceChangeLabel.Visible = true;
 
-                daysDiff = (returnDatePicker.Value.Date - currentLeasing.ExpectedEndDate.Date).TotalDays;
-                totalPriceChange = (currentCopy.PricePerDay * (decimal)daysDiff) * fineMultiplier;// getting MORE money from leasing
+                var daysDiff = (returnDatePicker.Value.Date - CurrentLeasing.ExpectedEndDate.Date).TotalDays;
+                var totalPriceChange = (CurrentCopy.PricePerDay * (decimal)daysDiff) * FineMultiplier;// просрочили - платите больше за каждый день просрочки
                 totalPriceChangeLabel.Text = "Штраф: " + totalPriceChange.ToString();
+                return totalPriceChange;
             }
-            else // early
+            else // вернули раньше
             {
                 returnDateLabel.ForeColor = Color.Green;
                 totalPriceChangeLabel.ForeColor = Color.Green;
                 totalPriceChangeLabel.Visible = true;
 
-                daysDiff = (currentLeasing.ExpectedEndDate.Date - returnDatePicker.Value.Date).TotalDays;
-                totalPriceChange = currentCopy.PricePerDay * (decimal)-daysDiff; // getting LESS money from leasing
-                totalPriceChangeLabel.Text = "Возврат: " + (-1 * totalPriceChange).ToString(); // -1 to prevent ~"Возврат -100"
+                var daysDiff = (CurrentLeasing.ExpectedEndDate.Date - returnDatePicker.Value.Date).TotalDays;
+                var totalPriceChange = CurrentCopy.PricePerDay * (decimal)-daysDiff; // вернули раньше - возвращай меньше
+                totalPriceChangeLabel.Text = "Возврат: " + (-1 * totalPriceChange).ToString(); // -1 чтобы не было ~"Возврат -100"
+                return totalPriceChange;
             }
+        }
+
+        private void ReturnForm_Load(object sender, EventArgs e)
+        {
+            ownerNameLabel.Text = CurrentCustomer.Name + ", рейтинг " + CurrentCustomer.Rating.ToString();
+            movieNameLabel.Text = CurrentMovie.Title;
+            fineFormulaLabel.Text = $"Штраф = {FineMultiplier.ToString()} * цена/день * количество просроченных дней";
+
+            movieCommentLabel.Text = CurrentCopy.Commentary;
+
+            startDatePicker.Value = CurrentLeasing.StartDate;
+            returnDatePicker.Value = DateTime.Now;
+            returnDatePicker.MinDate = CurrentLeasing.StartDate;
+            expectedEndLabel.Text = "Ожидается: " + CurrentLeasing.ExpectedEndDate.ToShortDateString();
+        }
+
+        private void returnDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+            GetTotalPriceChangeAndDisplay();
         }
     }
 }

@@ -13,7 +13,9 @@ namespace videoprokat_winform
     public partial class MovieCopyForm : Form, IMovieCopyView
     {
         private MovieOriginal _currentMovie;
-        public MovieOriginal currentMovie { get => _currentMovie;
+        public MovieOriginal currentMovie
+        {
+            get => _currentMovie;
             set => _currentMovie = value;
         }
         public event Action<MovieCopy> OnAddMovieCopy;

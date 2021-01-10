@@ -20,8 +20,9 @@ namespace videoprokat_winform.Presenters
         private readonly LeasingPresenter _leasingPresenter;
         private readonly CustomersPresenter _customersPresenter;
         private readonly ImportMoviesPresenter _importMoviesPresenter;
+        private readonly ReturnPresenter _returnPresenter;
         public MainPresenter(IMainView mainView, MoviePresenter moviePresenter, MovieCopyPresenter movieCopyPresenter, LeasingPresenter leasingPresenter, CustomersPresenter customersPresenter,
-            ImportMoviesPresenter importMoviesPresenter)
+            ImportMoviesPresenter importMoviesPresenter, ReturnPresenter returnPresenter)
         {
             _mainView = mainView;
             _moviePresenter = moviePresenter;
@@ -29,6 +30,7 @@ namespace videoprokat_winform.Presenters
             _leasingPresenter = leasingPresenter;
             _customersPresenter = customersPresenter;
             _importMoviesPresenter = importMoviesPresenter;
+            _returnPresenter = returnPresenter;
 
             _mainView.OnLoad += LoadMain;
 
@@ -37,6 +39,7 @@ namespace videoprokat_winform.Presenters
             _mainView.OnOpenMovieCopy += OpenMovieCopy;
             _mainView.OnOpenLeasing += OpenLeasing;
             _mainView.OnOpenImportMovies += OpenImportMovies;
+            _mainView.OnOpenReturn += OpenReturn;
 
             _mainView.OnUpdateMovie += UpdateMovie;
             _mainView.OnUpdateMovieCopy += UpdateMovieCopy;
@@ -98,6 +101,16 @@ namespace videoprokat_winform.Presenters
             _mainView.RedrawMovies(_context.MoviesOriginal.ToList());
         }
 
+        public void OpenReturn(int leasingId)
+        {
+            _returnPresenter._context = _context;
+            _returnPresenter.Run(leasingId);
+
+            List<MovieCopy> copiesList = _context.MoviesCopies.Where(c => c.MovieId == _mainView.CurrentMovieId).ToList();
+            _mainView.RedrawCopies(copiesList);
+
+        }
+
         public void LoadMain()
         {
             List<MovieOriginal> moviesList = _context.MoviesOriginal.ToList();
@@ -153,13 +166,6 @@ namespace videoprokat_winform.Presenters
             List<Customer> customers = _context.Customers.ToList();
             _mainView.RedrawLeasings(leasings, customers);
         }
-
-        //public void OpenImportMoviesForm(object sender, EventArgs e)
-        //{
-        //    ImportMoviesForm form = new ImportMoviesForm(_context);
-        //    form.ShowDialog();
-        //    RedrawMoviesDgv();
-        //}
 
         //public void OpenReturnForm(object sender, EventArgs e)
         //{

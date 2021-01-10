@@ -59,7 +59,7 @@ namespace videoprokat_winform
             this.returnDatePicker.Name = "returnDatePicker";
             this.returnDatePicker.Size = new System.Drawing.Size(304, 23);
             this.returnDatePicker.TabIndex = 1;
-            this.returnDatePicker.ValueChanged += new System.EventHandler(this.returnDate_ValueChanged);
+            this.returnDatePicker.ValueChanged += new System.EventHandler(this.returnDatePicker_ValueChanged);
             // 
             // startDateLabel
             // 
@@ -115,7 +115,6 @@ namespace videoprokat_winform
             this.returnButton.TabIndex = 6;
             this.returnButton.Text = "Вернуть";
             this.returnButton.UseVisualStyleBackColor = true;
-            this.returnButton.Click += new System.EventHandler(this.returnButton_Click);
             // 
             // ownerNameLabel
             // 

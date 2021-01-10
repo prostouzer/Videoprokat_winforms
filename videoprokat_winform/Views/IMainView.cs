@@ -17,7 +17,7 @@ namespace videoprokat_winform.Views
         event Action<int> OnOpenLeasing;
         event Action OnOpenMovie;
         event Action<int> OnOpenMovieCopy;
-        //event Action OnOpenReturn;
+        event Action<int> OnOpenReturn;
 
         event Action<int> OnMovieSelectionChanged;
         event Action<int> OnMovieCopySelectionChanged;
