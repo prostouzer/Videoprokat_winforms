@@ -18,7 +18,7 @@ namespace videoprokat_winform
     {
         public int CurrentMovieId => Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
 
-        //event Action OnOpenCustomersForm;
+        public event Action OnOpenCustomers;
         //event Action OnOpenImportMoviesForm;
         public event Action OnOpenMovie;
         public event Action<int> OnOpenMovieCopy;
@@ -68,6 +68,7 @@ namespace videoprokat_winform
                     commentary, pricePerDay);
                 OnUpdateMovieCopy?.Invoke(movieCopyId, updatedMovieCopy);
             };
+
             moviesDgv.DataError += (sender, args) => ShowDataError();
             copiesDgv.DataError += (sender, args) => ShowDataError();
 
@@ -76,7 +77,7 @@ namespace videoprokat_winform
             copiesDgv.SelectionChanged += (sender, args) =>
                 OnMovieCopySelectionChanged?.Invoke(Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value));
 
-            //mainMenu.Items[1].Click += On; // "Клиенты"
+            mainMenu.Items[1].Click += (sender, args) => OnOpenCustomers?.Invoke(); // "Клиенты"
             //mainMenu.Items[2].Click += _mainFormPresenter.OpenImportMoviesForm; // "Импорт фильмов"
 
             copiesContextMenu.Items[0].Click += (sender, args) => OnOpenLeasing?.Invoke(Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value)); // "Прокат"
@@ -92,10 +93,9 @@ namespace videoprokat_winform
         public void RedrawMovies(List<MovieOriginal> moviesList)
         {
             moviesDgv.DataSource = moviesList;
+
             moviesDgv.Columns["Id"].ReadOnly = true;
             moviesDgv.Columns["Copies"].Visible = false;
-
-            //moviesDgv.Sort(moviesDgv.Columns["Title"], ListSortDirection.Ascending); // несортируемый List
 
             moviesDgv.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
@@ -128,7 +128,13 @@ namespace videoprokat_winform
             copiesDgv.Columns["Commentary"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             copiesDgv.Columns["Available"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             copiesDgv.Columns["PricePerDay"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+            if (movieCopiesList.Count == 0) // нет копий вообще - очищаем список Leasing'ов. Иначе сохраняются прокаты последнего выбранного фильма. Сильно костыльно?
+            {
+                leasingsDgv.DataSource = null;
+            } 
         }
+
         public void RedrawLeasings(List<Leasing> leasingsList, List<Customer> customers)
         {
             int currentMovieCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
@@ -146,6 +152,7 @@ namespace videoprokat_winform
                 };
 
             leasingsDgv.DataSource = movieCopyLeasingInfo.ToList();
+
             leasingsDgv.Columns["id"].Visible = false;
 
             leasingsDgv.Columns["StartDate"].HeaderText = "Дата начала";

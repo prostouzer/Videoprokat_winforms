@@ -12,27 +12,30 @@ namespace videoprokat_winform.Presenters
 {
     class MainPresenter : IPresenter
     {
+        private readonly VideoprokatContext _context = new VideoprokatContext();
+
         private readonly IMainView _mainView;
         private readonly MoviePresenter _moviePresenter;
         private readonly MovieCopyPresenter _movieCopyPresenter;
         private readonly LeasingPresenter _leasingPresenter;
-        private readonly VideoprokatContext _context = new VideoprokatContext();
-
-        public MainPresenter(IMainView mainView, MoviePresenter moviePresenter, MovieCopyPresenter movieCopyPresenter, LeasingPresenter leasingPresenter)
+        private readonly CustomersPresenter _customersPresenter;
+        public MainPresenter(IMainView mainView, MoviePresenter moviePresenter, MovieCopyPresenter movieCopyPresenter, LeasingPresenter leasingPresenter, CustomersPresenter customersPresenter)
         {
             _mainView = mainView;
             _moviePresenter = moviePresenter;
             _movieCopyPresenter = movieCopyPresenter;
             _leasingPresenter = leasingPresenter;
+            _customersPresenter = customersPresenter;
 
             _mainView.OnLoad += LoadMain;
 
-            _mainView.OnUpdateMovie += UpdateMovie;
-
-            _mainView.OnUpdateMovieCopy += UpdateMovieCopy; // из конструктора выдает ошибку null reference
+            _mainView.OnOpenCustomers += OpenCustomers;
             _mainView.OnOpenMovie += OpenMovie;
             _mainView.OnOpenMovieCopy += OpenMovieCopy;
             _mainView.OnOpenLeasing += OpenLeasing;
+
+            _mainView.OnUpdateMovie += UpdateMovie;
+            _mainView.OnUpdateMovieCopy += UpdateMovieCopy;
 
             _mainView.OnFilterMovies += FilterMovies;
 
@@ -43,6 +46,12 @@ namespace videoprokat_winform.Presenters
         public void Run()
         {
             _mainView.Show();
+        }
+
+        public void OpenCustomers()
+        {
+            _customersPresenter._context = _context;
+            _customersPresenter.Run();
         }
 
         public void OpenMovie()
@@ -103,7 +112,9 @@ namespace videoprokat_winform.Presenters
         {
             MovieOriginal movie = _context.MoviesOriginal.First(m => m.Id == movieId);
             movie = updatedMovie;
+
             _context.SaveChanges();
+
             _mainView.RedrawMovies(_context.MoviesOriginal.ToList());
         }
 
@@ -111,6 +122,7 @@ namespace videoprokat_winform.Presenters
         {
             MovieCopy copy = _context.MoviesCopies.First(c => c.Id == movieCopyId);
             copy = updatedMovieCopy;
+
             _context.SaveChanges();
 
             List<MovieCopy> copiesList = _context.MoviesCopies.Where(c => c.MovieId == copy.MovieId).ToList();
@@ -120,15 +132,14 @@ namespace videoprokat_winform.Presenters
         public void MovieSelectionChanged(int movieId) // Поменяли фильм, отрисовываем его копии
         {
             List<MovieCopy> movieCopies = _context.MoviesCopies.Where(c => c.MovieId == movieId).ToList();
-            if (movieCopies.Count>0) _mainView.RedrawCopies(movieCopies);
+            _mainView.RedrawCopies(movieCopies); 
         }
 
         public void MovieCopySelectionChanged(int movieCopyId) // Поменяли копию, отрисовываем ее аренды (прокаты)
         {
             List<Leasing> leasings = _context.LeasedCopies.Where(l => l.MovieCopyId == movieCopyId).ToList();
             List<Customer> customers = _context.Customers.ToList();
-            //if (leasings.Count>0) 
-                _mainView.RedrawLeasings(leasings, customers);
+            _mainView.RedrawLeasings(leasings, customers);
         }
 
         //public void OpenImportMoviesForm(object sender, EventArgs e)

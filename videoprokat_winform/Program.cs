@@ -22,7 +22,8 @@ namespace videoprokat_winform
             var moviePresenter = new MoviePresenter();
             var movieCopyPresenter = new MovieCopyPresenter();
             var leasingPresenter = new LeasingPresenter();
-            var mainFormPresenter = new MainPresenter(new MainForm(), moviePresenter, movieCopyPresenter, leasingPresenter);
+            var customersPresenter = new CustomersPresenter();
+            var mainFormPresenter = new MainPresenter(new MainForm(), moviePresenter, movieCopyPresenter, leasingPresenter, customersPresenter);
 
             mainFormPresenter.Run();
         }

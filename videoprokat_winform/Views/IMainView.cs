@@ -11,7 +11,8 @@ namespace videoprokat_winform.Views
     interface IMainView : IView
     {
         int CurrentMovieId { get; }
-        //event Action OnOpenCustomers;
+
+        event Action OnOpenCustomers;
         //event Action OnOpenImportMovies;
         event Action<int> OnOpenLeasing;
         event Action OnOpenMovie;

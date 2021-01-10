@@ -28,6 +28,7 @@ namespace videoprokat_winform.Presenters
             {
                 _context.MoviesCopies.Add(movieCopy);
                 _context.SaveChanges();
+
                 _movieCopyView.Close();
             }
         }

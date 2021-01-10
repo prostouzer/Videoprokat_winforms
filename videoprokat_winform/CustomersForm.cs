@@ -8,50 +8,59 @@ using System.Windows.Forms;
 using videoprokat_winform.Models;
 using System.Linq;
 using System.Data.Entity;
+using videoprokat_winform.Views;
 
 namespace videoprokat_winform
 {
-    public partial class CustomersForm : Form
+    public partial class CustomersForm : Form, ICustomersView
     {
-        VideoprokatContext db;
-        public CustomersForm(VideoprokatContext context)
+        public event Action<Customer> OnAddCustomer;
+        public event Action<int, Customer> OnUpdateCustomer;
+
+        public event Action<int> OnCustomerSelectionChanged;
+
+        public new event Action OnLoad;
+        public CustomersForm()
         {
             InitializeComponent();
-            db = context;
-        }
 
-        private void CustomersForm_Load(object sender, EventArgs e)
-        {
-            db.Customers.Load();
+            this.Load += (sender, args) => OnLoad?.Invoke();
 
-            customers.DataSource = db.Customers.Local.ToList();
-            customers.Columns["Id"].ReadOnly = true;
+            customersDgv.SelectionChanged += (sender, args) => OnCustomerSelectionChanged?.Invoke(Convert.ToInt32(customersDgv.CurrentRow.Cells["Id"].Value));
 
-            customers.Columns["Id"].HeaderText = "ID";
-            customers.Columns["Name"].HeaderText = "Имя";
-            customers.Columns["Rating"].HeaderText = "Рейтинг";
-
-            customers.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            customers.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            customers.Columns["Rating"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-        }
-
-        private void addCustomerButton_Click(object sender, EventArgs e)
-        {
-            string newCustomerName = customerNameTextBox.Text.Trim();
-            if (newCustomerName != "")
+            customersDgv.CellValueChanged += (sender, args) =>
             {
-                DialogResult result = MessageBox.Show($"Добавить {newCustomerName}?", "Новый клиент",
+                var currentCustomerId = Convert.ToInt32(customersDgv.CurrentRow.Cells["Id"].Value);
+                var customer = new Customer(
+                    customersDgv.CurrentRow.Cells["Name"].Value.ToString(),
+                    (float)customersDgv.CurrentRow.Cells["Rating"].Value);
+                OnUpdateCustomer?.Invoke(currentCustomerId, customer);
+            };
+
+            addCustomerButton.Click += (sender, args) =>
+            {
+                var name = customerNameTextBox.Text.Trim();
+                var customer = new Customer(name);
+                OnAddCustomer?.Invoke(customer);
+            };
+        }
+
+        public new void Show()
+        {
+            ShowDialog();
+        }
+
+        public bool ConfirmNewCustomer()
+        {
+            string customerName = customerNameTextBox.Text.Trim();
+            if (customerName != "")
+            {
+                DialogResult result = MessageBox.Show($"Добавить {customerName}?", "Новый клиент",
                     MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
-                    Customer customer = new Customer(newCustomerName);
-
-                    db.Customers.Add(customer);
-                    db.SaveChanges();
-                    customers.DataSource = db.Customers.Local.ToList();
-
                     customerNameTextBox.Text = "";
+                    return true;
                 }
             }
             else
@@ -59,62 +68,63 @@ namespace videoprokat_winform
                 MessageBox.Show("Введите имя нового клиента");
                 customerNameTextBox.Text = "";
             }
-        }
 
-        private void customers_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+            return false;
+        }
+        public void RedrawCustomers(List<Customer> customers)
         {
-            db.SaveChanges();
+            customersDgv.DataSource = customers;
+
+            customersDgv.Columns["Id"].ReadOnly = true;
+
+            customersDgv.Columns["Id"].HeaderText = "ID";
+            customersDgv.Columns["Name"].HeaderText = "Имя";
+            customersDgv.Columns["Rating"].HeaderText = "Рейтинг";
+
+            customersDgv.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            customersDgv.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            customersDgv.Columns["Rating"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
 
-        private void customers_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        public void RedrawLeasings(List<Leasing> leasings, List<MovieOriginal> movies, List<MovieCopy> movieCopies)
+        {
+            var currentCustomerId = Convert.ToInt32(customersDgv.CurrentRow.Cells["Id"].Value);
+            var leasedByCustomer = from leasing in leasings
+                where leasing.CustomerId == currentCustomerId
+                join movie in movies on leasing.MovieCopy.MovieId equals movie.Id
+                join movieCopy in movieCopies on leasing.MovieCopyId equals movieCopy.Id
+                select new
+                {
+                    Id = leasing.Id,
+                    MovieTitle = movie.Title,
+                    MovieCommentary = movieCopy.Commentary,
+                    StartDate = leasing.StartDate,
+                    ExpectedEndDate = leasing.ExpectedEndDate,
+                    ReturnDate = leasing.ReturnDate,
+                    TotalPrice = leasing.TotalPrice,
+                };
+            leasedCopiesDgv.DataSource = leasedByCustomer.ToList();
+
+            leasedCopiesDgv.Columns["Id"].HeaderText = "ID";
+            leasedCopiesDgv.Columns["MovieTitle"].HeaderText = "Фильм";
+            leasedCopiesDgv.Columns["MovieCommentary"].HeaderText = "Комментарий";
+            leasedCopiesDgv.Columns["StartDate"].HeaderText = "Дата начала";
+            leasedCopiesDgv.Columns["ExpectedEndDate"].HeaderText = "Ожидаемый возврат";
+            leasedCopiesDgv.Columns["ReturnDate"].HeaderText = "Фактический возврат";
+            leasedCopiesDgv.Columns["TotalPrice"].HeaderText = "Итоговая цена";
+
+            leasedCopiesDgv.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            leasedCopiesDgv.Columns["MovieTitle"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            leasedCopiesDgv.Columns["MovieCommentary"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            leasedCopiesDgv.Columns["StartDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            leasedCopiesDgv.Columns["ExpectedEndDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            leasedCopiesDgv.Columns["ReturnDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            leasedCopiesDgv.Columns["TotalPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells; 
+        }
+
+        private void customersDgv_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             MessageBox.Show("Неправильный формат данных");
-        }
-
-        private void customers_SelectionChanged(object sender, EventArgs e)
-        {
-            int currentCustomerId = -1;
-            if (customers.CurrentRow != null)
-            {
-                currentCustomerId = Convert.ToInt32(customers.CurrentRow.Cells["Id"].Value);
-                Customer currentCustomer = db.Customers.First(c => c.Id == currentCustomerId);
-
-                var leasedByCustomer = from leasing in db.LeasedCopies
-                                     where leasing.CustomerId == currentCustomer.Id
-                                     join movie in db.MoviesOriginal on leasing.MovieCopy.MovieId equals movie.Id
-                                     join movieCopy in db.MoviesCopies on leasing.MovieCopyId equals movieCopy.Id
-                                     select new
-                                     {
-                                         Id = leasing.Id,
-                                         MovieTitle = movie.Title,
-                                         MovieCommentary = movieCopy.Commentary,
-                                         StartDate = leasing.StartDate,
-                                         ExpectedEndDate = leasing.ExpectedEndDate,
-                                         ReturnDate = leasing.ReturnDate,
-                                         TotalPrice = leasing.TotalPrice,
-                                     };
-                leasedCopies.DataSource = leasedByCustomer.ToList();
-                RedrawLeasedCopiesDgv();
-            }
-        }
-
-        private void RedrawLeasedCopiesDgv()
-        {
-            leasedCopies.Columns["Id"].HeaderText = "ID";
-            leasedCopies.Columns["MovieTitle"].HeaderText = "Фильм";
-            leasedCopies.Columns["MovieCommentary"].HeaderText = "Комментарий";
-            leasedCopies.Columns["StartDate"].HeaderText = "Дата начала";
-            leasedCopies.Columns["ExpectedEndDate"].HeaderText = "Ожидаемый возврат";
-            leasedCopies.Columns["ReturnDate"].HeaderText = "Фактический возврат";
-            leasedCopies.Columns["TotalPrice"].HeaderText = "Итоговая цена";
-
-            leasedCopies.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            leasedCopies.Columns["MovieTitle"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            leasedCopies.Columns["MovieCommentary"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            leasedCopies.Columns["StartDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            leasedCopies.Columns["ExpectedEndDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            leasedCopies.Columns["ReturnDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            leasedCopies.Columns["TotalPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
     }
 }

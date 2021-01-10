@@ -29,42 +29,40 @@ namespace videoprokat_winform
         /// </summary>
         private void InitializeComponent()
         {
-            this.customers = new System.Windows.Forms.DataGridView();
-            this.leasedCopies = new System.Windows.Forms.DataGridView();
+            this.customersDgv = new System.Windows.Forms.DataGridView();
+            this.leasedCopiesDgv = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.addCustomerButton = new System.Windows.Forms.Button();
             this.customerNameTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.customers)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.leasedCopies)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customersDgv)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.leasedCopiesDgv)).BeginInit();
             this.SuspendLayout();
             // 
-            // customers
+            // customersDgv
             // 
-            this.customers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.customersDgv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.customers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.customers.Location = new System.Drawing.Point(12, 12);
-            this.customers.Name = "customers";
-            this.customers.RowTemplate.Height = 25;
-            this.customers.Size = new System.Drawing.Size(382, 204);
-            this.customers.TabIndex = 0;
-            this.customers.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.customers_CellEndEdit);
-            this.customers.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.customers_DataError);
-            this.customers.SelectionChanged += new System.EventHandler(this.customers_SelectionChanged);
+            this.customersDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.customersDgv.Location = new System.Drawing.Point(12, 12);
+            this.customersDgv.Name = "customersDgv";
+            this.customersDgv.RowTemplate.Height = 25;
+            this.customersDgv.Size = new System.Drawing.Size(382, 204);
+            this.customersDgv.TabIndex = 0;
+            this.customersDgv.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.customersDgv_DataError);
             // 
-            // leasedCopies
+            // leasedCopiesDgv
             // 
-            this.leasedCopies.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.leasedCopiesDgv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.leasedCopies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.leasedCopies.Location = new System.Drawing.Point(12, 222);
-            this.leasedCopies.Name = "leasedCopies";
-            this.leasedCopies.ReadOnly = true;
-            this.leasedCopies.RowTemplate.Height = 25;
-            this.leasedCopies.Size = new System.Drawing.Size(721, 232);
-            this.leasedCopies.TabIndex = 1;
+            this.leasedCopiesDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.leasedCopiesDgv.Location = new System.Drawing.Point(12, 222);
+            this.leasedCopiesDgv.Name = "leasedCopiesDgv";
+            this.leasedCopiesDgv.ReadOnly = true;
+            this.leasedCopiesDgv.RowTemplate.Height = 25;
+            this.leasedCopiesDgv.Size = new System.Drawing.Size(721, 232);
+            this.leasedCopiesDgv.TabIndex = 1;
             // 
             // label1
             // 
@@ -87,7 +85,6 @@ namespace videoprokat_winform
             this.addCustomerButton.TabIndex = 3;
             this.addCustomerButton.Text = "Добавить";
             this.addCustomerButton.UseVisualStyleBackColor = true;
-            this.addCustomerButton.Click += new System.EventHandler(this.addCustomerButton_Click);
             // 
             // customerNameTextBox
             // 
@@ -116,15 +113,14 @@ namespace videoprokat_winform
             this.Controls.Add(this.customerNameTextBox);
             this.Controls.Add(this.addCustomerButton);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.leasedCopies);
-            this.Controls.Add(this.customers);
+            this.Controls.Add(this.leasedCopiesDgv);
+            this.Controls.Add(this.customersDgv);
             this.MinimumSize = new System.Drawing.Size(761, 505);
             this.Name = "CustomersForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Клиенты";
-            this.Load += new System.EventHandler(this.CustomersForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.customers)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.leasedCopies)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customersDgv)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.leasedCopiesDgv)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -132,8 +128,8 @@ namespace videoprokat_winform
 
         #endregion
 
-        private System.Windows.Forms.DataGridView customers;
-        private System.Windows.Forms.DataGridView leasedCopies;
+        private System.Windows.Forms.DataGridView customersDgv;
+        private System.Windows.Forms.DataGridView leasedCopiesDgv;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button addCustomerButton;
         private System.Windows.Forms.TextBox customerNameTextBox;

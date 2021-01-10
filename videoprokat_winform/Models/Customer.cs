@@ -38,5 +38,11 @@ namespace videoprokat_winform.Models
             Name = name;
             Rating = defaultRating;
         }
+
+        public Customer(string name, float rating)
+        {
+            Name = name;
+            Rating = rating;
+        }
     }
 }
