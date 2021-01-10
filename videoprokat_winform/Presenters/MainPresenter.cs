@@ -166,15 +166,5 @@ namespace videoprokat_winform.Presenters
             List<Customer> customers = _context.Customers.ToList();
             _mainView.RedrawLeasings(leasings, customers);
         }
-
-        //public void OpenReturnForm(object sender, EventArgs e)
-        //{
-        //    int currentLeasingId = Convert.ToInt32(_mainView.LeasingsDgv.CurrentRow.Cells["Id"].Value);
-        //    Leasing leasing = _context.LeasedCopies.First(l => l.Id == currentLeasingId);
-        //    ReturnForm form = new ReturnForm(_context, leasing);
-        //    form.ShowDialog();
-        //    RedrawCopiesDgv();
-        //    RedrawLeasingsDgv();
-        //}
     }
 }
