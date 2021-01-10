@@ -68,7 +68,6 @@ namespace videoprokat_winform
                 MessageBox.Show("Введите имя нового клиента");
                 customerNameTextBox.Text = "";
             }
-
             return false;
         }
         public void RedrawCustomers(List<Customer> customers)

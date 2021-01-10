@@ -13,7 +13,7 @@ namespace videoprokat_winform.Views
         int CurrentMovieId { get; }
 
         event Action OnOpenCustomers;
-        //event Action OnOpenImportMovies;
+        event Action OnOpenImportMovies;
         event Action<int> OnOpenLeasing;
         event Action OnOpenMovie;
         event Action<int> OnOpenMovieCopy;

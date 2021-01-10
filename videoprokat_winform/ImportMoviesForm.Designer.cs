@@ -30,8 +30,8 @@ namespace videoprokat_winform
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.chooseFileButton = new System.Windows.Forms.Button();
-            this.loadMoviesButton = new System.Windows.Forms.Button();
+            this.chooseFilePathButton = new System.Windows.Forms.Button();
+            this.uploadMoviesButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.moviesListView = new System.Windows.Forms.ListView();
             this.SuspendLayout();
@@ -47,28 +47,26 @@ namespace videoprokat_winform
             this.label1.TabIndex = 0;
             this.label1.Text = "Файл не выбран";
             // 
-            // chooseFileButton
+            // chooseFilePathButton
             // 
-            this.chooseFileButton.Location = new System.Drawing.Point(12, 86);
-            this.chooseFileButton.Name = "chooseFileButton";
-            this.chooseFileButton.Size = new System.Drawing.Size(153, 28);
-            this.chooseFileButton.TabIndex = 1;
-            this.chooseFileButton.Text = "Выбрать файл";
-            this.chooseFileButton.UseVisualStyleBackColor = true;
-            this.chooseFileButton.Click += new System.EventHandler(this.chooseFileButton_Click);
+            this.chooseFilePathButton.Location = new System.Drawing.Point(12, 86);
+            this.chooseFilePathButton.Name = "chooseFilePathButton";
+            this.chooseFilePathButton.Size = new System.Drawing.Size(153, 28);
+            this.chooseFilePathButton.TabIndex = 1;
+            this.chooseFilePathButton.Text = "Выбрать файл";
+            this.chooseFilePathButton.UseVisualStyleBackColor = true;
             // 
-            // loadMoviesButton
+            // uploadMoviesButton
             // 
-            this.loadMoviesButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.uploadMoviesButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.loadMoviesButton.Enabled = false;
-            this.loadMoviesButton.Location = new System.Drawing.Point(12, 390);
-            this.loadMoviesButton.Name = "loadMoviesButton";
-            this.loadMoviesButton.Size = new System.Drawing.Size(440, 129);
-            this.loadMoviesButton.TabIndex = 2;
-            this.loadMoviesButton.Text = "Загрузить фильмы";
-            this.loadMoviesButton.UseVisualStyleBackColor = true;
-            this.loadMoviesButton.Click += new System.EventHandler(this.loadMoviesButton_Click);
+            this.uploadMoviesButton.Enabled = false;
+            this.uploadMoviesButton.Location = new System.Drawing.Point(12, 390);
+            this.uploadMoviesButton.Name = "uploadMoviesButton";
+            this.uploadMoviesButton.Size = new System.Drawing.Size(440, 129);
+            this.uploadMoviesButton.TabIndex = 2;
+            this.uploadMoviesButton.Text = "Загрузить фильмы";
+            this.uploadMoviesButton.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -104,8 +102,8 @@ namespace videoprokat_winform
             this.ClientSize = new System.Drawing.Size(464, 531);
             this.Controls.Add(this.moviesListView);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.loadMoviesButton);
-            this.Controls.Add(this.chooseFileButton);
+            this.Controls.Add(this.uploadMoviesButton);
+            this.Controls.Add(this.chooseFilePathButton);
             this.Controls.Add(this.label1);
             this.MinimumSize = new System.Drawing.Size(480, 570);
             this.Name = "ImportMoviesForm";
@@ -119,8 +117,8 @@ namespace videoprokat_winform
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button chooseFileButton;
-        private System.Windows.Forms.Button loadMoviesButton;
+        private System.Windows.Forms.Button chooseFilePathButton;
+        private System.Windows.Forms.Button uploadMoviesButton;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ListView moviesListView;
     }

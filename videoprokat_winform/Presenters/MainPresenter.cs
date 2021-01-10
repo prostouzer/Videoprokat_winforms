@@ -19,13 +19,16 @@ namespace videoprokat_winform.Presenters
         private readonly MovieCopyPresenter _movieCopyPresenter;
         private readonly LeasingPresenter _leasingPresenter;
         private readonly CustomersPresenter _customersPresenter;
-        public MainPresenter(IMainView mainView, MoviePresenter moviePresenter, MovieCopyPresenter movieCopyPresenter, LeasingPresenter leasingPresenter, CustomersPresenter customersPresenter)
+        private readonly ImportMoviesPresenter _importMoviesPresenter;
+        public MainPresenter(IMainView mainView, MoviePresenter moviePresenter, MovieCopyPresenter movieCopyPresenter, LeasingPresenter leasingPresenter, CustomersPresenter customersPresenter,
+            ImportMoviesPresenter importMoviesPresenter)
         {
             _mainView = mainView;
             _moviePresenter = moviePresenter;
             _movieCopyPresenter = movieCopyPresenter;
             _leasingPresenter = leasingPresenter;
             _customersPresenter = customersPresenter;
+            _importMoviesPresenter = importMoviesPresenter;
 
             _mainView.OnLoad += LoadMain;
 
@@ -33,6 +36,7 @@ namespace videoprokat_winform.Presenters
             _mainView.OnOpenMovie += OpenMovie;
             _mainView.OnOpenMovieCopy += OpenMovieCopy;
             _mainView.OnOpenLeasing += OpenLeasing;
+            _mainView.OnOpenImportMovies += OpenImportMovies;
 
             _mainView.OnUpdateMovie += UpdateMovie;
             _mainView.OnUpdateMovieCopy += UpdateMovieCopy;
@@ -84,6 +88,14 @@ namespace videoprokat_winform.Presenters
             List<Leasing> leasings = _context.LeasedCopies.Where(l => l.MovieCopyId == movieCopy.Id).ToList();
             List<Customer> customers = _context.Customers.ToList();
             _mainView.RedrawLeasings(leasings, customers);
+        }
+
+        public void OpenImportMovies()
+        {
+            _importMoviesPresenter._context = _context;
+            _importMoviesPresenter.Run();
+
+            _mainView.RedrawMovies(_context.MoviesOriginal.ToList());
         }
 
         public void LoadMain()

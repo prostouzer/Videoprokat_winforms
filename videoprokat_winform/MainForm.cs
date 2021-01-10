@@ -19,7 +19,7 @@ namespace videoprokat_winform
         public int CurrentMovieId => Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
 
         public event Action OnOpenCustomers;
-        //event Action OnOpenImportMoviesForm;
+        public event Action OnOpenImportMovies;
         public event Action OnOpenMovie;
         public event Action<int> OnOpenMovieCopy;
 
@@ -78,7 +78,7 @@ namespace videoprokat_winform
                 OnMovieCopySelectionChanged?.Invoke(Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value));
 
             mainMenu.Items[1].Click += (sender, args) => OnOpenCustomers?.Invoke(); // "Клиенты"
-            //mainMenu.Items[2].Click += _mainFormPresenter.OpenImportMoviesForm; // "Импорт фильмов"
+            mainMenu.Items[2].Click += (sender, args) => OnOpenImportMovies?.Invoke(); // "Импорт фильмов"
 
             copiesContextMenu.Items[0].Click += (sender, args) => OnOpenLeasing?.Invoke(Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value)); // "Прокат"
 
