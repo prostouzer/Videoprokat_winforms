@@ -7,7 +7,6 @@ namespace videoprokat_winform.Views
 {
     interface IMovieView : IView
     {
-        //event Action<string, string, int> OnAddMovie;
         event Action<MovieOriginal> OnAddMovie;
 
         bool ConfirmNewMovie();

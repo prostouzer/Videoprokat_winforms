@@ -7,8 +7,8 @@ namespace videoprokat_winform.Views
 {
     interface ILeasingView : IView
     {
-        MovieOriginal currentMovie { get; set; }
-        MovieCopy currentMovieCopy { get; set; }
+        MovieOriginal CurrentMovie { get; set; }
+        MovieCopy CurrentMovieCopy { get; set; }
 
         event Action<Leasing> OnLeaseMovieCopy;
 

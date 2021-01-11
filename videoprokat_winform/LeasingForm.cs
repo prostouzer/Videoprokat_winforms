@@ -16,13 +16,13 @@ namespace videoprokat_winform
         private MovieOriginal _currentMovie;
         private MovieCopy _currentMovieCopy;
 
-        public MovieOriginal currentMovie
+        public MovieOriginal CurrentMovie
         {
             get => _currentMovie;
             set => _currentMovie = value;
         }
 
-        public MovieCopy currentMovieCopy
+        public MovieCopy CurrentMovieCopy
         {
             get => _currentMovieCopy;
             set => _currentMovieCopy = value;
@@ -39,8 +39,8 @@ namespace videoprokat_winform
                 var startDate = startDatePicker.Value.Date;
                 var endDate = endDatePicker.Value.Date;
                 var customerId = Convert.ToInt32(customersComboBox.SelectedValue);
-                var movieCopyId = currentMovieCopy.Id;
-                var pricePerDay = currentMovieCopy.PricePerDay;
+                var movieCopyId = CurrentMovieCopy.Id;
+                var pricePerDay = CurrentMovieCopy.PricePerDay;
                 Leasing leasing = new Leasing(startDate, endDate, customerId, movieCopyId, pricePerDay);
                 OnLeaseMovieCopy?.Invoke(leasing);
             };
@@ -58,8 +58,8 @@ namespace videoprokat_winform
                 if (startDatePicker.Value.Date < endDatePicker.Value.Date)
                 {
                     Leasing leasing = new Leasing(startDatePicker.Value.Date, endDatePicker.Value.Date, Convert.ToInt32(customersComboBox.SelectedValue),
-                                        currentMovieCopy.Id, currentMovieCopy.PricePerDay);
-                    DialogResult result = MessageBox.Show($"Прокат {currentMovie.Title}, {currentMovieCopy.Commentary} " +
+                                        CurrentMovieCopy.Id, CurrentMovieCopy.PricePerDay);
+                    DialogResult result = MessageBox.Show($"Прокат {CurrentMovie.Title}, {CurrentMovieCopy.Commentary} " +
                         $"с {startDatePicker.Value.Date} по {endDatePicker.Value.Date} за {leasing.TotalPrice.ToString()}?", "Прокат", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
@@ -91,8 +91,8 @@ namespace videoprokat_winform
             startDatePicker.Value = DateTime.Now;
             endDatePicker.Value = DateTime.Now.AddDays(2);
 
-            movieNameLabel.Text = currentMovie.Title;
-            movieCommentLabel.Text = currentMovieCopy.Commentary;
+            movieNameLabel.Text = CurrentMovie.Title;
+            movieCommentLabel.Text = CurrentMovieCopy.Commentary;
         }
 
         private void customersComboBox_Format(object sender, ListControlConvertEventArgs e)
@@ -117,7 +117,7 @@ namespace videoprokat_winform
             if (endDatePicker.Value.Date > startDatePicker.Value.Date)
             {
                 decimal price = (int)((endDatePicker.Value.Date - startDatePicker.Value.Date).TotalDays) *
-                                currentMovieCopy.PricePerDay;
+                                CurrentMovieCopy.PricePerDay;
                 priceLabel.Text = "Цена: " + price.ToString();
             }
             else

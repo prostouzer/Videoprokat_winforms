@@ -13,7 +13,7 @@ namespace videoprokat_winform
     public partial class MovieCopyForm : Form, IMovieCopyView
     {
         private MovieOriginal _currentMovie;
-        public MovieOriginal currentMovie
+        public MovieOriginal CurrentMovie
         {
             get => _currentMovie;
             set => _currentMovie = value;
@@ -40,7 +40,7 @@ namespace videoprokat_winform
 
         private void MovieCopyForm_Load(object sender, EventArgs e)
         {
-            movieNameLabel.Text = currentMovie.Title;
+            movieNameLabel.Text = CurrentMovie.Title;
         }
 
         public bool ConfirmNewMovieCopy()
@@ -48,7 +48,7 @@ namespace videoprokat_winform
             if (commentTextBox.Text.Trim() != "" && priceNumericUpDown.Value > 0)
             {
                 DialogResult dialogResult;
-                dialogResult = MessageBox.Show("Создать новую копию фильма " + currentMovie.Title + ", " + commentTextBox.Text.Trim() +
+                dialogResult = MessageBox.Show("Создать новую копию фильма " + CurrentMovie.Title + ", " + commentTextBox.Text.Trim() +
                     ", с ценой " + priceNumericUpDown.Value.ToString() + " руб. за день?", "Новая копия", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes) 
                     return true;

@@ -15,8 +15,8 @@ namespace videoprokat_winform.Presenters
         {
             _leasingView = new LeasingForm();
 
-            _leasingView.currentMovie = currentMovie;
-            _leasingView.currentMovieCopy = currentMovieCopy;
+            _leasingView.CurrentMovie = currentMovie;
+            _leasingView.CurrentMovieCopy = currentMovieCopy;
 
             _leasingView.PopulateWithCustomers(new List<Customer>(_context.Customers.ToList()));
 

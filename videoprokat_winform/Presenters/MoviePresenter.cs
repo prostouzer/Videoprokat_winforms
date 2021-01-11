@@ -11,15 +11,6 @@ namespace videoprokat_winform.Presenters
         private IMovieView _movieView;
         public VideoprokatContext _context;
 
-        //public void Run(VideoprokatContext context)
-        //{
-        //    _movieView = new MovieForm();
-        //    _movieView.Show();
-        //    _context = context;
-
-        //    _movieView.OnAddMovie += AddMovie;
-        //}
-
         public void AddMovie(MovieOriginal movie)
         {
             if (_movieView.ConfirmNewMovie())

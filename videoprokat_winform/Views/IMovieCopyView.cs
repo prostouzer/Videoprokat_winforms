@@ -7,7 +7,7 @@ namespace videoprokat_winform.Views
 {
     interface IMovieCopyView : IView
     {
-        MovieOriginal currentMovie { get; set; }
+        MovieOriginal CurrentMovie { get; set; }
         event Action<MovieCopy> OnAddMovieCopy;
 
         bool ConfirmNewMovieCopy();

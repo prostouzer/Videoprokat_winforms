@@ -14,7 +14,7 @@ namespace videoprokat_winform.Views
         decimal FineMultiplier { get; set; }
 
         event Action<DateTime> OnReturnEarly;
-        event Action OnReturnOnTime; // если вовремя - returnDate = expectedEndDate
+        event Action OnReturnOnTime; // если вовремя, то returnDate = expectedEndDate
         event Action<DateTime, decimal> OnReturnDelayed;
 
         bool ConfirmReturnEarly();
