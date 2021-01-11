@@ -13,7 +13,7 @@ namespace videoprokat_winform.Views
         event Action<int> OnCustomerSelectionChanged;
 
         bool ConfirmNewCustomer();
-        void RedrawLeasings(List<Leasing> leasings, List<MovieOriginal> movies, List<MovieCopy> copies);
+        void RedrawLeasings(List<Leasing> leasings, List<MovieOriginal> movies, List<MovieCopy> movieCopies);
         void RedrawCustomers(List<Customer> customers);
     }
 }

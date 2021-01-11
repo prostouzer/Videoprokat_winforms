@@ -18,7 +18,7 @@ namespace videoprokat_winform.Presenters
             _leasingView.CurrentMovie = currentMovie;
             _leasingView.CurrentMovieCopy = currentMovieCopy;
 
-            _leasingView.PopulateWithCustomers(new List<Customer>(_context.Customers.ToList()));
+            _leasingView.RedrawCustomers(new List<Customer>(_context.Customers.ToList()));
 
             _leasingView.OnLeaseMovieCopy += AddLeasing;
 

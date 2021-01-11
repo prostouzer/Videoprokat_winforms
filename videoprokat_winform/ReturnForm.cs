@@ -14,12 +14,12 @@ namespace videoprokat_winform
     public partial class ReturnForm : Form, IReturnView
     {
         private MovieOriginal _currentMovie;
-        private MovieCopy _currentCopy;
+        private MovieCopy _currentMovieCopy;
         private Customer _currentCustomer;
         private Leasing _currentLeasing;
         private decimal _fineMultiplier = 2;
         public MovieOriginal CurrentMovie { get => _currentMovie; set => _currentMovie = value; }
-        public MovieCopy CurrentCopy { get => _currentCopy; set => _currentCopy = value; }
+        public MovieCopy CurrentMovieCopy { get => _currentMovieCopy; set => _currentMovieCopy = value; }
         public Customer CurrentCustomer { get => _currentCustomer; set => _currentCustomer = value; }
         public Leasing CurrentLeasing { get => _currentLeasing; set => _currentLeasing = value; }
         public decimal FineMultiplier { get => _fineMultiplier; set => _fineMultiplier = value; }
@@ -48,7 +48,7 @@ namespace videoprokat_winform
 
         public bool ConfirmReturnEarly()
         {
-            var dialogResult = MessageBox.Show($"Возврат {CurrentMovie.Title}, {CurrentCopy.Commentary}, ВЕРНУТЬ {(-1 * TotalPriceChange).ToString()}",
+            var dialogResult = MessageBox.Show($"Возврат {CurrentMovie.Title}, {CurrentMovieCopy.Commentary}, ВЕРНУТЬ {(-1 * TotalPriceChange).ToString()}",
                          "Ранний возврат", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
@@ -59,7 +59,7 @@ namespace videoprokat_winform
 
         public bool ConfirmReturnOnTime()
         {
-            var dialogResult = MessageBox.Show($"Возврат {CurrentMovie.Title}, {CurrentCopy.Commentary} в срок",
+            var dialogResult = MessageBox.Show($"Возврат {CurrentMovie.Title}, {CurrentMovieCopy.Commentary} в срок",
                 "Возврат в срок", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
@@ -70,7 +70,7 @@ namespace videoprokat_winform
 
         public bool ConfirmReturnDelayed()
         {
-            var dialogResult = MessageBox.Show($"Возврат {CurrentMovie.Title}, {CurrentCopy.Commentary}, ШТРАФ {TotalPriceChange.ToString()}",
+            var dialogResult = MessageBox.Show($"Возврат {CurrentMovie.Title}, {CurrentMovieCopy.Commentary}, ШТРАФ {TotalPriceChange.ToString()}",
                              "Поздний возврат", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
@@ -94,7 +94,7 @@ namespace videoprokat_winform
                 totalPriceChangeLabel.Visible = true;
 
                 var daysDiff = (returnDatePicker.Value.Date - CurrentLeasing.ExpectedEndDate.Date).TotalDays;
-                var totalPriceChange = (CurrentCopy.PricePerDay * (decimal)daysDiff) * FineMultiplier;// просрочили - платите больше за каждый день просрочки
+                var totalPriceChange = (CurrentMovieCopy.PricePerDay * (decimal)daysDiff) * FineMultiplier;// просрочили - платите больше за каждый день просрочки
                 totalPriceChangeLabel.Text = "Штраф: " + totalPriceChange.ToString();
                 return totalPriceChange;
             }
@@ -105,7 +105,7 @@ namespace videoprokat_winform
                 totalPriceChangeLabel.Visible = true;
 
                 var daysDiff = (CurrentLeasing.ExpectedEndDate.Date - returnDatePicker.Value.Date).TotalDays;
-                var totalPriceChange = CurrentCopy.PricePerDay * (decimal)-daysDiff; // вернули раньше - возвращай меньше
+                var totalPriceChange = CurrentMovieCopy.PricePerDay * (decimal)-daysDiff; // вернули раньше - возвращай меньше
                 totalPriceChangeLabel.Text = "Возврат: " + (-1 * totalPriceChange).ToString(); // -1 чтобы не было ~"Возврат -100"
                 return totalPriceChange;
             }
@@ -117,7 +117,7 @@ namespace videoprokat_winform
             movieNameLabel.Text = CurrentMovie.Title;
             fineFormulaLabel.Text = $"Штраф = {FineMultiplier.ToString()} * цена/день * количество просроченных дней";
 
-            movieCommentLabel.Text = CurrentCopy.Commentary;
+            movieCommentLabel.Text = CurrentMovieCopy.Commentary;
 
             startDatePicker.Value = CurrentLeasing.StartDate;
             returnDatePicker.Value = DateTime.Now;

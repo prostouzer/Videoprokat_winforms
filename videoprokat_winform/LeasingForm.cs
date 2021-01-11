@@ -79,7 +79,7 @@ namespace videoprokat_winform
             return false;
         }
 
-        public void PopulateWithCustomers(List<Customer> customers)
+        public void RedrawCustomers(List<Customer> customers)
         {
             customersComboBox.DataSource = customers;
             customersComboBox.DisplayMember = "Name";

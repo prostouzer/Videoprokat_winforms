@@ -76,7 +76,6 @@ namespace videoprokat_winform
             {
                 return true;
             }
-
             return false;
         }
     }

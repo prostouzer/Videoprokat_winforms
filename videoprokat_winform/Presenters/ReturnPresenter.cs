@@ -21,7 +21,7 @@ namespace videoprokat_winform.Presenters
             var customer = _context.Customers.First(c => c.Id == leasing.CustomerId);
 
             _returnView.CurrentLeasing = leasing;
-            _returnView.CurrentCopy = copy;
+            _returnView.CurrentMovieCopy = copy;
             _returnView.CurrentMovie = movie;
             _returnView.CurrentCustomer = customer;
 

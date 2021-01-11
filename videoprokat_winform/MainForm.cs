@@ -47,6 +47,10 @@ namespace videoprokat_winform
 
             newMovieButton.Click += (sender, args) => OnOpenMovie?.Invoke(); // Добавить новый фильм
             newMovieCopyButton.Click += (sender, args) => OnOpenMovieCopy?.Invoke(Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value)); // Добавить новую копию фильма
+            mainMenu.Items[1].Click += (sender, args) => OnOpenCustomers?.Invoke(); // "Клиенты"
+            mainMenu.Items[2].Click += (sender, args) => OnOpenImportMovies?.Invoke(); // "Импорт фильмов"
+            copiesContextMenu.Items[0].Click += (sender, args) => OnOpenLeasing?.Invoke(Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value)); // "Прокат"
+            leasingContextMenu.Items[0].Click += (sender, args) => OnOpenReturn?.Invoke(Convert.ToInt32(leasingsDgv.CurrentRow.Cells["Id"].Value)); // "Вернуть"
 
             mainMenu.Items[0].TextChanged += (sender, args) => OnFilterMovies?.Invoke(mainMenu.Items[0].Text.Trim()); // Поиск фильма
 
@@ -76,13 +80,6 @@ namespace videoprokat_winform
                 OnMovieSelectionChanged?.Invoke(Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value));
             copiesDgv.SelectionChanged += (sender, args) =>
                 OnMovieCopySelectionChanged?.Invoke(Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value));
-
-            mainMenu.Items[1].Click += (sender, args) => OnOpenCustomers?.Invoke(); // "Клиенты"
-            mainMenu.Items[2].Click += (sender, args) => OnOpenImportMovies?.Invoke(); // "Импорт фильмов"
-
-            copiesContextMenu.Items[0].Click += (sender, args) => OnOpenLeasing?.Invoke(Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value)); // "Прокат"
-
-            leasingContextMenu.Items[0].Click += (sender, args) => OnOpenReturn?.Invoke(Convert.ToInt32(leasingsDgv.CurrentRow.Cells["Id"].Value)); // "Вернуть"
         }
 
         public void ShowDataError()

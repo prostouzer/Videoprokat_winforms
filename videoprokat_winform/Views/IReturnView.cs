@@ -8,7 +8,7 @@ namespace videoprokat_winform.Views
     interface IReturnView : IView
     {
         MovieOriginal CurrentMovie { get; set; }
-        MovieCopy CurrentCopy { get; set; }
+        MovieCopy CurrentMovieCopy { get; set; }
         Customer CurrentCustomer { get; set; }
         Leasing CurrentLeasing { get; set; }
         decimal FineMultiplier { get; set; }
