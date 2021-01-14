@@ -39,6 +39,7 @@ namespace videoprokat_winform
         {
             Application.Run(this);
         }
+
         public MainForm()
         {
             InitializeComponent();
@@ -54,7 +55,7 @@ namespace videoprokat_winform
 
             mainMenu.Items[0].TextChanged += (sender, args) => OnFilterMovies?.Invoke(mainMenu.Items[0].Text.Trim()); // Поиск фильма
 
-            moviesDgv.CellValueChanged += (sender, args) =>
+            moviesDgv.CellEndEdit += (sender, args) =>
             {
                 var movieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
                 var title = moviesDgv.CurrentRow.Cells["Title"].Value.ToString();
@@ -63,7 +64,7 @@ namespace videoprokat_winform
                 var updatedMovie = new MovieOriginal(title, description, yearReleased);
                 OnUpdateMovie?.Invoke(movieId, updatedMovie);
             };
-            copiesDgv.CellValueChanged += (sender, args) =>
+            copiesDgv.CellEndEdit += (sender, args) =>
             {
                 var movieCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
                 var commentary = copiesDgv.CurrentRow.Cells["Commentary"].Value.ToString();
@@ -89,47 +90,54 @@ namespace videoprokat_winform
 
         public void RedrawMovies(List<MovieOriginal> moviesList)
         {
-            moviesDgv.DataSource = moviesList;
+            this.BeginInvoke(new Action(() => // без this.BeingInvoke ошибка reentrant call to SetCurrentCellAddressCore (решение https://stackoverflow.com/questions/27626158/reentrant-call-to-setcurrentcelladdresscore-in-event-handlers-only-where-cel)
+            {
+                moviesDgv.DataSource = moviesList;
 
-            moviesDgv.Columns["Id"].ReadOnly = true;
-            moviesDgv.Columns["Copies"].Visible = false;
+                moviesDgv.Columns["Id"].ReadOnly = true;
+                moviesDgv.Columns["Copies"].Visible = false;
 
-            moviesDgv.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                moviesDgv.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            moviesDgv.Columns["Id"].HeaderText = "ID";
-            moviesDgv.Columns["Title"].HeaderText = "Название";
-            moviesDgv.Columns["Description"].HeaderText = "Описание";
-            moviesDgv.Columns["YearReleased"].HeaderText = "Год выпуска";
+                moviesDgv.Columns["Id"].HeaderText = "ID";
+                moviesDgv.Columns["Title"].HeaderText = "Название";
+                moviesDgv.Columns["Description"].HeaderText = "Описание";
+                moviesDgv.Columns["YearReleased"].HeaderText = "Год выпуска";
 
-            moviesDgv.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            moviesDgv.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            moviesDgv.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            moviesDgv.Columns["YearReleased"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                moviesDgv.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                moviesDgv.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                moviesDgv.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                moviesDgv.Columns["YearReleased"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }));
         }
 
         public void RedrawCopies(List<MovieCopy> movieCopiesList)
         {
-            copiesDgv.DataSource = movieCopiesList;
-
-            copiesDgv.Columns["Id"].ReadOnly = true;
-            copiesDgv.Columns["Available"].ReadOnly = true;
-            copiesDgv.Columns["MovieId"].Visible = false;
-            copiesDgv.Columns["Movie"].Visible = false;
-
-            copiesDgv.Columns["Id"].HeaderText = "ID";
-            copiesDgv.Columns["Commentary"].HeaderText = "Комментарий";
-            copiesDgv.Columns["Available"].HeaderText = "Доступен";
-            copiesDgv.Columns["PricePerDay"].HeaderText = "Цена/день";
-
-            copiesDgv.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            copiesDgv.Columns["Commentary"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            copiesDgv.Columns["Available"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            copiesDgv.Columns["PricePerDay"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-            if (movieCopiesList.Count == 0) // нет копий вообще - очищаем список Leasing'ов. Иначе сохраняются прокаты последнего выбранного фильма. Сильно костыльно?
+            this.BeginInvoke(new Action(() =>
             {
-                leasingsDgv.DataSource = null;
-            } 
+                copiesDgv.DataSource = movieCopiesList;
+
+                copiesDgv.Columns["Id"].ReadOnly = true;
+                copiesDgv.Columns["Available"].ReadOnly = true;
+                copiesDgv.Columns["MovieId"].Visible = false;
+                copiesDgv.Columns["Movie"].Visible = false;
+
+                copiesDgv.Columns["Id"].HeaderText = "ID";
+                copiesDgv.Columns["Commentary"].HeaderText = "Комментарий";
+                copiesDgv.Columns["Available"].HeaderText = "Доступен";
+                copiesDgv.Columns["PricePerDay"].HeaderText = "Цена/день";
+
+                copiesDgv.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                copiesDgv.Columns["Commentary"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                copiesDgv.Columns["Available"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                copiesDgv.Columns["PricePerDay"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+                if (movieCopiesList.Count == 0
+                ) // нет копий вообще - очищаем список Leasing'ов. Иначе сохраняются прокаты последнего выбранного фильма. Сильно костыльно?
+                {
+                    leasingsDgv.DataSource = null;
+                }
+            }));
         }
 
         public void RedrawLeasings(List<Leasing> leasingsList, List<Customer> customers)

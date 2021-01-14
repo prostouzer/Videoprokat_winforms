@@ -12,7 +12,7 @@ namespace videoprokat_winform.Models
         {
             MovieOriginal mo1 = new MovieOriginal("Терминатор", "Невероятный боевик", 1990);
             MovieOriginal mo2 = new MovieOriginal("Шрек", "Блокбастер девяностых", 2000);
-            
+
             db.MoviesOriginal.Add(mo1);
             db.MoviesOriginal.Add(mo2);
             db.SaveChanges(); // сохраняем сначала здесь, чтобы у фильмов появились собственные id, и чтобы копиям было на что ссылаться в movieId
