@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using videoprokat_winform.Contexts;
 using videoprokat_winform.Models;
 using videoprokat_winform.Views;
 
@@ -11,9 +12,9 @@ namespace videoprokat_winform.Presenters
     {
         private ICustomersView _customersView;
         public VideoprokatContext _context;
-        public void Run()
+        public void Run(ICustomersView view)
         {
-            _customersView = new CustomersForm();
+            _customersView = view;
 
             _customersView.OnLoad += LoadCustomers;
             _customersView.OnAddCustomer += AddCustomer;

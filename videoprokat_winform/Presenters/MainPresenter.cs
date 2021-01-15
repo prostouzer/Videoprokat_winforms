@@ -7,6 +7,7 @@ using videoprokat_winform.Models;
 using System.Linq;
 using System.Data.Entity;
 using System.Windows.Forms;
+using videoprokat_winform.Contexts;
 
 namespace videoprokat_winform.Presenters
 {
@@ -58,7 +59,7 @@ namespace videoprokat_winform.Presenters
         public void OpenCustomers()
         {
             _customersPresenter._context = _context;
-            _customersPresenter.Run();
+            _customersPresenter.Run(new CustomersForm());
         }
 
         public void OpenMovie()

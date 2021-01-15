@@ -47,7 +47,7 @@ namespace videoprokat_winform
             this.Load += (sender, args) => OnLoad?.Invoke();
 
             newMovieButton.Click += (sender, args) => OnOpenMovie?.Invoke(); // Добавить новый фильм
-            newMovieCopyButton.Click += (sender, args) => OnOpenMovieCopy?.Invoke(Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value)); // Добавить новую копию фильма
+            newMovieCopyButton.Click += (sender, args) => OnOpenMovieCopy?.Invoke(CurrentMovieId); // Добавить новую копию фильма
             mainMenu.Items[1].Click += (sender, args) => OnOpenCustomers?.Invoke(); // "Клиенты"
             mainMenu.Items[2].Click += (sender, args) => OnOpenImportMovies?.Invoke(); // "Импорт фильмов"
             copiesContextMenu.Items[0].Click += (sender, args) => OnOpenLeasing?.Invoke(Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value)); // "Прокат"
@@ -57,7 +57,7 @@ namespace videoprokat_winform
 
             moviesDgv.CellEndEdit += (sender, args) =>
             {
-                var movieId = Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value);
+                var movieId = CurrentMovieId;
                 var title = moviesDgv.CurrentRow.Cells["Title"].Value.ToString();
                 var description = moviesDgv.CurrentRow.Cells["Description"].Value.ToString();
                 var yearReleased = Convert.ToInt32(moviesDgv.CurrentRow.Cells["YearReleased"].Value);
@@ -78,7 +78,7 @@ namespace videoprokat_winform
             copiesDgv.DataError += (sender, args) => ShowDataError();
 
             moviesDgv.SelectionChanged += (sender, args) =>
-                OnMovieSelectionChanged?.Invoke(Convert.ToInt32(moviesDgv.CurrentRow.Cells["Id"].Value));
+                OnMovieSelectionChanged?.Invoke(CurrentMovieId);
             copiesDgv.SelectionChanged += (sender, args) =>
                 OnMovieCopySelectionChanged?.Invoke(Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value));
         }

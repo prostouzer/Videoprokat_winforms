@@ -1,57 +1,73 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.DataCollection;
 using videoprokat_winform.Models;
 using videoprokat_winform.Views;
 using videoprokat_winform.Presenters;
-using Moq;
+using NSubstitute;
+using NUnit.Framework;
+using NUnit.Framework.Internal.Execution;
 
 namespace videoprokat_winform.Tests.Presenters
 {
-    [TestClass]
+    [TestFixture]
     public class CustomersPresenterTests
     {
-        [TestMethod]
-        public void CustomersPresenterOpen()
+        private ICustomersView _view;
+        private VideoprokatContext _context;
+        private CustomersPresenter _presenter;
+        [SetUp]
+        public void SetUp()
         {
-            //// arrange
-            //var customersPresenter = new CustomersPresenter();
-            //var customersViewMock = new Mock<ICustomersView>();
+            _view = Substitute.For<ICustomersView>();
+            //_context = Substitute.For<VideoprokatContext>();
+            //var customers = Substitute.For<DbSet<Customer>>();
+            //_context.Set<Customer>().Returns(customers);
+            //_context.Customers.Returns(customers); // исключение
+            
+            //_context.Customers.ToList().Returns(new List<Customer>());
 
-            ////act
-            //customersPresenter.Run();
-
-            ////assert
-            //customersViewMock.Verify();
+            _presenter = new CustomersPresenter();
+            _presenter._context = _context;
+            _presenter.Run(_view);
         }
 
-        [TestMethod]
+        [Test]
+        public void CustomersPresenterOpen()
+        {
+
+        }
+
+        [Test]
         public void CustomersLoad()
         {
             //arrange
-            var customersPresenter = new CustomersPresenter();
-            var customersViewMock = new Mock<ICustomersView>();
-
 
             //act
-            customersPresenter.LoadCustomers();
+            _presenter.LoadCustomers();
+            _view.Received().RedrawCustomers(new List<Customer>());
 
             //assert
 
+
         }
 
-        [TestMethod]
+        [Test]
         public void CustomerAdd()
         {
 
         }
 
-        [TestMethod]
+        [Test]
         public void CustomerUpdate()
         {
 
         }
 
-        [TestMethod]
+        [Test]
         public void CustomerSelectionChanged()
         {
 

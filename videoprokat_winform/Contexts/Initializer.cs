@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Data.Entity;
+using videoprokat_winform.Contexts;
 
 namespace videoprokat_winform.Models
 {
