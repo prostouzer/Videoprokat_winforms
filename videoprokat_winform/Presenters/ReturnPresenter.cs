@@ -7,7 +7,7 @@ using videoprokat_winform.Views;
 
 namespace videoprokat_winform.Presenters
 {
-    class ReturnPresenter
+    public class ReturnPresenter
     {
         private IReturnView _returnView;
         public VideoprokatContext _context;

@@ -7,7 +7,7 @@ using videoprokat_winform.Views;
 
 namespace videoprokat_winform.Presenters
 {
-    class CustomersPresenter
+    public class CustomersPresenter
     {
         private ICustomersView _customersView;
         public VideoprokatContext _context;
@@ -18,14 +18,14 @@ namespace videoprokat_winform.Presenters
             _customersView.OnLoad += LoadCustomers;
             _customersView.OnAddCustomer += AddCustomer;
 
-            _customersView.OnCustomerSelectionChanged += RedrawLeasings;
+            _customersView.OnCustomerSelectionChanged += CustomerSelectionChanged;
 
             _customersView.Show();
         }
 
         public void LoadCustomers()
         {
-            RedrawCustomers();
+            _customersView.RedrawCustomers(_context.Customers.ToList());
 
             _customersView.OnUpdateCustomer += UpdateCustomer;
         }
@@ -47,12 +47,8 @@ namespace videoprokat_winform.Presenters
 
             _context.SaveChanges();
         }
-        public void RedrawCustomers()
-        {
-            _customersView.RedrawCustomers(_context.Customers.ToList());
-        }
 
-        public void RedrawLeasings(int customerId)
+        public void CustomerSelectionChanged(int customerId)
         {
             List<Leasing> leasings = _context.LeasedCopies.Where(l => l.CustomerId == customerId).ToList();
             List<MovieOriginal> movies = _context.MoviesOriginal.ToList();

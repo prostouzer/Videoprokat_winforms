@@ -5,7 +5,7 @@ using videoprokat_winform.Models;
 
 namespace videoprokat_winform.Views
 {
-    interface IImportMoviesView : IView
+    public interface IImportMoviesView : IView
     {
         event Action OnSelectNewFile;
         event Action OnUploadMovies;

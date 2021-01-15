@@ -8,7 +8,7 @@ using videoprokat_winform.Models;
 
 namespace videoprokat_winform.Views
 {
-    interface IMainView : IView
+    public interface IMainView : IView
     {
         int CurrentMovieId { get; }
 

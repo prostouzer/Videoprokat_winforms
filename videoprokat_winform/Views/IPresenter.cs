@@ -5,7 +5,7 @@ using videoprokat_winform.Models;
 
 namespace videoprokat_winform.Views
 {
-    interface IPresenter
+    public interface IPresenter
     {
         void Run();
     }

@@ -7,7 +7,7 @@ using videoprokat_winform.Views;
 
 namespace videoprokat_winform.Presenters
 {
-    class ImportMoviesPresenter
+    public class ImportMoviesPresenter
     {
         private IImportMoviesView _importMoviesView;
         public VideoprokatContext _context;

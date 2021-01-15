@@ -5,7 +5,7 @@ using System.Text;
 
 namespace videoprokat_winform.Views
 {
-    interface IView
+    public interface IView
     {
         void Show();
         void Close();

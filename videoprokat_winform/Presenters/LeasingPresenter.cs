@@ -7,7 +7,7 @@ using videoprokat_winform.Views;
 
 namespace videoprokat_winform.Presenters
 {
-    class LeasingPresenter
+    public class LeasingPresenter
     {
         private ILeasingView _leasingView;
         public VideoprokatContext _context;

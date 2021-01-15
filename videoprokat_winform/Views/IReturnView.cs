@@ -5,7 +5,7 @@ using videoprokat_winform.Models;
 
 namespace videoprokat_winform.Views
 {
-    interface IReturnView : IView
+    public interface IReturnView : IView
     {
         MovieOriginal CurrentMovie { get; set; }
         MovieCopy CurrentMovieCopy { get; set; }

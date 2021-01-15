@@ -5,7 +5,7 @@ using videoprokat_winform.Models;
 
 namespace videoprokat_winform.Views
 {
-    interface IMovieCopyView : IView
+    public interface IMovieCopyView : IView
     {
         MovieOriginal CurrentMovie { get; set; }
         event Action<MovieCopy> OnAddMovieCopy;

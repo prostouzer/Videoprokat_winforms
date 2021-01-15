@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace videoprokat_winform.Presenters
 {
-    class MainPresenter : IPresenter
+    public class MainPresenter : IPresenter
     {
         private readonly VideoprokatContext _context = new VideoprokatContext();
 

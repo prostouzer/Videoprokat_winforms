@@ -5,7 +5,7 @@ using videoprokat_winform.Models;
 
 namespace videoprokat_winform.Views
 {
-    interface ICustomersView : IView
+    public interface ICustomersView : IView
     {
         event Action OnLoad;
         event Action<Customer> OnAddCustomer;

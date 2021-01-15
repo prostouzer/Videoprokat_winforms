@@ -6,7 +6,7 @@ using videoprokat_winform.Views;
 
 namespace videoprokat_winform.Presenters
 {
-    class MovieCopyPresenter
+    public class MovieCopyPresenter
     {
         private IMovieCopyView _movieCopyView;
         public VideoprokatContext _context;
