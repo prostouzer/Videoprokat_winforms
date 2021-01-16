@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using videoprokat_winform.Models;
 
 namespace videoprokat_winform.Views
@@ -24,8 +26,8 @@ namespace videoprokat_winform.Views
         event Action<int, MovieCopy> OnUpdateMovieCopy;
 
         event Action OnLoad;
-        void RedrawMovies(List<MovieOriginal> moviesList);
-        void RedrawCopies(List<MovieCopy> movieCopiesList);
-        void RedrawLeasings(List<Leasing> leasingsList, List<Customer> customersList); // второй лист клиентов для того, чтобы отображать еще CustomerName на выводе (исп. join)
+        void RedrawMovies(IQueryable<MovieOriginal> moviesList);
+        void RedrawCopies(IQueryable<MovieCopy> movieCopiesList);
+        void RedrawLeasings(IQueryable<Leasing> leasingsList, DbSet<Customer> customersList); // второй лист клиентов для того, чтобы отображать еще CustomerName на выводе (исп. join)
     }
 }

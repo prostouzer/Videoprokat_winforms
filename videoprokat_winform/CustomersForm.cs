@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Windows.Forms;
 using videoprokat_winform.Models;
 using System.Linq;
@@ -60,8 +61,9 @@ namespace videoprokat_winform
             customerNameTextBox.Text = "";
             return false;
         }
-        public void RedrawCustomers(List<Customer> customers)
+        public void RedrawCustomers(DbSet<Customer> customersDbSet)
         {
+            var customers = customersDbSet.ToList();
             BeginInvoke(new Action(() =>
             {
                 customersDgv.DataSource = customers;
@@ -78,8 +80,12 @@ namespace videoprokat_winform
             }));
         }
 
-        public void RedrawLeasings(List<Leasing> leasings, List<MovieOriginal> movies, List<MovieCopy> movieCopies)
+        public void RedrawLeasings(IQueryable<Leasing> leasingsIQueryable, DbSet<MovieOriginal> moviesDbSet, DbSet<MovieCopy> movieCopiesDbSet)
         {
+            var leasings = leasingsIQueryable.ToList();
+            var movies = moviesDbSet.ToList();
+            var movieCopies = movieCopiesDbSet.ToList();
+
             var currentCustomerId = Convert.ToInt32(customersDgv.CurrentRow.Cells["Id"].Value);
             var leasedByCustomer = from leasing in leasings
                                    where leasing.CustomerId == currentCustomerId

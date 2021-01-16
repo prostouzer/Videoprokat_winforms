@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using videoprokat_winform.Models;
 
 namespace videoprokat_winform.Views
@@ -12,7 +14,7 @@ namespace videoprokat_winform.Views
         event Action<int> OnCustomerSelectionChanged;
 
         bool ConfirmNewCustomer();
-        void RedrawLeasings(List<Leasing> leasings, List<MovieOriginal> movies, List<MovieCopy> movieCopies);
-        void RedrawCustomers(List<Customer> customers);
+        void RedrawLeasings(IQueryable<Leasing> leasingsDbSet, DbSet<MovieOriginal> moviesDbSet, DbSet<MovieCopy> movieCopiesDbSet);
+        void RedrawCustomers(DbSet<Customer> customersDbSet);
     }
 }

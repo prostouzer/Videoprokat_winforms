@@ -58,29 +58,29 @@ namespace videoprokat_winform.Presenters
         public void OpenMovie()
         {
             _moviePresenter.Run(_context);
-            _mainView.RedrawMovies(_context.MoviesOriginal.ToList());
+            _mainView.RedrawMovies(_context.MoviesOriginal);
         }
 
         public void OpenMovieCopy(int movieId)
         {
-            var movie = _context.MoviesOriginal.First(m => m.Id == movieId);
+            var movie = _context.MoviesOriginal.Single(m => m.Id == movieId);
             _movieCopyPresenter.Run(movie, _context);
 
-            var copiesList = _context.MoviesCopies.Where(c => c.MovieId == _mainView.CurrentMovieId).ToList();
+            var copiesList = _context.MoviesCopies.Where(c => c.MovieId == _mainView.CurrentMovieId);
             _mainView.RedrawCopies(copiesList);
         }
 
         public void OpenLeasing(int movieCopyId)
         {
-            var movieCopy = _context.MoviesCopies.First(c => c.Id == movieCopyId);
-            var movie = _context.MoviesOriginal.First(m => m.Id == movieCopy.MovieId);
+            var movieCopy = _context.MoviesCopies.Single(c => c.Id == movieCopyId);
+            var movie = _context.MoviesOriginal.Single(m => m.Id == movieCopy.MovieId);
             _leasingPresenter.Run(movie, movieCopy, _context);
 
-            var movieCopies = _context.MoviesCopies.Where(c => c.MovieId == movie.Id).ToList();
+            var movieCopies = _context.MoviesCopies.Where(c => c.MovieId == movie.Id);
             _mainView.RedrawCopies(movieCopies);
 
-            var leasings = _context.LeasedCopies.Where(l => l.MovieCopyId == movieCopy.Id).ToList();
-            var customers = _context.Customers.ToList();
+            var leasings = _context.LeasedCopies.Where(l => l.MovieCopyId == movieCopy.Id);
+            var customers = _context.Customers;
             _mainView.RedrawLeasings(leasings, customers);
         }
 
@@ -88,22 +88,22 @@ namespace videoprokat_winform.Presenters
         {
             _importMoviesPresenter.Run(_context);
 
-            _mainView.RedrawMovies(_context.MoviesOriginal.ToList());
+            _mainView.RedrawMovies(_context.MoviesOriginal);
         }
 
         public void OpenReturn(int leasingId)
         {
             _returnPresenter.Run(leasingId, _context);
 
-            var copiesList = _context.MoviesCopies.Where(c => c.MovieId == _mainView.CurrentMovieId).ToList();
+            var copiesList = _context.MoviesCopies.Where(c => c.MovieId == _mainView.CurrentMovieId);
             _mainView.RedrawCopies(copiesList);
 
         }
 
         public void LoadMain()
         {
-            var moviesList = _context.MoviesOriginal.ToList();
-            if (moviesList.Count > 0) _mainView.RedrawMovies(_context.MoviesOriginal.ToList());
+            var moviesList = _context.MoviesOriginal;
+            if (moviesList.Any()) _mainView.RedrawMovies(_context.MoviesOriginal);
 
             _mainView.OnUpdateMovie += UpdateMovie;
             _mainView.OnUpdateMovieCopy += UpdateMovieCopy; // из конструктора выдает ошибку null reference
@@ -111,48 +111,48 @@ namespace videoprokat_winform.Presenters
 
         public void FilterMovies(string filter)
         {
-            var filteredMovies = _context.MoviesOriginal.Where(m => m.Title.Contains(filter)).ToList();
+            var filteredMovies = _context.MoviesOriginal.Where(m => m.Title.Contains(filter));
             if (filteredMovies.Any() && filter != "")
             {
                 _mainView.RedrawMovies(filteredMovies);
             }
             else
             {
-                _mainView.RedrawMovies(_context.MoviesOriginal.ToList());
+                _mainView.RedrawMovies(_context.MoviesOriginal);
             }
         }
 
         public void UpdateMovie(int movieId, MovieOriginal updatedMovie)
         {
-            var movie = _context.MoviesOriginal.First(m => m.Id == movieId);
+            var movie = _context.MoviesOriginal.Single(m => m.Id == movieId);
             movie = updatedMovie;
 
             _context.SaveChanges();
 
-            _mainView.RedrawMovies(_context.MoviesOriginal.ToList());
+            _mainView.RedrawMovies(_context.MoviesOriginal);
         }
 
         public void UpdateMovieCopy(int movieCopyId, MovieCopy updatedMovieCopy)
         {
-            var copy = _context.MoviesCopies.First(c => c.Id == movieCopyId);
+            var copy = _context.MoviesCopies.Single(c => c.Id == movieCopyId);
             copy = updatedMovieCopy;
 
             _context.SaveChanges();
 
-            var copiesList = _context.MoviesCopies.Where(c => c.MovieId == copy.MovieId).ToList();
+            var copiesList = _context.MoviesCopies.Where(c => c.MovieId == copy.MovieId);
             _mainView.RedrawCopies(copiesList);
         }
 
         public void MovieSelectionChanged(int movieId) // Поменяли фильм, отрисовываем его копии
         {
-            var movieCopies = _context.MoviesCopies.Where(c => c.MovieId == movieId).ToList();
+            var movieCopies = _context.MoviesCopies.Where(c => c.MovieId == movieId);
             _mainView.RedrawCopies(movieCopies); 
         }
 
         public void MovieCopySelectionChanged(int movieCopyId) // Поменяли копию, отрисовываем ее аренды (прокаты)
         {
-            var leasings = _context.LeasedCopies.Where(l => l.MovieCopyId == movieCopyId).ToList();
-            var customers = _context.Customers.ToList();
+            var leasings = _context.LeasedCopies.Where(l => l.MovieCopyId == movieCopyId);
+            var customers = _context.Customers;
             _mainView.RedrawLeasings(leasings, customers);
         }
     }

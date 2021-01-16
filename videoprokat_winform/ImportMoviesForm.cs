@@ -45,7 +45,7 @@ namespace videoprokat_winform
 
         public void RedrawMovies(List<MovieOriginal> movies)
         {
-            if (movies.Count > 0)
+            if (movies.Any())
             {
                 uploadMoviesButton.Enabled = true;
                 foreach (var item in movies.Select(movie => new ListViewItem

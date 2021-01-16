@@ -15,10 +15,10 @@ namespace videoprokat_winform.Presenters
 
             _returnView = new ReturnForm();
 
-            var leasing = _context.LeasedCopies.First(l => l.Id == leasingId);
-            var copy = _context.MoviesCopies.First(c => c.Id == leasing.MovieCopyId);
-            var movie = _context.MoviesOriginal.First(m => m.Id == copy.MovieId);
-            var customer = _context.Customers.First(c => c.Id == leasing.CustomerId);
+            var leasing = _context.LeasedCopies.Single(l => l.Id == leasingId);
+            var copy = _context.MoviesCopies.Single(c => c.Id == leasing.MovieCopyId);
+            var movie = _context.MoviesOriginal.Single(m => m.Id == copy.MovieId);
+            var customer = _context.Customers.Single(c => c.Id == leasing.CustomerId);
 
             _returnView.CurrentLeasing = leasing;
             _returnView.CurrentMovieCopy = copy;

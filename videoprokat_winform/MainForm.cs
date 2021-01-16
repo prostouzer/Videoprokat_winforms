@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Windows.Forms;
 using videoprokat_winform.Models;
@@ -81,11 +82,12 @@ namespace videoprokat_winform
             MessageBox.Show("Неправильный формат данных");
         }
 
-        public void RedrawMovies(List<MovieOriginal> moviesList)
+        public void RedrawMovies(IQueryable<MovieOriginal> moviesListDbSet)
         {
+            var movies = moviesListDbSet.ToList();
             BeginInvoke(new Action(() => // без this.BeingInvoke ошибка reentrant call to SetCurrentCellAddressCore (решение https://stackoverflow.com/questions/27626158/reentrant-call-to-setcurrentcelladdresscore-in-event-handlers-only-where-cel)
             {
-                moviesDgv.DataSource = moviesList;
+                moviesDgv.DataSource = movies;
 
                 moviesDgv.Columns["Id"].ReadOnly = true;
                 moviesDgv.Columns["Copies"].Visible = false;
@@ -104,11 +106,12 @@ namespace videoprokat_winform
             }));
         }
 
-        public void RedrawCopies(List<MovieCopy> movieCopiesList)
+        public void RedrawCopies(IQueryable<MovieCopy> movieCopiesIQueryable)
         {
+            var movieCopies = movieCopiesIQueryable.ToList();
             BeginInvoke(new Action(() =>
             {
-                copiesDgv.DataSource = movieCopiesList;
+                copiesDgv.DataSource = movieCopies;
 
                 copiesDgv.Columns["Id"].ReadOnly = true;
                 copiesDgv.Columns["Available"].ReadOnly = true;
@@ -125,15 +128,14 @@ namespace videoprokat_winform
                 copiesDgv.Columns["Available"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 copiesDgv.Columns["PricePerDay"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
-                if (movieCopiesList.Count == 0
-                ) // нет копий вообще - очищаем список Leasing'ов. Иначе сохраняются прокаты последнего выбранного фильма. Сильно костыльно?
+                if (movieCopies.Count == 0) // нет копий вообще - очищаем список Leasing'ов. Иначе сохраняются прокаты последнего выбранного фильма. Сильно костыльно?
                 {
                     leasingsDgv.DataSource = null;
                 }
             }));
         }
 
-        public void RedrawLeasings(List<Leasing> leasingsList, List<Customer> customers)
+        public void RedrawLeasings(IQueryable<Leasing> leasingsList, DbSet<Customer> customers)
         {
             var currentMovieCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
             var movieCopyLeasingInfo =

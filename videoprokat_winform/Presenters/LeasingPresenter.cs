@@ -20,7 +20,7 @@ namespace videoprokat_winform.Presenters
                 CurrentMovieCopy = currentMovieCopy
             };
 
-            _leasingView.RedrawCustomers(new List<Customer>(_context.Customers.ToList()));
+            _leasingView.RedrawCustomers(_context.Customers);
 
             _leasingView.OnLeaseMovieCopy += AddLeasing;
 
@@ -30,7 +30,7 @@ namespace videoprokat_winform.Presenters
         public void AddLeasing(Leasing leasing)
         {
             if (!_leasingView.ConfirmNewLeasing()) return;
-            var movieCopy = _context.MoviesCopies.First(c => c.Id == leasing.MovieCopyId);
+            var movieCopy = _context.MoviesCopies.Single(c => c.Id == leasing.MovieCopyId);
             movieCopy.Available = false;
             _context.LeasedCopies.Add(leasing);
             _context.SaveChanges();

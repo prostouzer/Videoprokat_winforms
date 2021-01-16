@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using System.Windows.Forms;
 using videoprokat_winform.Models;
 using videoprokat_winform.Views;
@@ -62,8 +64,9 @@ namespace videoprokat_winform
             return false;
         }
 
-        public void RedrawCustomers(List<Customer> customers)
+        public void RedrawCustomers(DbSet<Customer> customersDbSet)
         {
+            var customers = customersDbSet.ToList();
             customersComboBox.DataSource = customers;
             customersComboBox.DisplayMember = "Name";
             customersComboBox.ValueMember = "Id";

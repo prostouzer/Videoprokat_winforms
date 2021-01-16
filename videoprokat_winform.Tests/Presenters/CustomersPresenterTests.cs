@@ -10,6 +10,7 @@ using videoprokat_winform.Presenters;
 using NSubstitute;
 using NUnit.Framework;
 using NUnit.Framework.Internal.Execution;
+using videoprokat_winform.Contexts;
 
 namespace videoprokat_winform.Tests.Presenters
 {
@@ -22,17 +23,17 @@ namespace videoprokat_winform.Tests.Presenters
         [SetUp]
         public void SetUp()
         {
-            _view = Substitute.For<ICustomersView>();
-            //_context = Substitute.For<VideoprokatContext>();
-            //var customers = Substitute.For<DbSet<Customer>>();
-            //_context.Set<Customer>().Returns(customers);
-            //_context.Customers.Returns(customers); // исключение
+            //_view = Substitute.For<ICustomersView>();
+            ////_context = Substitute.For<VideoprokatContext>();
+            ////var customers = Substitute.For<DbSet<Customer>>();
+            ////_context.Set<Customer>().Returns(customers);
+            ////_context.Customers.Returns(customers); // исключение
             
-            //_context.Customers.ToList().Returns(new List<Customer>());
+            ////_context.Customers.ToList().Returns(new List<Customer>());
 
-            _presenter = new CustomersPresenter();
-            _presenter._context = _context;
-            _presenter.Run(_view);
+            //_presenter = new CustomersPresenter();
+            //_presenter._context = _context;
+            //_presenter.Run(_view);
         }
 
         [Test]
@@ -44,13 +45,13 @@ namespace videoprokat_winform.Tests.Presenters
         [Test]
         public void CustomersLoad()
         {
-            //arrange
+        //    //arrange
 
-            //act
-            _presenter.LoadCustomers();
-            _view.Received().RedrawCustomers(new List<Customer>());
+        //    //act
+        //    _presenter.LoadCustomers();
+        //    _view.Received().RedrawCustomers(new List<Customer>());
 
-            //assert
+        //    //assert
 
 
         }

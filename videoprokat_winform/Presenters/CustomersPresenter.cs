@@ -24,7 +24,7 @@ namespace videoprokat_winform.Presenters
 
         public void LoadCustomers()
         {
-            _customersView.RedrawCustomers(_context.Customers.ToList());
+            _customersView.RedrawCustomers(_context.Customers);
 
             _customersView.OnUpdateCustomer += UpdateCustomer;
         }
@@ -34,12 +34,12 @@ namespace videoprokat_winform.Presenters
             if (!_customersView.ConfirmNewCustomer()) return;
             _context.Customers.Add(customer);
             _context.SaveChanges();
-            _customersView.RedrawCustomers(_context.Customers.ToList());
+            _customersView.RedrawCustomers(_context.Customers);
         }
 
         public void UpdateCustomer(int customerId, Customer updatedCustomer)
         {
-            var customer = _context.Customers.First(c => c.Id == customerId);
+            var customer = _context.Customers.Single(c => c.Id == customerId);
             customer = updatedCustomer;
 
             _context.SaveChanges();
@@ -47,9 +47,9 @@ namespace videoprokat_winform.Presenters
 
         public void CustomerSelectionChanged(int customerId)
         {
-            var leasings = _context.LeasedCopies.Where(l => l.CustomerId == customerId).ToList();
-            var movies = _context.MoviesOriginal.ToList();
-            var movieCopies = _context.MoviesCopies.ToList();
+            var leasings = _context.LeasedCopies.Where(l => l.CustomerId == customerId);
+            var movies = _context.MoviesOriginal;
+            var movieCopies = _context.MoviesCopies;
 
             _customersView.RedrawLeasings(leasings, movies, movieCopies);
         }
