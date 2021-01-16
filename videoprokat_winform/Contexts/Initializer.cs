@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Data.Entity;
-using videoprokat_winform.Contexts;
+﻿using System.Data.Entity;
+using videoprokat_winform.Models;
 
-namespace videoprokat_winform.Models
+namespace videoprokat_winform.Contexts
 {
     //class Initializer : DropCreateDatabaseAlways<VideoprokatContext>
     class Initializer : CreateDatabaseIfNotExists<VideoprokatContext>

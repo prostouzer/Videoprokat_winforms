@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.Collections.Generic;
 using videoprokat_winform.Views;
 using videoprokat_winform.Models;
 using System.Linq;
-using System.Data.Entity;
-using System.Windows.Forms;
 using videoprokat_winform.Contexts;
 
 namespace videoprokat_winform.Presenters
@@ -118,7 +113,7 @@ namespace videoprokat_winform.Presenters
         public void FilterMovies(string filter)
         {
             List<MovieOriginal> filteredMovies = _context.MoviesOriginal.Where(m => m.Title.Contains(filter)).ToList();
-            if (filteredMovies.Count() > 0 && filter != "")
+            if (filteredMovies.Any() && filter != "")
             {
                 _mainView.RedrawMovies(filteredMovies);
             }

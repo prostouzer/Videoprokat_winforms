@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.DirectoryServices.ActiveDirectory;
-using System.Text;
-
-namespace videoprokat_winform.Views
+﻿namespace videoprokat_winform.Views
 {
     public interface IView
     {

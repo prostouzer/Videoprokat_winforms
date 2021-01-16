@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-
-namespace videoprokat_winform.Models
+﻿namespace videoprokat_winform.Models
 {
     public class Customer
     {

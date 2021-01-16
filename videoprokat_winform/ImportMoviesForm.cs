@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using videoprokat_winform.Models;
-using System.IO;
 using videoprokat_winform.Views;
 
 namespace videoprokat_winform
