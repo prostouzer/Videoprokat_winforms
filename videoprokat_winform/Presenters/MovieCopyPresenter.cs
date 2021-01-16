@@ -12,9 +12,7 @@ namespace videoprokat_winform.Presenters
         {
             _context = context;
 
-            _movieCopyView = new MovieCopyForm();
-
-            _movieCopyView.CurrentMovie = movie;
+            _movieCopyView = new MovieCopyForm {CurrentMovie = movie};
 
             _movieCopyView.OnAddMovieCopy += AddMovieCopy;
 
@@ -23,13 +21,11 @@ namespace videoprokat_winform.Presenters
 
         public void AddMovieCopy(MovieCopy movieCopy)
         {
-            if (_movieCopyView.ConfirmNewMovieCopy())
-            {
-                _context.MoviesCopies.Add(movieCopy);
-                _context.SaveChanges();
+            if (!_movieCopyView.ConfirmNewMovieCopy()) return;
+            _context.MoviesCopies.Add(movieCopy);
+            _context.SaveChanges();
 
-                _movieCopyView.Close();
-            }
+            _movieCopyView.Close();
         }
     }
 }

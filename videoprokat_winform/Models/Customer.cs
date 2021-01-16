@@ -2,9 +2,9 @@
 {
     public class Customer
     {
-        private float defaultRating = 100;
+        private const float defaultRating = 100;
+        private float _rating;
 
-        float _rating;
         public int Id { get; set; }
         public string Name { get; set; }
         public float Rating
@@ -27,7 +27,7 @@
             }
         }
 
-        private Customer(){} // для чтения для Entity Framework; private не даст вызвать пустой конструктор из кода
+        private Customer() { } // для чтения для Entity Framework; private не даст вызвать пустой конструктор из кода
         public Customer(string name)
         {
             Name = name;

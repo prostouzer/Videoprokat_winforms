@@ -7,7 +7,7 @@ namespace videoprokat_winform.Models
         public int Id { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime ExpectedEndDate { get; set; }
-        public Nullable<DateTime> ReturnDate { get; set; }
+        public DateTime? ReturnDate { get; set; }
         public decimal TotalPrice { get; set; }
 
         public int MovieCopyId { get; set; }
@@ -35,18 +35,18 @@ namespace videoprokat_winform.Models
             MovieCopy.Available = true;
             ReturnDate = ExpectedEndDate;
         }
-        public void ReturnDelayed(DateTime leasingReturnDate, decimal fineMultiplier = 2) // multiplier > 1 
+        public void ReturnDelayed(DateTime leasingReturnDate, decimal fineMultiplier = 2) // fineMultiplier должен быть > 1
         {
-            double delayedDaysDiff = (leasingReturnDate.Date - ExpectedEndDate.Date).TotalDays;
-            decimal totalPriceChange = (MovieCopy.PricePerDay * (decimal)delayedDaysDiff) * fineMultiplier; // getting MORE money from leasing
+            var delayedDaysDiff = (leasingReturnDate.Date - ExpectedEndDate.Date).TotalDays;
+            var totalPriceChange = MovieCopy.PricePerDay * (decimal)delayedDaysDiff * fineMultiplier; // получаем БОЛЬШЕ денег за прокат (т.к. вернули позже)
             TotalPrice += totalPriceChange;
             MovieCopy.Available = true;
             ReturnDate = leasingReturnDate;
         }
         public void ReturnEarly(DateTime leasingReturnDate)
         {
-            double daysDiff = (ExpectedEndDate.Date - leasingReturnDate.Date).TotalDays;
-            decimal totalPriceChange = MovieCopy.PricePerDay * (decimal)daysDiff; // getting LESS money from leasing
+            var daysDiff = (ExpectedEndDate.Date - leasingReturnDate.Date).TotalDays;
+            var totalPriceChange = MovieCopy.PricePerDay * (decimal)daysDiff; // получаем МЕНЬШЕ денег за прокат (т.к. вернули раньше)
             TotalPrice -= totalPriceChange;
             MovieCopy.Available = true;
             ReturnDate = leasingReturnDate;

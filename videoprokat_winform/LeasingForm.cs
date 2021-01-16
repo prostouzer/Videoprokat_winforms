@@ -9,7 +9,6 @@ namespace videoprokat_winform
     public partial class LeasingForm : Form, ILeasingView
     {
         public MovieOriginal CurrentMovie { get; set; }
-
         public MovieCopy CurrentMovieCopy { get; set; }
 
         public event Action<Leasing> OnLeaseMovieCopy;
@@ -25,7 +24,7 @@ namespace videoprokat_winform
                 var customerId = Convert.ToInt32(customersComboBox.SelectedValue);
                 var movieCopyId = CurrentMovieCopy.Id;
                 var pricePerDay = CurrentMovieCopy.PricePerDay;
-                Leasing leasing = new Leasing(startDate, endDate, customerId, movieCopyId, pricePerDay);
+                var leasing = new Leasing(startDate, endDate, customerId, movieCopyId, pricePerDay);
                 OnLeaseMovieCopy?.Invoke(leasing);
             };
         }
@@ -41,9 +40,9 @@ namespace videoprokat_winform
             {
                 if (startDatePicker.Value.Date < endDatePicker.Value.Date)
                 {
-                    Leasing leasing = new Leasing(startDatePicker.Value.Date, endDatePicker.Value.Date, Convert.ToInt32(customersComboBox.SelectedValue),
+                    var leasing = new Leasing(startDatePicker.Value.Date, endDatePicker.Value.Date, Convert.ToInt32(customersComboBox.SelectedValue),
                                         CurrentMovieCopy.Id, CurrentMovieCopy.PricePerDay);
-                    DialogResult result = MessageBox.Show($"Прокат {CurrentMovie.Title}, {CurrentMovieCopy.Commentary} " +
+                    var result = MessageBox.Show($"Прокат {CurrentMovie.Title}, {CurrentMovieCopy.Commentary} " +
                         $"с {startDatePicker.Value.Date} по {endDatePicker.Value.Date} за {leasing.TotalPrice}?", "Прокат", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
@@ -81,8 +80,8 @@ namespace videoprokat_winform
 
         private void customersComboBox_Format(object sender, ListControlConvertEventArgs e)
         {
-            string id = (((Customer)e.ListItem).Id).ToString();
-            string name = ((Customer)e.ListItem).Name;
+            var id = ((Customer)e.ListItem).Id.ToString();
+            var name = ((Customer)e.ListItem).Name;
             e.Value = id + ", " + name;
         }
 
@@ -100,7 +99,7 @@ namespace videoprokat_winform
         {
             if (endDatePicker.Value.Date > startDatePicker.Value.Date)
             {
-                decimal price = (int)((endDatePicker.Value.Date - startDatePicker.Value.Date).TotalDays) *
+                var price = (int)(endDatePicker.Value.Date - startDatePicker.Value.Date).TotalDays *
                                 CurrentMovieCopy.PricePerDay;
                 priceLabel.Text = "Цена: " + price;
             }

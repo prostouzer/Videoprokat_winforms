@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using videoprokat_winform.Models;
 using videoprokat_winform.Views;
@@ -25,7 +26,7 @@ namespace videoprokat_winform
 
         public bool SkipWronglyDeclaredMovie(string[] movieValues)
         {
-            DialogResult result = MessageBox.Show($"Неверно объявлен фильм: {string.Join(", ", movieValues)}. \r Продолжить?", "Ошибка", MessageBoxButtons.YesNo);
+            var result = MessageBox.Show($"Неверно объявлен фильм: {string.Join(", ", movieValues)}. \r Продолжить?", "Ошибка", MessageBoxButtons.YesNo);
             if (result == DialogResult.No)
             {
                 return false;
@@ -36,14 +37,10 @@ namespace videoprokat_winform
 
         public string ChooseFilePath()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Текстовый файл (*.txt)|*.txt";
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                moviesListView.Items.Clear();
-                return openFileDialog.FileName;
-            }
-            return "";
+            var openFileDialog = new OpenFileDialog {Filter = "Текстовый файл (*.txt)|*.txt"};
+            if (openFileDialog.ShowDialog() != DialogResult.OK) return "";
+            moviesListView.Items.Clear();
+            return openFileDialog.FileName;
         }
 
         public void RedrawMovies(List<MovieOriginal> movies)
@@ -51,10 +48,11 @@ namespace videoprokat_winform
             if (movies.Count > 0)
             {
                 uploadMoviesButton.Enabled = true;
-                foreach (var movie in movies)
+                foreach (var item in movies.Select(movie => new ListViewItem
                 {
-                    ListViewItem item = new ListViewItem();
-                    item.Text = $"{movie.Title}, {movie.Description}, {movie.YearReleased} года выпуска";
+                    Text = $"{movie.Title}, {movie.Description}, {movie.YearReleased} года выпуска"
+                }))
+                {
                     moviesListView.Items.Add(item);
                 }
             }
@@ -66,12 +64,8 @@ namespace videoprokat_winform
 
         public bool ConfirmUploadMovies()
         {
-            DialogResult result = MessageBox.Show("Загрузить полученные фильмы в базу данных?", "Подтверждение", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
-            {
-                return true;
-            }
-            return false;
+            var result = MessageBox.Show("Загрузить полученные фильмы в базу данных?", "Подтверждение", MessageBoxButtons.YesNo);
+            return result == DialogResult.Yes;
         }
     }
 }

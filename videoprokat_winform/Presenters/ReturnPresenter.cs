@@ -34,38 +34,32 @@ namespace videoprokat_winform.Presenters
 
         public void ReturnEarly(DateTime returnDate)
         {
-            if (_returnView.ConfirmReturnEarly())
-            {
-                var leasing = _returnView.CurrentLeasing;
-                leasing.ReturnEarly(returnDate);
+            if (!_returnView.ConfirmReturnEarly()) return;
+            var leasing = _returnView.CurrentLeasing;
+            leasing.ReturnEarly(returnDate);
 
-                _context.SaveChanges();
-                _returnView.Close();
-            }
+            _context.SaveChanges();
+            _returnView.Close();
         }
 
         public void ReturnOnTime()
         {
-            if (_returnView.ConfirmReturnOnTime())
-            {
-                var leasing = _returnView.CurrentLeasing;
-                leasing.ReturnOnTime();
+            if (!_returnView.ConfirmReturnOnTime()) return;
+            var leasing = _returnView.CurrentLeasing;
+            leasing.ReturnOnTime();
 
-                _context.SaveChanges();
-                _returnView.Close();
-            }
+            _context.SaveChanges();
+            _returnView.Close();
         }
 
         public void ReturnDelayed(DateTime returnDate, decimal fineMultiplier)
         {
-            if (_returnView.ConfirmReturnDelayed())
-            {
-                var leasing = _returnView.CurrentLeasing;
-                leasing.ReturnDelayed(returnDate, fineMultiplier);
+            if (!_returnView.ConfirmReturnDelayed()) return;
+            var leasing = _returnView.CurrentLeasing;
+            leasing.ReturnDelayed(returnDate, fineMultiplier);
 
-                _context.SaveChanges();
-                _returnView.Close();
-            }
+            _context.SaveChanges();
+            _returnView.Close();
         }
     }
 }

@@ -22,12 +22,10 @@ namespace videoprokat_winform.Presenters
 
         public void AddMovie(MovieOriginal movie)
         {
-            if (_movieView.ConfirmNewMovie())
-            {
-                _context.MoviesOriginal.Add(movie);
-                _context.SaveChanges();
-                _movieView.Close();
-            }
+            if (!_movieView.ConfirmNewMovie()) return;
+            _context.MoviesOriginal.Add(movie);
+            _context.SaveChanges();
+            _movieView.Close();
         }
     }
 }

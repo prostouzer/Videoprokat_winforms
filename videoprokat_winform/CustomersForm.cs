@@ -19,7 +19,7 @@ namespace videoprokat_winform
         {
             InitializeComponent();
 
-            this.Load += (sender, args) => OnLoad?.Invoke();
+            Load += (sender, args) => OnLoad?.Invoke();
 
             customersDgv.SelectionChanged += (sender, args) => OnCustomerSelectionChanged?.Invoke(Convert.ToInt32(customersDgv.CurrentRow.Cells["Id"].Value));
 
@@ -47,16 +47,14 @@ namespace videoprokat_winform
 
         public bool ConfirmNewCustomer()
         {
-            string customerName = customerNameTextBox.Text.Trim();
+            var customerName = customerNameTextBox.Text.Trim();
             if (customerName != "")
             {
-                DialogResult result = MessageBox.Show($"Добавить {customerName}?", "Новый клиент",
+                var result = MessageBox.Show($"Добавить {customerName}?", "Новый клиент",
                     MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
-                {
-                    customerNameTextBox.Text = "";
-                    return true;
-                }
+                if (result != DialogResult.Yes) return false;
+                customerNameTextBox.Text = "";
+                return true;
             }
             else
             {
@@ -67,7 +65,7 @@ namespace videoprokat_winform
         }
         public void RedrawCustomers(List<Customer> customers)
         {
-            this.BeginInvoke(new Action(() =>
+            BeginInvoke(new Action(() =>
             {
                 customersDgv.DataSource = customers;
 

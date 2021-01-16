@@ -7,12 +7,8 @@ namespace videoprokat_winform
 {
     public partial class MovieCopyForm : Form, IMovieCopyView
     {
-        private MovieOriginal _currentMovie;
-        public MovieOriginal CurrentMovie
-        {
-            get => _currentMovie;
-            set => _currentMovie = value;
-        }
+        public MovieOriginal CurrentMovie { get; set; }
+
         public event Action<MovieCopy> OnAddMovieCopy;
         public MovieCopyForm()
         {
@@ -20,7 +16,7 @@ namespace videoprokat_winform
 
             addMovieButton.Click += (sender, args) =>
             {
-                var movieId = _currentMovie.Id;
+                var movieId = CurrentMovie.Id;
                 var commentary = commentTextBox.Text.Trim();
                 var pricePerDay = priceNumericUpDown.Value;
                 var copy = new MovieCopy(movieId, commentary, pricePerDay);
@@ -30,7 +26,7 @@ namespace videoprokat_winform
 
         public new void Show()
         {
-            this.ShowDialog();
+            ShowDialog();
         }
 
         private void MovieCopyForm_Load(object sender, EventArgs e)
@@ -42,9 +38,8 @@ namespace videoprokat_winform
         {
             if (commentTextBox.Text.Trim() != "" && priceNumericUpDown.Value > 0)
             {
-                DialogResult dialogResult;
-                dialogResult = MessageBox.Show("Создать новую копию фильма " + CurrentMovie.Title + ", " + commentTextBox.Text.Trim() +
-                    ", с ценой " + priceNumericUpDown.Value.ToString() + " руб. за день?", "Новая копия", MessageBoxButtons.YesNo);
+                var dialogResult = MessageBox.Show("Создать новую копию фильма " + CurrentMovie.Title + ", " + commentTextBox.Text.Trim() +
+                                                            ", с ценой " + priceNumericUpDown.Value + " руб. за день?", "Новая копия", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes) 
                     return true;
             }

@@ -14,10 +14,11 @@ namespace videoprokat_winform.Presenters
         {
             _context = context;
 
-            _leasingView = new LeasingForm();
-
-            _leasingView.CurrentMovie = currentMovie;
-            _leasingView.CurrentMovieCopy = currentMovieCopy;
+            _leasingView = new LeasingForm
+            {
+                CurrentMovie = currentMovie,
+                CurrentMovieCopy = currentMovieCopy
+            };
 
             _leasingView.RedrawCustomers(new List<Customer>(_context.Customers.ToList()));
 
@@ -28,14 +29,12 @@ namespace videoprokat_winform.Presenters
 
         public void AddLeasing(Leasing leasing)
         {
-            if (_leasingView.ConfirmNewLeasing())
-            {
-                var movieCopy = _context.MoviesCopies.First(c => c.Id == leasing.MovieCopyId);
-                movieCopy.Available = false;
-                _context.LeasedCopies.Add(leasing);
-                _context.SaveChanges();
-                _leasingView.Close();
-            }
+            if (!_leasingView.ConfirmNewLeasing()) return;
+            var movieCopy = _context.MoviesCopies.First(c => c.Id == leasing.MovieCopyId);
+            movieCopy.Available = false;
+            _context.LeasedCopies.Add(leasing);
+            _context.SaveChanges();
+            _leasingView.Close();
         }
     }
 }

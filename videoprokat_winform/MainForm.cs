@@ -37,7 +37,7 @@ namespace videoprokat_winform
         {
             InitializeComponent();
 
-            this.Load += (sender, args) => OnLoad?.Invoke();
+            Load += (sender, args) => OnLoad?.Invoke();
 
             newMovieButton.Click += (sender, args) => OnOpenMovie?.Invoke(); // Добавить новый фильм
             newMovieCopyButton.Click += (sender, args) => OnOpenMovieCopy?.Invoke(CurrentMovieId); // Добавить новую копию фильма
@@ -83,7 +83,7 @@ namespace videoprokat_winform
 
         public void RedrawMovies(List<MovieOriginal> moviesList)
         {
-            this.BeginInvoke(new Action(() => // без this.BeingInvoke ошибка reentrant call to SetCurrentCellAddressCore (решение https://stackoverflow.com/questions/27626158/reentrant-call-to-setcurrentcelladdresscore-in-event-handlers-only-where-cel)
+            BeginInvoke(new Action(() => // без this.BeingInvoke ошибка reentrant call to SetCurrentCellAddressCore (решение https://stackoverflow.com/questions/27626158/reentrant-call-to-setcurrentcelladdresscore-in-event-handlers-only-where-cel)
             {
                 moviesDgv.DataSource = moviesList;
 
@@ -106,7 +106,7 @@ namespace videoprokat_winform
 
         public void RedrawCopies(List<MovieCopy> movieCopiesList)
         {
-            this.BeginInvoke(new Action(() =>
+            BeginInvoke(new Action(() =>
             {
                 copiesDgv.DataSource = movieCopiesList;
 
@@ -135,7 +135,7 @@ namespace videoprokat_winform
 
         public void RedrawLeasings(List<Leasing> leasingsList, List<Customer> customers)
         {
-            int currentMovieCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
+            var currentMovieCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
             var movieCopyLeasingInfo =
                 from leasing in leasingsList
                 where leasing.MovieCopyId == currentMovieCopyId && leasing.ReturnDate == null
@@ -163,72 +163,38 @@ namespace videoprokat_winform
 
         private void moviesDgv_SelectionChanged(object sender, EventArgs e)
         {
-            if (moviesDgv.CurrentRow != null)
-            {
-                newMovieCopyButton.Enabled = true;
-            }
-            else
-            {
-                newMovieCopyButton.Enabled = false;
-            }
+            newMovieCopyButton.Enabled = moviesDgv.CurrentRow != null;
         }
 
         private void copiesDgv_SelectionChanged(object sender, EventArgs e)
         {
-            if (copiesDgv.SelectedRows.Count > 0)
-            {
-                if ((bool)copiesDgv.CurrentRow.Cells["Available"].Value == false) // нельзя изменять цену за день если копия на данный момент в пользовании
-                {
-                    copiesDgv.Columns["PricePerDay"].ReadOnly = true;
-                }
-                else
-                {
-                    copiesDgv.Columns["PricePerDay"].ReadOnly = false;
-                }
-            }
+            if (copiesDgv.SelectedRows.Count <= 0) return;
+            copiesDgv.Columns["PricePerDay"].ReadOnly = (bool)copiesDgv.CurrentRow.Cells["Available"].Value == false;
         }
 
         private void copiesDgv_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            if (e.Button != MouseButtons.Right) return;
+            if (copiesDgv.SelectedCells.Count > 0)
             {
-                if (copiesDgv.SelectedCells.Count > 0)
-                {
-                    if ((bool)copiesDgv.CurrentRow.Cells["Available"].Value == true)
-                    {
-                        copiesContextMenu.Items[0].Enabled = true; // "Прокат"
-                    }
-                    else
-                    {
-                        copiesContextMenu.Items[0].Enabled = false; // "Прокат"
-                    }
-                }
-                else
-                {
-                    copiesContextMenu.Items[0].Enabled = false; // "Прокат"
-                }
+                copiesContextMenu.Items[0].Enabled = (bool)copiesDgv.CurrentRow.Cells["Available"].Value;
+            }
+            else
+            {
+                copiesContextMenu.Items[0].Enabled = false; // "Прокат"
             }
         }
 
         private void leasingsDgv_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            if (e.Button != MouseButtons.Right) return;
+            if (leasingsDgv.SelectedCells.Count > 0)
             {
-                if (leasingsDgv.SelectedCells.Count > 0)
-                {
-                    if ((bool)copiesDgv.CurrentRow.Cells["Available"].Value == false)
-                    {
-                        leasingContextMenu.Items[0].Enabled = true; // "Вернуть"
-                    }
-                    else
-                    {
-                        leasingContextMenu.Items[0].Enabled = false; // "Вернуть"
-                    }
-                }
-                else
-                {
-                    leasingContextMenu.Items[0].Enabled = false; // "Вернуть"
-                }
+                leasingContextMenu.Items[0].Enabled = (bool)copiesDgv.CurrentRow.Cells["Available"].Value == false;
+            }
+            else
+            {
+                leasingContextMenu.Items[0].Enabled = false; // "Вернуть"
             }
         }
     }

@@ -25,68 +25,62 @@ namespace videoprokat_winform.Presenters
 
         public void SelectNewFile()
         {
-            string path = _importMoviesView.ChooseFilePath();
+            var path = _importMoviesView.ChooseFilePath();
             ExtractMoviesFromFile(path);
 
-            _importMoviesView.RedrawMovies(moviesList);
+            _importMoviesView.RedrawMovies(_moviesList);
         }
         public void UploadMovies()
         {
-            if (_importMoviesView.ConfirmUploadMovies())
+            if (!_importMoviesView.ConfirmUploadMovies()) return;
+            foreach (var movie in _moviesList)
             {
-                foreach (var movie in moviesList)
-                {
-                    _context.MoviesOriginal.Add(movie);
-                }
-
-                _context.SaveChanges();
-                _importMoviesView.Close();
+                _context.MoviesOriginal.Add(movie);
             }
+
+            _context.SaveChanges();
+            _importMoviesView.Close();
         }
 
-        readonly List<MovieOriginal> moviesList = new List<MovieOriginal>();
+        private readonly List<MovieOriginal> _moviesList = new List<MovieOriginal>();
         private void ExtractMoviesFromFile(string path)
         {
-            moviesList.Clear();
-            bool abort = false;
-            if (path.Trim() != "")
+            _moviesList.Clear();
+            var abort = false;
+            if (path.Trim() == "") return;
+            using var reader = new StreamReader(path);
+            while (!reader.EndOfStream && !abort)
             {
-                using var reader = new StreamReader(path);
-                while (!reader.EndOfStream && !abort)
+                var line = reader.ReadLine();
+                var movies = line.Split(';');
+                foreach (var movie in movies)
                 {
-                    var line = reader.ReadLine();
-                    var movies = line.Split(';');
-                    foreach (string movie in movies)
+                    if (movie == "") continue;
+                    var movieValues = movie.Split(",,");
+
+                    try
                     {
-                        if (movie != "")
+                        var title = movieValues[0];
+                        var description = movieValues[1];
+                        var yearReleased = Convert.ToInt32(movieValues[2]);
+
+                        var newMovie = new MovieOriginal(title, description, yearReleased);
+
+                        _moviesList.Add(newMovie);
+                    }
+                    catch
+                    {
+                        if (!_importMoviesView.SkipWronglyDeclaredMovie(movieValues)) // неправильно объявлен фильм, отменяем передачу...
                         {
-                            string[] movieValues = movie.Split(",,");
-
-                            try
-                            {
-                                string title = movieValues[0];
-                                string description = movieValues[1];
-                                int yearReleased = Convert.ToInt32(movieValues[2]);
-
-                                MovieOriginal newMovie = new MovieOriginal(title, description, yearReleased);
-
-                                moviesList.Add(newMovie);
-                            }
-                            catch
-                            {
-                                if (!_importMoviesView.SkipWronglyDeclaredMovie(movieValues)) // неправильно объявлен фильм, отменяем передачу...
-                                {
-                                    abort = true;
-                                    break;
-                                }
-                            }
+                            abort = true;
+                            break;
                         }
                     }
                 }
-                if (abort)
-                {
-                    moviesList.Clear();
-                }
+            }
+            if (abort)
+            {
+                _moviesList.Clear();
             }
         }
     }

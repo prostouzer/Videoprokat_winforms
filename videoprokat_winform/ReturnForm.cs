@@ -44,33 +44,21 @@ namespace videoprokat_winform
         {
             var dialogResult = MessageBox.Show($"Возврат {CurrentMovie.Title}, {CurrentMovieCopy.Commentary}, ВЕРНУТЬ {-1 * TotalPriceChange}",
                          "Ранний возврат", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
-            {
-                return true;
-            }
-            return false;
+            return dialogResult == DialogResult.Yes;
         }
 
         public bool ConfirmReturnOnTime()
         {
             var dialogResult = MessageBox.Show($"Возврат {CurrentMovie.Title}, {CurrentMovieCopy.Commentary} в срок",
                 "Возврат в срок", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
-            {
-                return true;
-            }
-            return false;
+            return dialogResult == DialogResult.Yes;
         }
 
         public bool ConfirmReturnDelayed()
         {
             var dialogResult = MessageBox.Show($"Возврат {CurrentMovie.Title}, {CurrentMovieCopy.Commentary}, ШТРАФ {TotalPriceChange}",
                              "Поздний возврат", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
-            {
-                return true;
-            }
-            return false;
+            return dialogResult == DialogResult.Yes;
         }
 
         private decimal GetTotalPriceChangeAndDisplay()
@@ -88,7 +76,7 @@ namespace videoprokat_winform
                 totalPriceChangeLabel.Visible = true;
 
                 var daysDiff = (returnDatePicker.Value.Date - CurrentLeasing.ExpectedEndDate.Date).TotalDays;
-                var totalPriceChange = (CurrentMovieCopy.PricePerDay * (decimal)daysDiff) * FineMultiplier;// просрочили - платите больше за каждый день просрочки
+                var totalPriceChange = CurrentMovieCopy.PricePerDay * (decimal)daysDiff * FineMultiplier;// просрочили - платите больше за каждый день просрочки
                 totalPriceChangeLabel.Text = "Штраф: " + totalPriceChange;
                 return totalPriceChange;
             }
@@ -100,7 +88,7 @@ namespace videoprokat_winform
 
                 var daysDiff = (CurrentLeasing.ExpectedEndDate.Date - returnDatePicker.Value.Date).TotalDays;
                 var totalPriceChange = CurrentMovieCopy.PricePerDay * (decimal)-daysDiff; // вернули раньше - возвращай меньше
-                totalPriceChangeLabel.Text = "Возврат: " + (-1 * totalPriceChange); // -1 чтобы не было ~"Возврат -100"
+                totalPriceChangeLabel.Text = "Возврат: " + -1 * totalPriceChange; // -1 чтобы не было ~"Возврат -100"
                 return totalPriceChange;
             }
         }

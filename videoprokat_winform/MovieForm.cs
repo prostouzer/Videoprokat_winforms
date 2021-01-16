@@ -30,17 +30,8 @@ namespace videoprokat_winform
         {
             if (movieTitleTextBox.Text.Trim() != "")
             {
-                DialogResult result;
-                if (movieDescriptionTextBox.Text.Trim() != "") // сообщение с описанием фильма
-                {
-                    result = MessageBox.Show($"Добавить фильм {movieTitleTextBox.Text.Trim()}, {movieDescriptionTextBox.Text.Trim()}, {yearReleasedNumericUpDown.Value} года?",
-                        "Добавить фильм", MessageBoxButtons.YesNo);
-                }
-                else // сообщение без описания фильма, чтобы не выводил лишнюю запятую
-                {
-                    result = MessageBox.Show($"Добавить фильм {movieTitleTextBox.Text.Trim()}, {yearReleasedNumericUpDown.Value} года?",
-                        "Добавить фильм", MessageBoxButtons.YesNo);
-                }
+                var result = MessageBox.Show(movieDescriptionTextBox.Text.Trim() != "" ? $"Добавить фильм {movieTitleTextBox.Text.Trim()}, {movieDescriptionTextBox.Text.Trim()}, {yearReleasedNumericUpDown.Value} года?" 
+                    : $"Добавить фильм {movieTitleTextBox.Text.Trim()}, {yearReleasedNumericUpDown.Value} года?", "Добавить фильм", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
                     return true;
