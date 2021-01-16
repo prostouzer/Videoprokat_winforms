@@ -11,9 +11,11 @@ namespace videoprokat_winform.Presenters
     public class ReturnPresenter
     {
         private IReturnView _returnView;
-        public VideoprokatContext _context;
-        public void Run(int leasingId)
+        private VideoprokatContext _context;
+        public void Run(int leasingId, VideoprokatContext context)
         {
+            _context = context;
+
             _returnView = new ReturnForm();
 
             var leasing = _context.LeasedCopies.First(l => l.Id == leasingId);

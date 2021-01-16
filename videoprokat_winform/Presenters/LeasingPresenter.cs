@@ -11,9 +11,11 @@ namespace videoprokat_winform.Presenters
     public class LeasingPresenter
     {
         private ILeasingView _leasingView;
-        public VideoprokatContext _context;
-        public void Run(MovieOriginal currentMovie, MovieCopy currentMovieCopy)
+        private VideoprokatContext _context;
+        public void Run(MovieOriginal currentMovie, MovieCopy currentMovieCopy, VideoprokatContext context)
         {
+            _context = context;
+
             _leasingView = new LeasingForm();
 
             _leasingView.CurrentMovie = currentMovie;

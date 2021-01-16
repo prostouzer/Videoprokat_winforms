@@ -14,7 +14,7 @@ namespace videoprokat_winform.Models
         public string Name { get; set; }
         public float Rating
         {
-            get { return _rating; }
+            get => _rating;
             set
             {
                 if (value > 100)

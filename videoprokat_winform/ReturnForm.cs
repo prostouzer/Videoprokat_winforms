@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using videoprokat_winform.Models;
-using System.Linq;
 using videoprokat_winform.Views;
 
 namespace videoprokat_winform
@@ -23,7 +18,7 @@ namespace videoprokat_winform
 
         public decimal FineMultiplier { get; set; } = 2;
 
-        private decimal TotalPriceChange { get => GetTotalPriceChangeAndDisplay(); }
+        private decimal TotalPriceChange => GetTotalPriceChangeAndDisplay();
 
         public event Action<DateTime> OnReturnEarly;
         public event Action OnReturnOnTime;
@@ -47,7 +42,7 @@ namespace videoprokat_winform
 
         public bool ConfirmReturnEarly()
         {
-            var dialogResult = MessageBox.Show($"Возврат {CurrentMovie.Title}, {CurrentMovieCopy.Commentary}, ВЕРНУТЬ {(-1 * TotalPriceChange).ToString()}",
+            var dialogResult = MessageBox.Show($"Возврат {CurrentMovie.Title}, {CurrentMovieCopy.Commentary}, ВЕРНУТЬ {-1 * TotalPriceChange}",
                          "Ранний возврат", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
@@ -112,9 +107,9 @@ namespace videoprokat_winform
 
         private void ReturnForm_Load(object sender, EventArgs e)
         {
-            ownerNameLabel.Text = CurrentCustomer.Name + ", рейтинг " + CurrentCustomer.Rating.ToString();
+            ownerNameLabel.Text = CurrentCustomer.Name + ", рейтинг " + CurrentCustomer.Rating;
             movieNameLabel.Text = CurrentMovie.Title;
-            fineFormulaLabel.Text = $"Штраф = {FineMultiplier.ToString()} * цена/день * количество просроченных дней";
+            fineFormulaLabel.Text = $"Штраф = {FineMultiplier} * цена/день * количество просроченных дней";
 
             movieCommentLabel.Text = CurrentMovieCopy.Commentary;
 

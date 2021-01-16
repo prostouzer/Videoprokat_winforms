@@ -7,10 +7,21 @@ using videoprokat_winform.Views;
 
 namespace videoprokat_winform.Presenters
 {
-    public class MoviePresenter : IPresenter
+    public class MoviePresenter 
     {
         private IMovieView _movieView;
-        public VideoprokatContext _context;
+        private VideoprokatContext _context;
+
+        public void Run(VideoprokatContext context)
+        {
+            _context = context;
+
+            _movieView = new MovieForm();
+
+            _movieView.OnAddMovie += AddMovie;
+
+            _movieView.Show();
+        }
 
         public void AddMovie(MovieOriginal movie)
         {
@@ -20,14 +31,6 @@ namespace videoprokat_winform.Presenters
                 _context.SaveChanges();
                 _movieView.Close();
             }
-        }
-
-        public void Run()
-        {
-            _movieView = new MovieForm();
-            _movieView.OnAddMovie += AddMovie;
-
-            _movieView.Show();
         }
     }
 }

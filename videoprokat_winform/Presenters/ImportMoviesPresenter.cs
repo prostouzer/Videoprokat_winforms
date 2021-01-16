@@ -11,9 +11,11 @@ namespace videoprokat_winform.Presenters
     public class ImportMoviesPresenter
     {
         private IImportMoviesView _importMoviesView;
-        public VideoprokatContext _context;
-        public void Run()
+        private VideoprokatContext _context;
+        public void Run(VideoprokatContext context)
         {
+            _context = context;
+
             _importMoviesView = new ImportMoviesForm();
 
             _importMoviesView.OnSelectNewFile += SelectNewFile;
@@ -43,50 +45,48 @@ namespace videoprokat_winform.Presenters
             }
         }
 
-        List<MovieOriginal> moviesList = new List<MovieOriginal>();
+        readonly List<MovieOriginal> moviesList = new List<MovieOriginal>();
         private void ExtractMoviesFromFile(string path)
         {
             moviesList.Clear();
             bool abort = false;
             if (path.Trim() != "")
             {
-                using (var reader = new StreamReader(path))
+                using var reader = new StreamReader(path);
+                while (!reader.EndOfStream && !abort)
                 {
-                    while (!reader.EndOfStream && !abort)
+                    var line = reader.ReadLine();
+                    var movies = line.Split(';');
+                    foreach (string movie in movies)
                     {
-                        var line = reader.ReadLine();
-                        var movies = line.Split(';');
-                        foreach (string movie in movies)
+                        if (movie != "")
                         {
-                            if (movie != "")
+                            string[] movieValues = movie.Split(",,");
+
+                            try
                             {
-                                string[] movieValues = movie.Split(",,");
+                                string title = movieValues[0];
+                                string description = movieValues[1];
+                                int yearReleased = Convert.ToInt32(movieValues[2]);
 
-                                try
+                                MovieOriginal newMovie = new MovieOriginal(title, description, yearReleased);
+
+                                moviesList.Add(newMovie);
+                            }
+                            catch
+                            {
+                                if (!_importMoviesView.SkipWronglyDeclaredMovie(movieValues)) // неправильно объявлен фильм, отменяем передачу...
                                 {
-                                    string title = movieValues[0];
-                                    string description = movieValues[1];
-                                    int yearReleased = Convert.ToInt32(movieValues[2]);
-
-                                    MovieOriginal newMovie = new MovieOriginal(title, description, yearReleased);
-
-                                    moviesList.Add(newMovie);
-                                }
-                                catch
-                                {
-                                    if (!_importMoviesView.SkipWronglyDeclaredMovie(movieValues)) // неправильно объявлен фильм, отменяем передачу...
-                                    {
-                                        abort = true;
-                                        break;
-                                    }
+                                    abort = true;
+                                    break;
                                 }
                             }
                         }
                     }
-                    if (abort == true)
-                    {
-                        moviesList.Clear();
-                    }
+                }
+                if (abort)
+                {
+                    moviesList.Clear();
                 }
             }
         }

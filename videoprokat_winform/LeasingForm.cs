@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using videoprokat_winform.Models;
 using videoprokat_winform.Views;
@@ -13,20 +8,9 @@ namespace videoprokat_winform
 {
     public partial class LeasingForm : Form, ILeasingView
     {
-        private MovieOriginal _currentMovie;
-        private MovieCopy _currentMovieCopy;
+        public MovieOriginal CurrentMovie { get; set; }
 
-        public MovieOriginal CurrentMovie
-        {
-            get => _currentMovie;
-            set => _currentMovie = value;
-        }
-
-        public MovieCopy CurrentMovieCopy
-        {
-            get => _currentMovieCopy;
-            set => _currentMovieCopy = value;
-        }
+        public MovieCopy CurrentMovieCopy { get; set; }
 
         public event Action<Leasing> OnLeaseMovieCopy;
 
@@ -60,7 +44,7 @@ namespace videoprokat_winform
                     Leasing leasing = new Leasing(startDatePicker.Value.Date, endDatePicker.Value.Date, Convert.ToInt32(customersComboBox.SelectedValue),
                                         CurrentMovieCopy.Id, CurrentMovieCopy.PricePerDay);
                     DialogResult result = MessageBox.Show($"Прокат {CurrentMovie.Title}, {CurrentMovieCopy.Commentary} " +
-                        $"с {startDatePicker.Value.Date} по {endDatePicker.Value.Date} за {leasing.TotalPrice.ToString()}?", "Прокат", MessageBoxButtons.YesNo);
+                        $"с {startDatePicker.Value.Date} по {endDatePicker.Value.Date} за {leasing.TotalPrice}?", "Прокат", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
                         return true;
@@ -118,7 +102,7 @@ namespace videoprokat_winform
             {
                 decimal price = (int)((endDatePicker.Value.Date - startDatePicker.Value.Date).TotalDays) *
                                 CurrentMovieCopy.PricePerDay;
-                priceLabel.Text = "Цена: " + price.ToString();
+                priceLabel.Text = "Цена: " + price;
             }
             else
             {

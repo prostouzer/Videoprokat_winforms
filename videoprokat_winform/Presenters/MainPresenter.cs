@@ -58,22 +58,19 @@ namespace videoprokat_winform.Presenters
 
         public void OpenCustomers()
         {
-            _customersPresenter._context = _context;
-            _customersPresenter.Run(new CustomersForm());
+            _customersPresenter.Run(_context);
         }
 
         public void OpenMovie()
         {
-            _moviePresenter._context = _context;
-            _moviePresenter.Run();
+            _moviePresenter.Run(_context);
             _mainView.RedrawMovies(_context.MoviesOriginal.ToList());
         }
 
         public void OpenMovieCopy(int movieId)
         {
             var movie = _context.MoviesOriginal.First(m => m.Id == movieId);
-            _movieCopyPresenter._context = _context;
-            _movieCopyPresenter.Run(movie);
+            _movieCopyPresenter.Run(movie, _context);
 
             List<MovieCopy> copiesList = _context.MoviesCopies.Where(c => c.MovieId == _mainView.CurrentMovieId).ToList();
             _mainView.RedrawCopies(copiesList);
@@ -83,8 +80,7 @@ namespace videoprokat_winform.Presenters
         {
             var movieCopy = _context.MoviesCopies.First(c => c.Id == movieCopyId);
             var movie = _context.MoviesOriginal.First(m => m.Id == movieCopy.MovieId);
-            _leasingPresenter._context = _context;
-            _leasingPresenter.Run(movie, movieCopy);
+            _leasingPresenter.Run(movie, movieCopy, _context);
 
             List<MovieCopy> movieCopies = _context.MoviesCopies.Where(c => c.MovieId == movie.Id).ToList();
             _mainView.RedrawCopies(movieCopies);
@@ -96,16 +92,14 @@ namespace videoprokat_winform.Presenters
 
         public void OpenImportMovies()
         {
-            _importMoviesPresenter._context = _context;
-            _importMoviesPresenter.Run();
+            _importMoviesPresenter.Run(_context);
 
             _mainView.RedrawMovies(_context.MoviesOriginal.ToList());
         }
 
         public void OpenReturn(int leasingId)
         {
-            _returnPresenter._context = _context;
-            _returnPresenter.Run(leasingId);
+            _returnPresenter.Run(leasingId, _context);
 
             List<MovieCopy> copiesList = _context.MoviesCopies.Where(c => c.MovieId == _mainView.CurrentMovieId).ToList();
             _mainView.RedrawCopies(copiesList);
