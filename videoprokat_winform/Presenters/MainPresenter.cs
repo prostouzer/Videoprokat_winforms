@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using videoprokat_winform.Views;
+﻿using videoprokat_winform.Views;
 using videoprokat_winform.Models;
 using System.Linq;
 using videoprokat_winform.Contexts;

@@ -56,11 +56,8 @@ namespace videoprokat_winform
                 customerNameTextBox.Text = "";
                 return true;
             }
-            else
-            {
-                MessageBox.Show("Введите имя нового клиента");
-                customerNameTextBox.Text = "";
-            }
+            MessageBox.Show("Введите имя нового клиента");
+            customerNameTextBox.Text = "";
             return false;
         }
         public void RedrawCustomers(List<Customer> customers)
@@ -96,7 +93,7 @@ namespace videoprokat_winform
                                        StartDate = leasing.StartDate,
                                        ExpectedEndDate = leasing.ExpectedEndDate,
                                        ReturnDate = leasing.ReturnDate,
-                                       TotalPrice = leasing.TotalPrice,
+                                       TotalPrice = leasing.TotalPrice
                                    };
             leasedCopiesDgv.DataSource = leasedByCustomer.ToList();
 

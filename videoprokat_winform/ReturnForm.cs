@@ -69,7 +69,7 @@ namespace videoprokat_winform
                 returnDateLabel.ForeColor = SystemColors.ControlText;
                 return -1;
             }
-            else if (returnDatePicker.Value.Date > CurrentLeasing.ExpectedEndDate.Date) // вернули позже
+            if (returnDatePicker.Value.Date > CurrentLeasing.ExpectedEndDate.Date) // вернули позже
             {
                 returnDateLabel.ForeColor = Color.Red;
                 totalPriceChangeLabel.ForeColor = Color.Red;

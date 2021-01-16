@@ -2,7 +2,7 @@
 {
     public class Customer
     {
-        private const float defaultRating = 100;
+        private const float DefaultRating = 100;
         private float _rating;
 
         public int Id { get; set; }
@@ -31,7 +31,7 @@
         public Customer(string name)
         {
             Name = name;
-            Rating = defaultRating;
+            Rating = DefaultRating;
         }
 
         public Customer(string name, float rating)
