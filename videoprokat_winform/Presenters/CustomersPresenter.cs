@@ -7,12 +7,17 @@ namespace videoprokat_winform.Presenters
 {
     public class CustomersPresenter
     {
-        private ICustomersView _customersView;
+        private readonly ICustomersView _customersView;
         private VideoprokatContext _context;
+
+        public CustomersPresenter(ICustomersView view)
+        {
+            _customersView = view;
+        }
+
         public void Run(VideoprokatContext context)
         {
             _context = context;
-            _customersView = new CustomersForm();
 
             _customersView.OnLoad += LoadCustomers;
             _customersView.OnAddCustomer += AddCustomer;

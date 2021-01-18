@@ -9,13 +9,17 @@ namespace videoprokat_winform.Presenters
 {
     public class ImportMoviesPresenter
     {
-        private IImportMoviesView _importMoviesView;
+        private readonly IImportMoviesView _importMoviesView;
         private VideoprokatContext _context;
+
+        public ImportMoviesPresenter(IImportMoviesView view)
+        {
+            _importMoviesView = view;
+        }
+
         public void Run(VideoprokatContext context)
         {
             _context = context;
-
-            _importMoviesView = new ImportMoviesForm();
 
             _importMoviesView.OnSelectNewFile += SelectNewFile;
             _importMoviesView.OnUploadMovies += UploadMovies;

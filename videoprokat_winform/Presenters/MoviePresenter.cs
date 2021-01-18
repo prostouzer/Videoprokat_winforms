@@ -6,14 +6,17 @@ namespace videoprokat_winform.Presenters
 {
     public class MoviePresenter 
     {
-        private IMovieView _movieView;
+        private readonly IMovieView _movieView;
         private VideoprokatContext _context;
+
+        public MoviePresenter(IMovieView view)
+        {
+            _movieView = view;
+        }
 
         public void Run(VideoprokatContext context)
         {
             _context = context;
-
-            _movieView = new MovieForm();
 
             _movieView.OnAddMovie += AddMovie;
 

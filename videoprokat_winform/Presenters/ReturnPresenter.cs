@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Forms;
 using videoprokat_winform.Contexts;
 using videoprokat_winform.Views;
 
@@ -7,13 +8,17 @@ namespace videoprokat_winform.Presenters
 {
     public class ReturnPresenter
     {
-        private IReturnView _returnView;
+        private readonly IReturnView _returnView;
         private VideoprokatContext _context;
+
+        public ReturnPresenter(IReturnView view)
+        {
+            _returnView = view;
+        }
+
         public void Run(int leasingId, VideoprokatContext context)
         {
             _context = context;
-
-            _returnView = new ReturnForm();
 
             var leasing = _context.LeasedCopies.Single(l => l.Id == leasingId);
             var copy = _context.MoviesCopies.Single(c => c.Id == leasing.MovieCopyId);

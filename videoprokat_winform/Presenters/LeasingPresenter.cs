@@ -7,17 +7,20 @@ namespace videoprokat_winform.Presenters
 {
     public class LeasingPresenter
     {
-        private ILeasingView _leasingView;
+        private readonly ILeasingView _leasingView;
         private VideoprokatContext _context;
+
+        public LeasingPresenter(ILeasingView view)
+        {
+            _leasingView = view;
+        }
+
         public void Run(MovieOriginal currentMovie, MovieCopy currentMovieCopy, VideoprokatContext context)
         {
             _context = context;
 
-            _leasingView = new LeasingForm
-            {
-                CurrentMovie = currentMovie,
-                CurrentMovieCopy = currentMovieCopy
-            };
+            _leasingView.CurrentMovie = currentMovie;
+            _leasingView.CurrentMovieCopy = currentMovieCopy;
 
             _leasingView.RedrawCustomers(_context.Customers);
 
