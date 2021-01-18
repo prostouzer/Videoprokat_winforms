@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
+using videoprokat_winform.Contexts;
 using videoprokat_winform.Presenters;
 using videoprokat_winform.Views;
 
@@ -38,8 +39,10 @@ namespace videoprokat_winform
         {
             var services = new ServiceCollection();
 
+            services.AddSingleton<VideoprokatContext>();
             services.AddTransient<MainPresenter>();
-            services.AddTransient<IMainView, MainForm>(); //нужно ли? если запускается главная форма через GetService.Run ?
+
+            services.AddTransient<IMainView, MainForm>(); 
             services.AddTransient<ICustomersView, CustomersForm>();
             services.AddTransient<IImportMoviesView, ImportMoviesForm>();
             services.AddTransient<ILeasingView, LeasingForm>();
