@@ -70,11 +70,9 @@ namespace videoprokat_winform.Presenters
                     }
                     catch
                     {
-                        if (!_importMoviesView.SkipWronglyDeclaredMovie(movieValues)) // неправильно объявлен фильм, отменяем передачу...
-                        {
-                            abort = true;
-                            break;
-                        }
+                        if (_importMoviesView.SkipWronglyDeclaredMovie(movieValues)) continue;
+                        abort = true;
+                        break;
                     }
                 }
             }
