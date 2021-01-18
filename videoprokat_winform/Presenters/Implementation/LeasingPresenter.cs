@@ -8,12 +8,14 @@ namespace videoprokat_winform.Presenters.Implementation
     public class LeasingPresenter : ILeasingPresenter
     {
         private readonly ILeasingView _leasingView;
-        private VideoprokatContext _context;
+        private readonly VideoprokatContext _context;
 
         public LeasingPresenter(ILeasingView view, VideoprokatContext context)
         {
             _leasingView = view;
             _context = context;
+
+            _leasingView.OnLeaseMovieCopy += AddLeasing;
         }
 
         public void Run(MovieOriginal currentMovie, MovieCopy currentMovieCopy)
@@ -22,8 +24,6 @@ namespace videoprokat_winform.Presenters.Implementation
             _leasingView.CurrentMovieCopy = currentMovieCopy;
 
             _leasingView.RedrawCustomers(_context.Customers);
-
-            _leasingView.OnLeaseMovieCopy += AddLeasing;
 
             _leasingView.Show();
         }

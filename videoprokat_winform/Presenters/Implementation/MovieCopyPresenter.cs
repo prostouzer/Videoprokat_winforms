@@ -7,18 +7,19 @@ namespace videoprokat_winform.Presenters.Implementation
     public class MovieCopyPresenter : IMovieCopyPresenter
     {
         private readonly IMovieCopyView _movieCopyView;
-        private VideoprokatContext _context;
+        private readonly VideoprokatContext _context;
 
         public MovieCopyPresenter(IMovieCopyView view, VideoprokatContext context)
         {
             _movieCopyView = view;
             _context = context;
+
+            _movieCopyView.OnAddMovieCopy += AddMovieCopy;
         }
 
         public void Run(MovieOriginal movie)
         {
             _movieCopyView.CurrentMovie = movie;
-            _movieCopyView.OnAddMovieCopy += AddMovieCopy;
 
             _movieCopyView.Show();
         }

@@ -67,8 +67,8 @@ namespace videoprokat_winform.Presenters
             var movie = _context.MoviesOriginal.Single(m => m.Id == movieId);
             _movieCopyPresenter.Run(movie);
 
-            var copiesList = _context.MoviesCopies.Where(c => c.MovieId == _mainView.CurrentMovieId);
-            _mainView.RedrawCopies(copiesList);
+            var copies = _context.MoviesCopies.Where(c => c.MovieId == _mainView.CurrentMovieId);
+            _mainView.RedrawCopies(copies);
         }
 
         public void OpenLeasing(int movieCopyId)
@@ -96,15 +96,15 @@ namespace videoprokat_winform.Presenters
         {
             _returnPresenter.Run(leasingId);
 
-            var copiesList = _context.MoviesCopies.Where(c => c.MovieId == _mainView.CurrentMovieId);
-            _mainView.RedrawCopies(copiesList);
+            var copies = _context.MoviesCopies.Where(c => c.MovieId == _mainView.CurrentMovieId);
+            _mainView.RedrawCopies(copies);
 
         }
 
         public void LoadMain()
         {
-            var moviesList = _context.MoviesOriginal;
-            if (moviesList.Any()) _mainView.RedrawMovies(_context.MoviesOriginal);
+            var movies = _context.MoviesOriginal;
+            if (movies.Any()) _mainView.RedrawMovies(_context.MoviesOriginal);
 
             _mainView.OnUpdateMovie += UpdateMovie;
             _mainView.OnUpdateMovieCopy += UpdateMovieCopy; // из конструктора выдает ошибку null reference
@@ -143,8 +143,8 @@ namespace videoprokat_winform.Presenters
 
             _context.SaveChanges();
 
-            var copiesList = _context.MoviesCopies.Where(c => c.MovieId == copy.MovieId);
-            _mainView.RedrawCopies(copiesList);
+            var copies = _context.MoviesCopies.Where(c => c.MovieId == copy.MovieId);
+            _mainView.RedrawCopies(copies);
         }
 
         public void MovieSelectionChanged(int movieId) // Поменяли фильм, отрисовываем его копии
