@@ -5,7 +5,16 @@ using videoprokat_winform.Views;
 
 namespace videoprokat_winform.Presenters
 {
-    public class CustomersPresenter
+    public interface ICustomersPresenter
+    {
+        void Run(VideoprokatContext context);
+        void LoadCustomers();
+        void AddCustomer(Customer customer);
+        void UpdateCustomer(int customerId, Customer updatedCustomer);
+        void CustomerSelectionChanged(int customerId);
+    }
+
+    public class CustomersPresenter : ICustomersPresenter
     {
         private readonly ICustomersView _customersView;
         private VideoprokatContext _context;

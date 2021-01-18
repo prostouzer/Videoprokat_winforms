@@ -6,7 +6,15 @@ using videoprokat_winform.Views;
 
 namespace videoprokat_winform.Presenters
 {
-    public class ReturnPresenter
+    public interface IReturnPresenter
+    {
+        void Run(int leasingId, VideoprokatContext context);
+        void ReturnEarly(DateTime returnDate);
+        void ReturnOnTime();
+        void ReturnDelayed(DateTime returnDate, decimal fineMultiplier);
+    }
+
+    public class ReturnPresenter : IReturnPresenter
     {
         private readonly IReturnView _returnView;
         private VideoprokatContext _context;

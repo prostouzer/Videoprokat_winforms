@@ -7,7 +7,15 @@ using videoprokat_winform.Views;
 
 namespace videoprokat_winform.Presenters
 {
-    public class ImportMoviesPresenter
+    public interface IImportMoviesPresenter
+    {
+        void Run(VideoprokatContext context);
+        void SelectNewFile();
+        void UploadMovies();
+        void ExtractMoviesFromFile(string path);
+    }
+
+    public class ImportMoviesPresenter : IImportMoviesPresenter
     {
         private readonly IImportMoviesView _importMoviesView;
         private VideoprokatContext _context;
@@ -47,7 +55,8 @@ namespace videoprokat_winform.Presenters
         }
 
         private readonly List<MovieOriginal> _moviesList = new List<MovieOriginal>();
-        private void ExtractMoviesFromFile(string path)
+
+        public void ExtractMoviesFromFile(string path)
         {
             _moviesList.Clear();
             var abort = false;

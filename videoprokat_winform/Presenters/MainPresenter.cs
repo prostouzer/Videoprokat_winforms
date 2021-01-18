@@ -10,14 +10,14 @@ namespace videoprokat_winform.Presenters
         private readonly VideoprokatContext _context = new VideoprokatContext();
 
         private readonly IMainView _mainView;
-        private readonly MoviePresenter _moviePresenter;
-        private readonly MovieCopyPresenter _movieCopyPresenter;
-        private readonly LeasingPresenter _leasingPresenter;
-        private readonly CustomersPresenter _customersPresenter;
-        private readonly ImportMoviesPresenter _importMoviesPresenter;
-        private readonly ReturnPresenter _returnPresenter;
-        public MainPresenter(IMainView mainView, MoviePresenter moviePresenter, MovieCopyPresenter movieCopyPresenter, LeasingPresenter leasingPresenter, CustomersPresenter customersPresenter,
-            ImportMoviesPresenter importMoviesPresenter, ReturnPresenter returnPresenter)
+        private readonly IMoviePresenter _moviePresenter;
+        private readonly IMovieCopyPresenter _movieCopyPresenter;
+        private readonly ILeasingPresenter _leasingPresenter;
+        private readonly ICustomersPresenter _customersPresenter;
+        private readonly IImportMoviesPresenter _importMoviesPresenter;
+        private readonly IReturnPresenter _returnPresenter;
+        public MainPresenter(IMainView mainView, IMoviePresenter moviePresenter, IMovieCopyPresenter movieCopyPresenter, ILeasingPresenter leasingPresenter, ICustomersPresenter customersPresenter,
+            IImportMoviesPresenter importMoviesPresenter, IReturnPresenter returnPresenter)
         {
             _mainView = mainView;
             _moviePresenter = moviePresenter;

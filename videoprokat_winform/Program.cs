@@ -39,13 +39,20 @@ namespace videoprokat_winform
             var services = new ServiceCollection();
 
             services.AddTransient<MainPresenter>();
+            services.AddTransient<IMainView, MainForm>(); //нужно ли? если запускается главная форма через GetService.Run ?
             services.AddTransient<ICustomersView, CustomersForm>();
             services.AddTransient<IImportMoviesView, ImportMoviesForm>();
             services.AddTransient<ILeasingView, LeasingForm>();
-            //services.AddTransient<IMainView, MainForm>(); //нужно ли? если запускается главная форма через GetService.Run ?
             services.AddTransient<IMovieCopyView, MovieCopyForm>();
             services.AddTransient<IMovieView, MovieForm>();
             services.AddTransient<IReturnView, ReturnForm>();
+
+            services.AddTransient<ICustomersPresenter, CustomersPresenter>();
+            services.AddTransient<IImportMoviesPresenter, ImportMoviesPresenter>();
+            services.AddTransient<ILeasingPresenter, LeasingPresenter>();
+            services.AddTransient<IMovieCopyPresenter, MovieCopyPresenter>();
+            services.AddTransient<IMoviePresenter, MoviePresenter>();
+            services.AddTransient<IReturnPresenter, ReturnPresenter>();
 
             return services;
         }

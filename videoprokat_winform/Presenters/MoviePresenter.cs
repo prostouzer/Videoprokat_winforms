@@ -4,7 +4,13 @@ using videoprokat_winform.Views;
 
 namespace videoprokat_winform.Presenters
 {
-    public class MoviePresenter 
+    public interface IMoviePresenter
+    {
+        void Run(VideoprokatContext context);
+        void AddMovie(MovieOriginal movie);
+    }
+
+    public class MoviePresenter : IMoviePresenter
     {
         private readonly IMovieView _movieView;
         private VideoprokatContext _context;

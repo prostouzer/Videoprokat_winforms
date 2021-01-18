@@ -5,7 +5,13 @@ using videoprokat_winform.Views;
 
 namespace videoprokat_winform.Presenters
 {
-    public class LeasingPresenter
+    public interface ILeasingPresenter
+    {
+        void Run(MovieOriginal currentMovie, MovieCopy currentMovieCopy, VideoprokatContext context);
+        void AddLeasing(Leasing leasing);
+    }
+
+    public class LeasingPresenter : ILeasingPresenter
     {
         private readonly ILeasingView _leasingView;
         private VideoprokatContext _context;
