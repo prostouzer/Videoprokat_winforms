@@ -25,8 +25,8 @@ namespace videoprokat_winform.Views
         event Action<int, MovieCopy> OnUpdateMovieCopy;
 
         event Action OnLoad;
-        void RedrawMovies(IQueryable<MovieOriginal> moviesList);
-        void RedrawCopies(IQueryable<MovieCopy> movieCopiesList);
-        void RedrawLeasings(IQueryable<Leasing> leasingsList, DbSet<Customer> customersList); // второй лист клиентов для того, чтобы отображать еще CustomerName на выводе (исп. join)
+        void RedrawMovies(IQueryable<MovieOriginal> moviesListIQueryable);
+        void RedrawCopies(IQueryable<MovieCopy> movieCopiesIQueryable);
+        void RedrawLeasings(IQueryable<Leasing> leasingsList, IQueryable<Customer> customersList); // второй лист клиентов для того, чтобы отображать еще CustomerName на выводе (исп. join)
     }
 }

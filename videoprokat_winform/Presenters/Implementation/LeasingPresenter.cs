@@ -3,28 +3,21 @@ using videoprokat_winform.Contexts;
 using videoprokat_winform.Models;
 using videoprokat_winform.Views;
 
-namespace videoprokat_winform.Presenters
+namespace videoprokat_winform.Presenters.Implementation
 {
-    public interface ILeasingPresenter
-    {
-        void Run(MovieOriginal currentMovie, MovieCopy currentMovieCopy, VideoprokatContext context);
-        void AddLeasing(Leasing leasing);
-    }
-
     public class LeasingPresenter : ILeasingPresenter
     {
         private readonly ILeasingView _leasingView;
         private VideoprokatContext _context;
 
-        public LeasingPresenter(ILeasingView view)
+        public LeasingPresenter(ILeasingView view, VideoprokatContext context)
         {
             _leasingView = view;
+            _context = context;
         }
 
-        public void Run(MovieOriginal currentMovie, MovieCopy currentMovieCopy, VideoprokatContext context)
+        public void Run(MovieOriginal currentMovie, MovieCopy currentMovieCopy)
         {
-            _context = context;
-
             _leasingView.CurrentMovie = currentMovie;
             _leasingView.CurrentMovieCopy = currentMovieCopy;
 

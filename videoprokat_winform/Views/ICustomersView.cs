@@ -13,7 +13,7 @@ namespace videoprokat_winform.Views
         event Action<int> OnCustomerSelectionChanged;
 
         bool ConfirmNewCustomer();
-        void RedrawLeasings(IQueryable<Leasing> leasingsDbSet, DbSet<MovieOriginal> moviesDbSet, DbSet<MovieCopy> movieCopiesDbSet);
-        void RedrawCustomers(DbSet<Customer> customersDbSet);
+        void RedrawLeasings(IQueryable<Leasing> leasingsDbSet, IQueryable<MovieOriginal> moviesDbSet, IQueryable<MovieCopy> movieCopiesDbSet);
+        void RedrawCustomers(IQueryable<Customer> customersDbSet);
     }
 }

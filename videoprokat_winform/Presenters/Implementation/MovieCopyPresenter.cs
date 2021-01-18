@@ -2,28 +2,21 @@
 using videoprokat_winform.Models;
 using videoprokat_winform.Views;
 
-namespace videoprokat_winform.Presenters
+namespace videoprokat_winform.Presenters.Implementation
 {
-    public interface IMovieCopyPresenter
-    {
-        void Run(MovieOriginal movie, VideoprokatContext context);
-        void AddMovieCopy(MovieCopy movieCopy);
-    }
-
     public class MovieCopyPresenter : IMovieCopyPresenter
     {
-        private IMovieCopyView _movieCopyView;
+        private readonly IMovieCopyView _movieCopyView;
         private VideoprokatContext _context;
 
-        public MovieCopyPresenter(IMovieCopyView view)
+        public MovieCopyPresenter(IMovieCopyView view, VideoprokatContext context)
         {
             _movieCopyView = view;
+            _context = context;
         }
 
-        public void Run(MovieOriginal movie, VideoprokatContext context)
+        public void Run(MovieOriginal movie)
         {
-            _context = context;
-
             _movieCopyView.CurrentMovie = movie;
             _movieCopyView.OnAddMovieCopy += AddMovieCopy;
 

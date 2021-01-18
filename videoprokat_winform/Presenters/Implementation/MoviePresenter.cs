@@ -2,28 +2,21 @@
 using videoprokat_winform.Models;
 using videoprokat_winform.Views;
 
-namespace videoprokat_winform.Presenters
+namespace videoprokat_winform.Presenters.Implementation
 {
-    public interface IMoviePresenter
-    {
-        void Run(VideoprokatContext context);
-        void AddMovie(MovieOriginal movie);
-    }
-
     public class MoviePresenter : IMoviePresenter
     {
         private readonly IMovieView _movieView;
         private VideoprokatContext _context;
 
-        public MoviePresenter(IMovieView view)
+        public MoviePresenter(IMovieView view, VideoprokatContext context)
         {
             _movieView = view;
+            _context = context;
         }
 
-        public void Run(VideoprokatContext context)
+        public void Run()
         {
-            _context = context;
-
             _movieView.OnAddMovie += AddMovie;
 
             _movieView.Show();

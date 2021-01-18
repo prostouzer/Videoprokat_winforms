@@ -81,9 +81,9 @@ namespace videoprokat_winform
             MessageBox.Show("Неправильный формат данных");
         }
 
-        public void RedrawMovies(IQueryable<MovieOriginal> moviesListDbSet)
+        public void RedrawMovies(IQueryable<MovieOriginal> moviesListIQueryable)
         {
-            var movies = moviesListDbSet.ToList();
+            var movies = moviesListIQueryable.ToList();
             BeginInvoke(new Action(() => // без this.BeingInvoke ошибка reentrant call to SetCurrentCellAddressCore (решение https://stackoverflow.com/questions/27626158/reentrant-call-to-setcurrentcelladdresscore-in-event-handlers-only-where-cel)
             {
                 moviesDgv.DataSource = movies;
@@ -134,13 +134,13 @@ namespace videoprokat_winform
             }));
         }
 
-        public void RedrawLeasings(IQueryable<Leasing> leasingsList, DbSet<Customer> customers)
+        public void RedrawLeasings(IQueryable<Leasing> leasingsIQueryable, IQueryable<Customer> customersIQueryable)
         {
             var currentMovieCopyId = Convert.ToInt32(copiesDgv.CurrentRow.Cells["Id"].Value);
             var movieCopyLeasingInfo =
-                from leasing in leasingsList
+                from leasing in leasingsIQueryable
                 where leasing.MovieCopyId == currentMovieCopyId && leasing.ReturnDate == null
-                join customer in customers on leasing.CustomerId equals customer.Id
+                join customer in customersIQueryable on leasing.CustomerId equals customer.Id
                 select new
                 {
                     id = leasing.Id,

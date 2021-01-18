@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using videoprokat_winform.Contexts;
 using videoprokat_winform.Presenters;
+using videoprokat_winform.Presenters.Implementation;
 using videoprokat_winform.Views;
 
 namespace videoprokat_winform
@@ -23,16 +24,6 @@ namespace videoprokat_winform
             var serviceProvider = services.BuildServiceProvider();
 
             serviceProvider.GetService<MainPresenter>()?.Run();
-
-            //var moviePresenter = new MoviePresenter();
-            //var movieCopyPresenter = new MovieCopyPresenter();
-            //var leasingPresenter = new LeasingPresenter();
-            //var customersPresenter = new CustomersPresenter();
-            //var importMoviesPresenter = new ImportMoviesPresenter();
-            //var returnPresenter = new ReturnPresenter();
-            //var mainFormPresenter = new MainPresenter(new MainForm(), moviePresenter, movieCopyPresenter, leasingPresenter, customersPresenter, importMoviesPresenter, returnPresenter);
-
-            //mainFormPresenter.Run();
         }
 
         private static IServiceCollection ConfigureServices()

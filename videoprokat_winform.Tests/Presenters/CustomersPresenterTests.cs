@@ -7,19 +7,19 @@ using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.DataCollection;
 using videoprokat_winform.Models;
 using videoprokat_winform.Views;
 using videoprokat_winform.Presenters;
-using NSubstitute;
 using NUnit.Framework;
 using NUnit.Framework.Internal.Execution;
 using videoprokat_winform.Contexts;
+using videoprokat_winform.Presenters.Implementation;
 
 namespace videoprokat_winform.Tests.Presenters
 {
     [TestFixture]
     public class CustomersPresenterTests
     {
-        private ICustomersView _view;
-        private VideoprokatContext _context;
-        private CustomersPresenter _presenter;
+        //private ICustomersView _view;
+        //private VideoprokatContext _context;
+        //private CustomersPresenter _presenter;
         [SetUp]
         public void SetUp()
         {

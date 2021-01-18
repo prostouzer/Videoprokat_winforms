@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Windows.Forms;
 using videoprokat_winform.Models;
@@ -60,9 +61,9 @@ namespace videoprokat_winform
             customerNameTextBox.Text = "";
             return false;
         }
-        public void RedrawCustomers(DbSet<Customer> customersDbSet)
+        public void RedrawCustomers(IQueryable<Customer> customersIQueryable)
         {
-            var customers = customersDbSet.ToList();
+            var customers = customersIQueryable.ToList();
             BeginInvoke(new Action(() =>
             {
                 customersDgv.DataSource = customers;
@@ -79,11 +80,11 @@ namespace videoprokat_winform
             }));
         }
 
-        public void RedrawLeasings(IQueryable<Leasing> leasingsIQueryable, DbSet<MovieOriginal> moviesDbSet, DbSet<MovieCopy> movieCopiesDbSet)
+        public void RedrawLeasings(IQueryable<Leasing> leasingsIQueryable, IQueryable<MovieOriginal> moviesIQueryable, IQueryable<MovieCopy> movieCopiesIQueryable)
         {
             var leasings = leasingsIQueryable.ToList();
-            var movies = moviesDbSet.ToList();
-            var movieCopies = movieCopiesDbSet.ToList();
+            var movies = moviesIQueryable.ToList();
+            var movieCopies = movieCopiesIQueryable.ToList();
 
             var currentCustomerId = Convert.ToInt32(customersDgv.CurrentRow.Cells["Id"].Value);
             var leasedByCustomer = from leasing in leasings

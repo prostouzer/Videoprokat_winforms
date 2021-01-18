@@ -1,33 +1,23 @@
 ﻿using System;
 using System.Linq;
-using System.Windows.Forms;
 using videoprokat_winform.Contexts;
 using videoprokat_winform.Views;
 
-namespace videoprokat_winform.Presenters
+namespace videoprokat_winform.Presenters.Implementation
 {
-    public interface IReturnPresenter
-    {
-        void Run(int leasingId, VideoprokatContext context);
-        void ReturnEarly(DateTime returnDate);
-        void ReturnOnTime();
-        void ReturnDelayed(DateTime returnDate, decimal fineMultiplier);
-    }
-
     public class ReturnPresenter : IReturnPresenter
     {
         private readonly IReturnView _returnView;
         private VideoprokatContext _context;
 
-        public ReturnPresenter(IReturnView view)
+        public ReturnPresenter(IReturnView view, VideoprokatContext context)
         {
             _returnView = view;
+            _context = context;
         }
 
-        public void Run(int leasingId, VideoprokatContext context)
+        public void Run(int leasingId)
         {
-            _context = context;
-
             var leasing = _context.LeasedCopies.Single(l => l.Id == leasingId);
             var copy = _context.MoviesCopies.Single(c => c.Id == leasing.MovieCopyId);
             var movie = _context.MoviesOriginal.Single(m => m.Id == copy.MovieId);

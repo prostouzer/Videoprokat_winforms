@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Windows.Forms;
@@ -63,9 +64,9 @@ namespace videoprokat_winform
             return false;
         }
 
-        public void RedrawCustomers(DbSet<Customer> customersDbSet)
+        public void RedrawCustomers(IQueryable<Customer> customersIEnumerable)
         {
-            var customers = customersDbSet.ToList();
+            var customers = customersIEnumerable.ToList();
             customersComboBox.DataSource = customers;
             customersComboBox.DisplayMember = "Name";
             customersComboBox.ValueMember = "Id";

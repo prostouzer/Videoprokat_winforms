@@ -3,31 +3,21 @@ using videoprokat_winform.Contexts;
 using videoprokat_winform.Models;
 using videoprokat_winform.Views;
 
-namespace videoprokat_winform.Presenters
+namespace videoprokat_winform.Presenters.Implementation
 {
-    public interface ICustomersPresenter
-    {
-        void Run(VideoprokatContext context);
-        void LoadCustomers();
-        void AddCustomer(Customer customer);
-        void UpdateCustomer(int customerId, Customer updatedCustomer);
-        void CustomerSelectionChanged(int customerId);
-    }
-
     public class CustomersPresenter : ICustomersPresenter
     {
         private readonly ICustomersView _customersView;
         private VideoprokatContext _context;
 
-        public CustomersPresenter(ICustomersView view)
+        public CustomersPresenter(ICustomersView view, VideoprokatContext context)
         {
             _customersView = view;
+            _context = context;
         }
 
-        public void Run(VideoprokatContext context)
+        public void Run()
         {
-            _context = context;
-
             _customersView.OnLoad += LoadCustomers;
             _customersView.OnAddCustomer += AddCustomer;
 
@@ -54,7 +44,8 @@ namespace videoprokat_winform.Presenters
         public void UpdateCustomer(int customerId, Customer updatedCustomer)
         {
             var customer = _context.Customers.Single(c => c.Id == customerId);
-            customer = updatedCustomer;
+            customer.Name = updatedCustomer.Name;
+            customer.Rating = updatedCustomer.Rating;
 
             _context.SaveChanges();
         }

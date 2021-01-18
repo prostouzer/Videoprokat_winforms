@@ -26,16 +26,15 @@ namespace videoprokat_winform
         {
             ShowDialog();
         }
+
         public bool ConfirmNewMovie()
         {
             if (movieTitleTextBox.Text.Trim() != "")
             {
-                var result = MessageBox.Show(movieDescriptionTextBox.Text.Trim() != "" ? $"Добавить фильм {movieTitleTextBox.Text.Trim()}, {movieDescriptionTextBox.Text.Trim()}, {yearReleasedNumericUpDown.Value} года?" 
+                var dialogResult = MessageBox.Show(movieDescriptionTextBox.Text.Trim() != "" ? $"Добавить фильм {movieTitleTextBox.Text.Trim()}, {movieDescriptionTextBox.Text.Trim()}, {yearReleasedNumericUpDown.Value} года?" 
                     : $"Добавить фильм {movieTitleTextBox.Text.Trim()}, {yearReleasedNumericUpDown.Value} года?", "Добавить фильм", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
-                {
+                if (dialogResult == DialogResult.Yes)
                     return true;
-                }
             }
             else
             {

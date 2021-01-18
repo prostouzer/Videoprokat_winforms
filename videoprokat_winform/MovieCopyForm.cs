@@ -45,7 +45,7 @@ namespace videoprokat_winform
             }
             else
             {
-                MessageBox.Show("Заполните поле комментария");
+                MessageBox.Show("Заполните все поля");
             }
             return false;
         }

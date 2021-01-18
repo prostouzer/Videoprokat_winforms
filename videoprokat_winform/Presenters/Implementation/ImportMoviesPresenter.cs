@@ -5,30 +5,21 @@ using videoprokat_winform.Contexts;
 using videoprokat_winform.Models;
 using videoprokat_winform.Views;
 
-namespace videoprokat_winform.Presenters
+namespace videoprokat_winform.Presenters.Implementation
 {
-    public interface IImportMoviesPresenter
-    {
-        void Run(VideoprokatContext context);
-        void SelectNewFile();
-        void UploadMovies();
-        void ExtractMoviesFromFile(string path);
-    }
-
     public class ImportMoviesPresenter : IImportMoviesPresenter
     {
         private readonly IImportMoviesView _importMoviesView;
         private VideoprokatContext _context;
 
-        public ImportMoviesPresenter(IImportMoviesView view)
+        public ImportMoviesPresenter(IImportMoviesView view, VideoprokatContext context)
         {
             _importMoviesView = view;
+            _context = context;
         }
 
-        public void Run(VideoprokatContext context)
+        public void Run()
         {
-            _context = context;
-
             _importMoviesView.OnSelectNewFile += SelectNewFile;
             _importMoviesView.OnUploadMovies += UploadMovies;
 

@@ -53,19 +53,19 @@ namespace videoprokat_winform.Presenters
 
         public void OpenCustomers()
         {
-            _customersPresenter.Run(_context);
+            _customersPresenter.Run();
         }
 
         public void OpenMovie()
         {
-            _moviePresenter.Run(_context);
+            _moviePresenter.Run();
             _mainView.RedrawMovies(_context.MoviesOriginal);
         }
 
         public void OpenMovieCopy(int movieId)
         {
             var movie = _context.MoviesOriginal.Single(m => m.Id == movieId);
-            _movieCopyPresenter.Run(movie, _context);
+            _movieCopyPresenter.Run(movie);
 
             var copiesList = _context.MoviesCopies.Where(c => c.MovieId == _mainView.CurrentMovieId);
             _mainView.RedrawCopies(copiesList);
@@ -75,7 +75,7 @@ namespace videoprokat_winform.Presenters
         {
             var movieCopy = _context.MoviesCopies.Single(c => c.Id == movieCopyId);
             var movie = _context.MoviesOriginal.Single(m => m.Id == movieCopy.MovieId);
-            _leasingPresenter.Run(movie, movieCopy, _context);
+            _leasingPresenter.Run(movie, movieCopy);
 
             var movieCopies = _context.MoviesCopies.Where(c => c.MovieId == movie.Id);
             _mainView.RedrawCopies(movieCopies);
@@ -87,14 +87,14 @@ namespace videoprokat_winform.Presenters
 
         public void OpenImportMovies()
         {
-            _importMoviesPresenter.Run(_context);
+            _importMoviesPresenter.Run();
 
             _mainView.RedrawMovies(_context.MoviesOriginal);
         }
 
         public void OpenReturn(int leasingId)
         {
-            _returnPresenter.Run(leasingId, _context);
+            _returnPresenter.Run(leasingId);
 
             var copiesList = _context.MoviesCopies.Where(c => c.MovieId == _mainView.CurrentMovieId);
             _mainView.RedrawCopies(copiesList);
@@ -126,7 +126,9 @@ namespace videoprokat_winform.Presenters
         public void UpdateMovie(int movieId, MovieOriginal updatedMovie)
         {
             var movie = _context.MoviesOriginal.Single(m => m.Id == movieId);
-            movie = updatedMovie;
+            movie.Description = updatedMovie.Description;
+            movie.Title = updatedMovie.Title;
+            movie.YearReleased = updatedMovie.YearReleased;
 
             _context.SaveChanges();
 
@@ -136,7 +138,8 @@ namespace videoprokat_winform.Presenters
         public void UpdateMovieCopy(int movieCopyId, MovieCopy updatedMovieCopy)
         {
             var copy = _context.MoviesCopies.Single(c => c.Id == movieCopyId);
-            copy = updatedMovieCopy;
+            copy.Commentary = updatedMovieCopy.Commentary;
+            copy.PricePerDay = updatedMovieCopy.PricePerDay;
 
             _context.SaveChanges();
 
