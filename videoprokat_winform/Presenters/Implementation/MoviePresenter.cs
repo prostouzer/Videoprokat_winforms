@@ -7,9 +7,9 @@ namespace videoprokat_winform.Presenters.Implementation
     public class MoviePresenter : IMoviePresenter
     {
         private readonly IMovieView _movieView;
-        private readonly VideoprokatContext _context;
+        private readonly IVideoprokatContext _context;
 
-        public MoviePresenter(IMovieView view, VideoprokatContext context)
+        public MoviePresenter(IMovieView view, IVideoprokatContext context)
         {
             _movieView = view;
             _context = context;

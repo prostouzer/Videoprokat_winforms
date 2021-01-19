@@ -1,76 +1,134 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.DataCollection;
-using videoprokat_winform.Models;
-using videoprokat_winform.Views;
-using videoprokat_winform.Presenters;
+using NSubstitute;
 using NUnit.Framework;
-using NUnit.Framework.Internal.Execution;
 using videoprokat_winform.Contexts;
+using videoprokat_winform.Models;
+using videoprokat_winform.Presenters;
 using videoprokat_winform.Presenters.Implementation;
+using videoprokat_winform.Views;
 
 namespace videoprokat_winform.Tests.Presenters
 {
     [TestFixture]
     public class CustomersPresenterTests
     {
-        //private ICustomersView _view;
-        //private VideoprokatContext _context;
-        //private CustomersPresenter _presenter;
+        private IVideoprokatContext _context;
+        private ICustomersView _view;
+        private ICustomersPresenter _presenter;
+
         [SetUp]
         public void SetUp()
         {
-            //_view = Substitute.For<ICustomersView>();
-            ////_context = Substitute.For<VideoprokatContext>();
-            ////var customers = Substitute.For<DbSet<Customer>>();
-            ////_context.Set<Customer>().Returns(customers);
-            ////_context.Customers.Returns(customers); // исключение
-            
-            ////_context.Customers.ToList().Returns(new List<Customer>());
-
-            //_presenter = new CustomersPresenter();
-            //_presenter._context = _context;
-            //_presenter.Run(_view);
+            _context = Substitute.For<IVideoprokatContext>();
+            _view = Substitute.For<ICustomersView>();
+            _presenter = new CustomersPresenter(_view, _context);
         }
 
         [Test]
         public void CustomersPresenterOpen()
         {
+            //arrange
+
+
+            //act
+
+
+            //assert
 
         }
 
         [Test]
         public void CustomersLoad()
         {
-        //    //arrange
-
-        //    //act
-        //    _presenter.LoadCustomers();
-        //    _view.Received().RedrawCustomers(new List<Customer>());
-
-        //    //assert
+            //arrange
 
 
-        }
+            //act
 
-        [Test]
-        public void CustomerAdd()
-        {
+
+            //assert
 
         }
 
         [Test]
-        public void CustomerUpdate()
+        public void CustomerAdd_Confirmed()
         {
+            //arrange
+            _view.ConfirmNewCustomer().Returns(true); // юзер соглашается "Подтвердить нового пользователя" (MessageBox)
+            var customers = Substitute.For<DbSet<Customer>>();
+            _context.Customers.Returns(customers);
+            var testCustomer = new Customer("test customer");
+
+            //act
+            _presenter.AddCustomer(testCustomer);
+
+            //assert
+            _context.Customers.Received().Add(Arg.Any<Customer>());
+            _context.Received().SaveChanges();
+            _view.Received().RedrawCustomers(customers);
+        }
+
+        [Test]
+        public void CustomerAdd_NotConfirmed()
+        {
+            //arrange
+            _view.ConfirmNewCustomer().Returns(false); // юзер отказывается "Подтвердить нового пользователя" (MessageBox)
+            var customers = Substitute.For<DbSet<Customer>>();
+            _context.Customers.Returns(customers);
+            var testCustomer = new Customer("test customer");
+
+            //act
+            _presenter.AddCustomer(testCustomer);
+
+            //assert
+            _context.Customers.DidNotReceive().Add(Arg.Any<Customer>());
+            _context.DidNotReceive().SaveChanges();
+            _view.DidNotReceive().RedrawCustomers(customers);
+        }
+
+        [Test]
+        public void CustomerUpdate_ValidData()
+        {
+            // arrange
+            //var customers = Substitute.For<DbSet<Customer>>();
+            //_context.Customers.Returns(customers);
+            var customerId = 1;
+            var initialCustomer = new Customer("Initial Customer", 50);
+            var updatedCustomer = new Customer("Updated Customer Name", 99);
+            
+            //act
+            _presenter.UpdateCustomer(customerId, updatedCustomer);
+
+            //assert
+            Assert.AreEqual(initialCustomer.Name, updatedCustomer.Name);
+            Assert.AreEqual(initialCustomer.Rating, initialCustomer.Rating);
+            _context.Received().SaveChanges();
+        }
+
+        [Test]
+        public void CustomerUpdate_InvalidData()
+        {
+            // arrange
+
+
+            //act
+
+
+            //assert
 
         }
 
         [Test]
         public void CustomerSelectionChanged()
         {
+            //arrange
+
+
+            //act
+
+
+            //assert
 
         }
     }

@@ -10,9 +10,9 @@ namespace videoprokat_winform.Presenters.Implementation
     public class ImportMoviesPresenter : IImportMoviesPresenter
     {
         private readonly IImportMoviesView _importMoviesView;
-        private readonly VideoprokatContext _context;
+        private readonly IVideoprokatContext _context;
 
-        public ImportMoviesPresenter(IImportMoviesView view, VideoprokatContext context)
+        public ImportMoviesPresenter(IImportMoviesView view, IVideoprokatContext context)
         {
             _importMoviesView = view;
             _context = context;

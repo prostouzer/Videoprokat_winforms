@@ -3,7 +3,7 @@ using videoprokat_winform.Models;
 
 namespace videoprokat_winform.Contexts
 {
-    public class VideoprokatContext : DbContext
+    public class VideoprokatContext : DbContext, IVideoprokatContext
     {
         static VideoprokatContext()
         {
