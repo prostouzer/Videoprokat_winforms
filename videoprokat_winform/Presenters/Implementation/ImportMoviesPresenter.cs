@@ -12,6 +12,8 @@ namespace videoprokat_winform.Presenters.Implementation
         private readonly IImportMoviesView _importMoviesView;
         private readonly IVideoprokatContext _context;
 
+        public List<MovieOriginal> MoviesList { get; } = new List<MovieOriginal>(); // превратил в открытое свойство для ImportMoviesTests
+
         public ImportMoviesPresenter(IImportMoviesView view, IVideoprokatContext context)
         {
             _importMoviesView = view;
@@ -31,12 +33,12 @@ namespace videoprokat_winform.Presenters.Implementation
             var path = _importMoviesView.ChooseFilePath();
             ExtractMoviesFromFile(path);
 
-            _importMoviesView.RedrawMovies(_moviesList);
+            _importMoviesView.RedrawMovies(MoviesList);
         }
         public void UploadMovies()
         {
             if (!_importMoviesView.ConfirmUploadMovies()) return;
-            foreach (var movie in _moviesList)
+            foreach (var movie in MoviesList)
             {
                 _context.MoviesOriginal.Add(movie);
             }
@@ -45,11 +47,9 @@ namespace videoprokat_winform.Presenters.Implementation
             _importMoviesView.Close();
         }
 
-        private readonly List<MovieOriginal> _moviesList = new List<MovieOriginal>();
-
         public void ExtractMoviesFromFile(string path)
         {
-            _moviesList.Clear();
+            MoviesList.Clear();
             var abort = false;
             if (path.Trim() == "") return;
             using var reader = new StreamReader(path);
@@ -70,7 +70,7 @@ namespace videoprokat_winform.Presenters.Implementation
 
                         var newMovie = new MovieOriginal(title, description, yearReleased);
 
-                        _moviesList.Add(newMovie);
+                        MoviesList.Add(newMovie);
                     }
                     catch
                     {
@@ -82,7 +82,7 @@ namespace videoprokat_winform.Presenters.Implementation
             }
             if (abort)
             {
-                _moviesList.Clear();
+                MoviesList.Clear();
             }
         }
     }

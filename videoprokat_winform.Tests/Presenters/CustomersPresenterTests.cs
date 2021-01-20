@@ -15,8 +15,8 @@ namespace videoprokat_winform.Tests.Presenters
     [TestFixture]
     public class CustomersPresenterTests
     {
-        private IVideoprokatContext _context;
         private ICustomersView _view;
+        private IVideoprokatContext _context;
         private ICustomersPresenter _presenter;
 
         [SetUp]
