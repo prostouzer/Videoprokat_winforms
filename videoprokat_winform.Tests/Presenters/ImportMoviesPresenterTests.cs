@@ -56,7 +56,7 @@ namespace videoprokat_winform.Tests.Presenters
         }
 
         [Test]
-        public void UploadMovies_Confirmed()
+        public void MoviesUpload_Confirmed()
         {
             //arrange
             _view.ConfirmUploadMovies().Returns(true);
@@ -75,7 +75,7 @@ namespace videoprokat_winform.Tests.Presenters
         }
 
         [Test]
-        public void UploadMovies_NotConfirmed()
+        public void MoviesUpload_NotConfirmed()
         {
             //arrange
             _view.ConfirmUploadMovies().Returns(false);
