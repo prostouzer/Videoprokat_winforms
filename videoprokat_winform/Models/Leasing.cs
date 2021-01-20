@@ -16,8 +16,7 @@ namespace videoprokat_winform.Models
         public Customer Customer { get; set; }
 
         private Leasing() { }
-        public Leasing(DateTime startDate, DateTime expectedEndDate, int customerId, int movieCopyId,
-            decimal pricePerDay)
+        public Leasing(DateTime startDate, DateTime expectedEndDate, int customerId, int movieCopyId, decimal pricePerDay)
         {
             StartDate = startDate;
             ExpectedEndDate = expectedEndDate;
