@@ -17,14 +17,14 @@ namespace videoprokat_winform.Tests.Presenters
     {
         private IImportMoviesView _view;
         private IVideoprokatContext _context;
-        private IImportMoviesPresenter presenter;
+        private IImportMoviesPresenter _presenter;
 
         [SetUp]
         public void SetUp()
         {
             _context = Substitute.For<IVideoprokatContext>();
             _view = Substitute.For<IImportMoviesView>();
-            presenter = new ImportMoviesPresenter(_view, _context);
+            _presenter = new ImportMoviesPresenter(_view, _context);
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace videoprokat_winform.Tests.Presenters
 
 
             //act
-            presenter.Run();
+            _presenter.Run();
 
             //assert
             _view.Received().Show();
@@ -47,7 +47,7 @@ namespace videoprokat_winform.Tests.Presenters
 
 
             //act
-            presenter.SelectNewFile();
+            _presenter.SelectNewFile();
 
             //assert
             _view.Received().ChooseFilePath();
@@ -63,10 +63,10 @@ namespace videoprokat_winform.Tests.Presenters
             var movies = Substitute.For<DbSet<MovieOriginal>>();
             _context.MoviesOriginal.Returns(movies);
             var testMovie = new MovieOriginal("TEST TITLE", "TEST DESCR", 9999);
-            presenter.MoviesList.Add(testMovie); // добавляю фильм чтобы был хотя бы один в MoviesList (для цикла foreach)
+            _presenter.MoviesList.Add(testMovie); // добавляю фильм чтобы был хотя бы один в MoviesList (для цикла foreach)
 
             //act
-            presenter.UploadMovies();
+            _presenter.UploadMovies();
 
             //assert
             _context.MoviesOriginal.Received().Add(Arg.Any<MovieOriginal>());
@@ -80,10 +80,10 @@ namespace videoprokat_winform.Tests.Presenters
             //arrange
             _view.ConfirmUploadMovies().Returns(false);
             var testMovie = new MovieOriginal("TEST TITLE", "TEST DESCR", 9999);
-            presenter.MoviesList.Add(testMovie);
+            _presenter.MoviesList.Add(testMovie);
 
             //act
-            presenter.UploadMovies();
+            _presenter.UploadMovies();
 
             //assert
             _context.MoviesOriginal.DidNotReceive().Add(Arg.Any<MovieOriginal>());
@@ -106,8 +106,8 @@ namespace videoprokat_winform.Tests.Presenters
             };
 
             //act
-            presenter.ExtractMoviesFromFile(path);
-            var actual = presenter.MoviesList;
+            _presenter.ExtractMoviesFromFile(path);
+            var actual = _presenter.MoviesList;
 
             //assert
             Assert.AreEqual(expected[0].Title, actual[0].Title);
@@ -134,7 +134,7 @@ namespace videoprokat_winform.Tests.Presenters
             var path = new string("..\\..\\..\\ImportMoviesExamples\\пример неправильных фильмов.txt");
 
             //act
-            presenter.ExtractMoviesFromFile(path);
+            _presenter.ExtractMoviesFromFile(path);
 
             //assert
             _view.Received().SkipWronglyDeclaredMovie(Arg.Any<string[]>());
