@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.DataCollection;
 using NSubstitute;
 using NUnit.Framework;
 using videoprokat_winform.Contexts;
@@ -92,7 +90,7 @@ namespace videoprokat_winform.Tests.Presenters
         }
 
         [Test]
-        public void CustomerUpdate_ValidData()
+        public void CustomerUpdate()
         {
             // arrange
             const int initialCustomerId = 0;

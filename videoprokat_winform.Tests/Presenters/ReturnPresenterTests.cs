@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using NSubstitute;
 using NUnit.Framework;
 using videoprokat_winform.Contexts;
@@ -12,7 +10,7 @@ using videoprokat_winform.Views;
 namespace videoprokat_winform.Tests.Presenters
 {
     [TestFixture]
-    class ReturnPresenterTests
+    internal class ReturnPresenterTests
     {
         private IReturnView _view;
         private IVideoprokatContext _context;
@@ -35,16 +33,16 @@ namespace videoprokat_winform.Tests.Presenters
             var testMovie = new MovieOriginal("TEST TITLE", "TEST DESCR", 9999);
             var testCustomer = new Customer("TEST NAME");
 
-            var leasings = new FakeDbSet<Leasing>() {testLeasing};
+            var leasings = new FakeDbSet<Leasing> {testLeasing};
             _context.LeasedCopies.Returns(leasings);
-            var copies = new FakeDbSet<MovieCopy>() {testMovieCopy};
+            var copies = new FakeDbSet<MovieCopy> {testMovieCopy};
             _context.MoviesCopies.Returns(copies);
-            var movies  = new FakeDbSet<MovieOriginal>() {testMovie};
+            var movies  = new FakeDbSet<MovieOriginal> {testMovie};
             _context.MoviesOriginal.Returns(movies);
-            var customers = new FakeDbSet<Customer>() {testCustomer};
+            var customers = new FakeDbSet<Customer> {testCustomer};
             _context.Customers.Returns(customers);
 
-            var leasingId = 0;
+            const int leasingId = 0;
 
             //act
             _presenter.Run(leasingId);
@@ -75,15 +73,13 @@ namespace videoprokat_winform.Tests.Presenters
             //arrange
             _view.ConfirmReturnEarly().Returns(true);
 
-            var testMovieCopy = new MovieCopy(9999, "TEST COMMENT", 50);
-            testMovieCopy.Available = false; // копия у кого-то в аренде
+            var testMovieCopy = new MovieCopy(9999, "TEST COMMENT", 50) {Available = false}; // копия у кого-то в аренде
 
             // взяли 20 января, договорились вернуть 25, но вернули 23
             var startDate = new DateTime(2020, 01, 20);
             var expectedEndDate = new DateTime(2020, 01, 25);
             var returnDate = new DateTime(2020, 01, 23);
-            var leasing = new Leasing(startDate, expectedEndDate, 0, 0, 50);
-            leasing.MovieCopy = testMovieCopy;
+            var leasing = new Leasing(startDate, expectedEndDate, 0, 0, 50) {MovieCopy = testMovieCopy};
             _view.CurrentLeasing = leasing;
 
             leasing.ReturnEarly(returnDate);
@@ -106,14 +102,12 @@ namespace videoprokat_winform.Tests.Presenters
             //arrange
             _view.ConfirmReturnEarly().Returns(false);
 
-            var testMovieCopy = new MovieCopy(9999, "TEST COMMENT", 50);
-            testMovieCopy.Available = false; // копия у кого-то в аренде
+            var testMovieCopy = new MovieCopy(9999, "TEST COMMENT", 50) {Available = false}; // копия у кого-то в аренде
 
             var startDate = new DateTime(2020, 01, 20);
             var expectedEndDate = new DateTime(2020, 01, 25);
             var returnDate = new DateTime(2020, 01, 23);
-            var leasing = new Leasing(startDate, expectedEndDate, 0, 0, 50);
-            leasing.MovieCopy = testMovieCopy;
+            var leasing = new Leasing(startDate, expectedEndDate, 0, 0, 50) {MovieCopy = testMovieCopy};
             _view.CurrentLeasing = leasing;
 
             //act
@@ -131,13 +125,11 @@ namespace videoprokat_winform.Tests.Presenters
             //arrange
             _view.ConfirmReturnOnTime().Returns(true);
 
-            var testMovieCopy = new MovieCopy(9999, "TEST COMMENT", 50);
-            testMovieCopy.Available = false; // копия у кого-то в аренде
+            var testMovieCopy = new MovieCopy(9999, "TEST COMMENT", 50) {Available = false}; // копия у кого-то в аренде
 
             var startDate = new DateTime(2020, 01, 20);
             var expectedEndDate = new DateTime(2020, 01, 25);
-            var leasing = new Leasing(startDate, expectedEndDate, 0, 0, 50);
-            leasing.MovieCopy = testMovieCopy;
+            var leasing = new Leasing(startDate, expectedEndDate, 0, 0, 50) {MovieCopy = testMovieCopy};
             _view.CurrentLeasing = leasing;
 
             leasing.ReturnOnTime();
@@ -158,15 +150,13 @@ namespace videoprokat_winform.Tests.Presenters
         public void ReturnOnTime_NotConfirmed()
         {
             //arrange
-            _view.ConfirmReturnOnTime().Returns(false); 
-            
-            var testMovieCopy = new MovieCopy(9999, "TEST COMMENT", 50);
-            testMovieCopy.Available = false; // копия у кого-то в аренде
+            _view.ConfirmReturnOnTime().Returns(false);
+
+            var testMovieCopy = new MovieCopy(9999, "TEST COMMENT", 50) {Available = false}; // копия у кого-то в аренде
 
             var startDate = new DateTime(2020, 01, 20);
             var expectedEndDate = new DateTime(2020, 01, 25);
-            var leasing = new Leasing(startDate, expectedEndDate, 0, 0, 50);
-            leasing.MovieCopy = testMovieCopy;
+            var leasing = new Leasing(startDate, expectedEndDate, 0, 0, 50) {MovieCopy = testMovieCopy};
             _view.CurrentLeasing = leasing;
 
             //act
@@ -185,19 +175,17 @@ namespace videoprokat_winform.Tests.Presenters
             //arrange
             _view.ConfirmReturnDelayed().Returns(true);
 
-            var testMovieCopy = new MovieCopy(9999, "TEST COMMENT", 50);
-            testMovieCopy.Available = false; // копия у кого-то в аренде
+            var testMovieCopy = new MovieCopy(9999, "TEST COMMENT", 50) {Available = false}; // копия у кого-то в аренде
 
             // взяли 20 января, договорились вернуть 25, но вернули 28
             var startDate = new DateTime(2020, 01, 20);
             var expectedEndDate = new DateTime(2020, 01, 25);
             var returnDate = new DateTime(2020, 01, 28);
-            var leasing = new Leasing(startDate, expectedEndDate, 0, 0, 50);
-            leasing.MovieCopy = testMovieCopy;
+            var leasing = new Leasing(startDate, expectedEndDate, 0, 0, 50) {MovieCopy = testMovieCopy};
             _view.CurrentLeasing = leasing;
 
-            decimal fineMultiplier = 2;
-            leasing.ReturnDelayed(returnDate, fineMultiplier);
+            const decimal fineMultiplier = 2;
+            leasing.ReturnDelayed(returnDate);
 
             //act
             _presenter.ReturnDelayed(returnDate, fineMultiplier);
@@ -217,18 +205,16 @@ namespace videoprokat_winform.Tests.Presenters
             //arrange
             _view.ConfirmReturnDelayed().Returns(false);
 
-            var testMovieCopy = new MovieCopy(9999, "TEST COMMENT", 50);
-            testMovieCopy.Available = false; // копия у кого-то в аренде
+            var testMovieCopy = new MovieCopy(9999, "TEST COMMENT", 50) {Available = false}; // копия у кого-то в аренде
 
             // взяли 20 января, договорились вернуть 25, но вернули 28
             var startDate = new DateTime(2020, 01, 20);
             var expectedEndDate = new DateTime(2020, 01, 25);
             var returnDate = new DateTime(2020, 01, 28);
-            var leasing = new Leasing(startDate, expectedEndDate, 0, 0, 50);
-            leasing.MovieCopy = testMovieCopy;
+            var leasing = new Leasing(startDate, expectedEndDate, 0, 0, 50) {MovieCopy = testMovieCopy};
             _view.CurrentLeasing = leasing;
 
-            decimal fineMultiplier = 2;
+            const decimal fineMultiplier = 2;
 
             //act
             _presenter.ReturnDelayed(returnDate, fineMultiplier);

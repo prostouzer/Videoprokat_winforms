@@ -17,8 +17,8 @@ namespace videoprokat_winform.Presenters
         private readonly IImportMoviesPresenter _importMoviesPresenter;
         private readonly IReturnPresenter _returnPresenter;
         public MainPresenter(
-            IVideoprokatContext context, 
-            IMainView mainView, 
+            IMainView mainView,
+            IVideoprokatContext context,
             IMoviePresenter moviePresenter, 
             IMovieCopyPresenter movieCopyPresenter, 
             ILeasingPresenter leasingPresenter, 

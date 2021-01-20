@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
 using videoprokat_winform.Contexts;
@@ -13,7 +10,7 @@ using videoprokat_winform.Views;
 namespace videoprokat_winform.Tests.Presenters
 {
     [TestFixture]
-    class MovieCopyPresenterTests
+    internal class MovieCopyPresenterTests
     {
         private IMovieCopyView _view;
         private IVideoprokatContext _context;
@@ -49,7 +46,7 @@ namespace videoprokat_winform.Tests.Presenters
         {
             //arrange
             _view.ConfirmNewMovieCopy().Returns(true);
-            var movieCopies = new FakeDbSet<MovieCopy> { };
+            var movieCopies = new FakeDbSet<MovieCopy>();
             _context.MoviesCopies.Returns(movieCopies);
             var testMovieCopy = new MovieCopy(9999, "TEST", 9999);
 

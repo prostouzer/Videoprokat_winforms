@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
-using System.IO;
 using NSubstitute;
 using NUnit.Framework;
 using videoprokat_winform.Contexts;
@@ -95,13 +93,13 @@ namespace videoprokat_winform.Tests.Presenters
         public void ExtractMoviesFromFile_ValidData()
         {
             //arrange
-            var path = "..\\..\\..\\ImportMoviesExamples\\пример правильных фильмов №1.txt";
-            var expected = new List<MovieOriginal>()
+            const string path = "..\\..\\..\\ImportMoviesExamples\\пример правильных фильмов №1.txt";
+            var expected = new List<MovieOriginal>
             {
                 new MovieOriginal("имя1", "название1", 2001),
                 new MovieOriginal("имя2", "название2", 2002),
                 new MovieOriginal("имя3", "название3", 2003),
-                new MovieOriginal("имя4", "название4", 2004),
+                new MovieOriginal("имя4", "название4", 2004)
 
             };
 

@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using JetBrains.dotMemoryUnit.Properties;
 using NSubstitute;
-using NSubstitute.Core.Arguments;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using videoprokat_winform.Contexts;
 using videoprokat_winform.Models;
 using videoprokat_winform.Presenters;
@@ -17,7 +11,7 @@ using videoprokat_winform.Views;
 namespace videoprokat_winform.Tests.Presenters
 {
     [TestFixture]
-    class LeasingPresenterTests
+    internal class LeasingPresenterTests
     {
         private ILeasingView _view;
         private IVideoprokatContext _context;
@@ -65,7 +59,7 @@ namespace videoprokat_winform.Tests.Presenters
             _context.MoviesCopies.Returns(movieCopies);
 
             var testLeasing = new Leasing(DateTime.Now, DateTime.Now, 9999, 0, 9999);
-            var leasings = new FakeDbSet<Leasing> { }; 
+            var leasings = new FakeDbSet<Leasing>(); 
             _context.LeasedCopies.Returns(leasings);
 
             //act
@@ -89,7 +83,7 @@ namespace videoprokat_winform.Tests.Presenters
             _context.MoviesCopies.Returns(movieCopies);
 
             var testLeasing = new Leasing(DateTime.Now, DateTime.Now, 9999, 0, 9999);
-            var leasings = new FakeDbSet<Leasing> { };
+            var leasings = new FakeDbSet<Leasing>();
             _context.LeasedCopies.Returns(leasings);
 
             //act

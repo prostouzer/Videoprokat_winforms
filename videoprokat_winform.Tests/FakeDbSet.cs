@@ -8,7 +8,7 @@ namespace videoprokat_winform.Tests
 {
     public class FakeDbSet<T> : IDbSet<T> where T : class
     {
-        readonly IQueryable _query;
+        private readonly IQueryable _query;
 
         public FakeDbSet()
         {

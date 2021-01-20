@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Text;
+﻿using System.Data.Entity;
 using NSubstitute;
 using NUnit.Framework;
 using videoprokat_winform.Contexts;
@@ -13,7 +10,7 @@ using videoprokat_winform.Views;
 namespace videoprokat_winform.Tests.Presenters
 {
     [TestFixture]
-    class MoviePresenterTests
+    internal class MoviePresenterTests
     {
         private IMovieView _view;
         private IVideoprokatContext _context;
