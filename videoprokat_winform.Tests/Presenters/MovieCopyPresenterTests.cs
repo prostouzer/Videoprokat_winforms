@@ -68,15 +68,13 @@ namespace videoprokat_winform.Tests.Presenters
         {
             //arrange
             _view.ConfirmNewMovieCopy().Returns(false);
-            var movieCopies = new FakeDbSet<MovieCopy> { };
-            _context.MoviesCopies.Returns(movieCopies);
             var testMovieCopy = new MovieCopy(9999, "TEST", 9999);
 
             //act
             _presenter.AddMovieCopy(testMovieCopy);
 
             //asert
-            Assert.AreEqual(false, _context.MoviesCopies.Any());
+            _context.MoviesCopies.DidNotReceive().Add(Arg.Any<MovieCopy>());
             _context.DidNotReceive().SaveChanges();
 
             _view.DidNotReceive().Close();
