@@ -1,6 +1,4 @@
-﻿using videoprokat_winform.Contexts;
-
-namespace videoprokat_winform.Presenters
+﻿namespace videoprokat_winform.Presenters
 {
     public interface IImportMoviesPresenter
     {

@@ -14,9 +14,9 @@ namespace videoprokat_winform.Contexts
 
         }
 
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<MovieOriginal> MoviesOriginal { get; set; }
-        public DbSet<MovieCopy> MoviesCopies { get; set; }
-        public DbSet<Leasing> LeasedCopies { get; set; }
+        public IDbSet<Customer> Customers { get; set; }
+        public IDbSet<MovieOriginal> MoviesOriginal { get; set; }
+        public IDbSet<MovieCopy> MoviesCopies { get; set; }
+        public IDbSet<Leasing> LeasedCopies { get; set; }
     }
 }

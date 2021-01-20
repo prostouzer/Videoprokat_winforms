@@ -1,5 +1,7 @@
-﻿using System.Data.Entity;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.DataCollection;
 using NSubstitute;
 using NUnit.Framework;
 using videoprokat_winform.Contexts;
@@ -26,29 +28,31 @@ namespace videoprokat_winform.Tests.Presenters
         }
 
         [Test]
-        public void CustomersPresenterOpen()
+        public void CustomersPresenterRun()
         {
             //arrange
 
 
             //act
-
+            _presenter.Run();
 
             //assert
-
+            _view.Received().Show();
         }
 
         [Test]
         public void CustomersLoad()
         {
             //arrange
-
+            var customers = Substitute.For<DbSet<Customer>>();
+            _context.Customers.Returns(customers);
 
             //act
-
+            _presenter.LoadCustomers();
 
             //assert
-
+            _view.Received().RedrawCustomers(customers);
+            _view.Received().OnUpdateCustomer += Arg.Any<Action<int, Customer>>();
         }
 
         [Test]
@@ -91,14 +95,16 @@ namespace videoprokat_winform.Tests.Presenters
         public void CustomerUpdate_ValidData()
         {
             // arrange
-            //var customers = Substitute.For<DbSet<Customer>>();
-            //_context.Customers.Returns(customers);
-            var customerId = 1;
+            const int initialCustomerId = 0;
             var initialCustomer = new Customer("Initial Customer", 50);
             var updatedCustomer = new Customer("Updated Customer Name", 99);
-            
+
+            var customers = new FakeDbSet<Customer> {initialCustomer}; // не мокаю, т.к. презентер в этом методе использует статический метод Single
+
+            _context.Customers.Returns(customers);
+
             //act
-            _presenter.UpdateCustomer(customerId, updatedCustomer);
+            _presenter.UpdateCustomer(initialCustomerId, updatedCustomer);
 
             //assert
             Assert.AreEqual(initialCustomer.Name, updatedCustomer.Name);
@@ -107,29 +113,20 @@ namespace videoprokat_winform.Tests.Presenters
         }
 
         [Test]
-        public void CustomerUpdate_InvalidData()
-        {
-            // arrange
-
-
-            //act
-
-
-            //assert
-
-        }
-
-        [Test]
         public void CustomerSelectionChanged()
         {
             //arrange
-
+            var leasing = new Leasing(DateTime.Now, DateTime.Now, 999, 999, 999);
+            var leasings = new FakeDbSet<Leasing> {leasing}; // не мокаю, т.к. презентер в этом методе использует статический метод Single
+            _context.LeasedCopies.Returns(leasings);
+            var movies = Substitute.For <DbSet<MovieOriginal>>();
+            var movieCopies = Substitute.For<DbSet<MovieCopy>>();
 
             //act
-
+            _presenter.CustomerSelectionChanged(leasing.Id); 
 
             //assert
-
+            _view.ReceivedWithAnyArgs().RedrawLeasings(leasings, movies, movieCopies); // просто с Received() ошибка типа Non-matched call
         }
     }
 }

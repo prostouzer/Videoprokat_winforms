@@ -1,7 +1,9 @@
 using System;
+using System.Data.Entity;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using videoprokat_winform.Contexts;
+using videoprokat_winform.Models;
 using videoprokat_winform.Presenters;
 using videoprokat_winform.Presenters.Implementation;
 using videoprokat_winform.Views;
@@ -47,6 +49,11 @@ namespace videoprokat_winform
             services.AddTransient<IMovieCopyPresenter, MovieCopyPresenter>();
             services.AddTransient<IMoviePresenter, MoviePresenter>();
             services.AddTransient<IReturnPresenter, ReturnPresenter>();
+
+            services.AddTransient<IDbSet<Customer>, DbSet<Customer>>();
+            services.AddTransient<IDbSet<MovieOriginal>, DbSet<MovieOriginal>>();
+            services.AddTransient<IDbSet<MovieCopy>, DbSet<MovieCopy>>();
+            services.AddTransient<IDbSet<Leasing>, DbSet<Leasing>>();
 
             return services;
         }
