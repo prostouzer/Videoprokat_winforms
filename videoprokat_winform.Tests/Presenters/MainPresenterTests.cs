@@ -53,9 +53,6 @@ namespace videoprokat_winform.Tests.Presenters
         [Test]
         public void Run()
         {
-            //arrange
-
-
             //act
             _presenter.Run();
 
@@ -66,9 +63,6 @@ namespace videoprokat_winform.Tests.Presenters
         [Test]
         public void OpenCustomers()
         {
-            //arrange
-
-
             //act
             _presenter.OpenCustomers();
 
@@ -79,9 +73,6 @@ namespace videoprokat_winform.Tests.Presenters
         [Test]
         public void OpenMovie()
         {
-            //arrange
-
-
             //act
             _presenter.OpenMovie();
 
@@ -94,15 +85,13 @@ namespace videoprokat_winform.Tests.Presenters
         public void OpenMovieCopy()
         {
             //arrange
-            //var movies = new FakeDbSet<MovieOriginal> {new MovieOriginal("TEST", "TEST", 9999)};
-            //_context.MoviesOriginal.Returns(movies);
-            //var movieCopies = new FakeDbSet<MovieCopy> {new MovieCopy(9999, "TEST", 9999)};
-            //_context.MoviesCopies.Returns(movieCopies);
-
-            const int movieId = 0;
+            var testMovie = new MovieOriginal("TEST", "TEST", 9999);
+            _context.MoviesOriginal.Add(testMovie);
+            _context.MoviesCopies.Add(new MovieCopy(9999, "TEST", 9999));
+            _context.SaveChanges();
 
             //act
-            _presenter.OpenMovieCopy(movieId);
+            _presenter.OpenMovieCopy(testMovie.Id);
 
             //assert
             _movieCopyPresenter.Received().Run(Arg.Any<MovieOriginal>());
@@ -113,17 +102,15 @@ namespace videoprokat_winform.Tests.Presenters
         public void OpenLeasing()
         {
             //arrange
-            //var movies = new FakeDbSet<MovieOriginal> { new MovieOriginal("TEST", "TEST", 9999) };
-            //_context.MoviesOriginal.Returns(movies);
-            //var movieCopies = new FakeDbSet<MovieCopy> { new MovieCopy(0, "TEST", 9999) };
-            //_context.MoviesCopies.Returns(movieCopies);
-            //var leasings = new FakeDbSet<Leasing> {new Leasing(DateTime.Now, DateTime.Now, 9999, 9999, 9999)};
-            //_context.LeasedCopies.Returns(leasings);
-
-            const int movieCopyId = 0;
+            var testMovie = new MovieOriginal("TEST", "TEST", 9999);
+            _context.MoviesOriginal.Add(testMovie);
+            _context.SaveChanges(); // нужно чтобы testMovieCopy получил актуальный testMovie.Id после добавления в контекст. Иначе testMovie.Id будет 0
+            var testMovieCopy = new MovieCopy(testMovie.Id, "TEST", 9999);
+            _context.MoviesCopies.Add(testMovieCopy);
+            _context.SaveChanges();
 
             //act
-            _presenter.OpenLeasing(movieCopyId);
+            _presenter.OpenLeasing(testMovieCopy.Id);
 
             //assert
             _leasingPresenter.Received().Run(Arg.Any<MovieOriginal>(), Arg.Any<MovieCopy>());
@@ -134,9 +121,6 @@ namespace videoprokat_winform.Tests.Presenters
         [Test]
         public void OpenImportMovies()
         {
-            //arrange
-
-
             //act
             _presenter.OpenImportMovies();
 
@@ -148,14 +132,8 @@ namespace videoprokat_winform.Tests.Presenters
         [Test]
         public void OpenReturn()
         {
-            //arrange
-            //var copies = new FakeDbSet<MovieCopy>();
-            //_context.MoviesCopies.Returns(copies);
-
-            const int leasingId = 0;
-
             //act
-            _presenter.OpenReturn(leasingId);
+            _presenter.OpenReturn(9999);
 
             //assert
             _returnPresenter.Received().Run(Arg.Any<int>());
@@ -165,10 +143,6 @@ namespace videoprokat_winform.Tests.Presenters
         [Test]
         public void LoadMain()
         {
-            //arrange
-            //var movies = new FakeDbSet<MovieOriginal>();
-            //_context.MoviesOriginal.Returns(movies);
-
             //act
             _presenter.LoadMain();
 
@@ -181,18 +155,14 @@ namespace videoprokat_winform.Tests.Presenters
         [Test]
         public void FilterMovies_Filtered()
         {
-            //arrange
-            //var movies = new FakeDbSet<MovieOriginal>
-            //{
-            //    new MovieOriginal("Терминатор", "Описание терминатора!", 1999),
-            //    new MovieOriginal("Шрек", "Описание шрека!", 2000),
-            //    new MovieOriginal("Терминатор 2", "Описание терминатора 2!", 2001),
-            //    new MovieOriginal("Терминатор 3", "Описание терминатора 3!", 2001),
-            //    new MovieOriginal("Шрек 2", "Описание шрека 2!", 2002),
-            //    new MovieOriginal("Человек-паук", "Описание человека-паука!", 2003)
-            //};
-            //_context.MoviesOriginal.Returns(movies);
-
+            //arrang
+            _context.MoviesOriginal.Add(new MovieOriginal("Терминатор", "Описание терминатора!", 1999));
+            _context.MoviesOriginal.Add(new MovieOriginal("Шрек", "Описание шрека!", 2000));
+            _context.MoviesOriginal.Add(new MovieOriginal("Терминатор 2", "Описание терминатора 2!", 2001));
+            _context.MoviesOriginal.Add(new MovieOriginal("Терминатор 3", "Описание терминатора 3!", 2001));
+            _context.MoviesOriginal.Add(new MovieOriginal("Шрек 2", "Описание шрека 2!", 2002));
+            _context.MoviesOriginal.Add(new MovieOriginal("Человек-паук", "Описание человека-паука!", 2003));
+            _context.SaveChanges();
 
             //act
             _presenter.FilterMovies("Шрек");
@@ -206,16 +176,13 @@ namespace videoprokat_winform.Tests.Presenters
         public void FilterMovies_NotFiltered()
         {
             //arrange
-            //var movies = new FakeDbSet<MovieOriginal>
-            //{
-            //    new MovieOriginal("Терминатор", "Описание терминатора!", 1999),
-            //    new MovieOriginal("Шрек", "Описание шрека!", 2000),
-            //    new MovieOriginal("Терминатор 2", "Описание терминатора 2!", 2001),
-            //    new MovieOriginal("Терминатор 3", "Описание терминатора 3!", 2001),
-            //    new MovieOriginal("Шрек 2", "Описание шрека 2!", 2002),
-            //    new MovieOriginal("Человек-паук", "Описание человека-паука!", 2003)
-            //};
-            //_context.MoviesOriginal.Returns(movies);
+            _context.MoviesOriginal.Add(new MovieOriginal("Терминатор", "Описание терминатора!", 1999));
+            _context.MoviesOriginal.Add(new MovieOriginal("Шрек", "Описание шрека!", 2000));
+            _context.MoviesOriginal.Add(new MovieOriginal("Терминатор 2", "Описание терминатора 2!", 2001));
+            _context.MoviesOriginal.Add(new MovieOriginal("Терминатор 3", "Описание терминатора 3!", 2001));
+            _context.MoviesOriginal.Add(new MovieOriginal("Шрек 2", "Описание шрека 2!", 2002));
+            _context.MoviesOriginal.Add(new MovieOriginal("Человек-паук", "Описание человека-паука!", 2003));
+            _context.SaveChanges();
 
             //act
             _presenter.FilterMovies("Мстители");
@@ -229,40 +196,59 @@ namespace videoprokat_winform.Tests.Presenters
         {
             //arrange
             var initialMovie = new MovieOriginal("Старое имя :(", "Старое описание :(", 8888);
+            _context.MoviesOriginal.Add(initialMovie);
+            _context.SaveChanges();
             var updatedMovie = new MovieOriginal("НОВОЕ ИМЯ", "НОВОЕ ОПИСАНИЕ!!!", 9999);
-            //var movies = new FakeDbSet<MovieOriginal> { initialMovie };
-            //_context.MoviesOriginal.Returns(movies);
-
-            const int initialMovieId = 0;
 
             //act
-            _presenter.UpdateMovie(initialMovieId, updatedMovie);
+            _presenter.UpdateMovie(initialMovie.Id, updatedMovie);
 
             //assert
             Assert.AreEqual(updatedMovie.Title, initialMovie.Title);
             Assert.AreEqual(updatedMovie.Description, initialMovie.Description);
             Assert.AreEqual(updatedMovie.YearReleased, initialMovie.YearReleased);
 
-            _context.Received().SaveChanges();
             _view.Received().RedrawMovies(Arg.Any<IQueryable<MovieOriginal>>());
         }
 
         [Test]
         public void UpdateMovieCopy()
         {
+            //arrange
+            var initialMovieCopy = new MovieCopy(9999, "Старый комментарий :(", 7777);
+            _context.MoviesCopies.Add(initialMovieCopy);
+            _context.SaveChanges();
+            var updatedMovieCopy = new MovieCopy(9999, "НОВЫЙ КОММЕНТАРИЙ!!!", 8888);
 
+            //act
+            _presenter.UpdateMovieCopy(initialMovieCopy.Id, updatedMovieCopy);
+            var actual = _context.MoviesCopies.Single(c=> c.Id == initialMovieCopy.Id);
+
+            //assert
+            Assert.AreEqual(updatedMovieCopy.Commentary, actual.Commentary);
+            Assert.AreEqual(updatedMovieCopy.PricePerDay, actual.PricePerDay);
+
+            _view.Received().RedrawCopies(Arg.Any<IQueryable<MovieCopy>>());
         }
 
         [Test]
         public void MovieSelectionChanged()
         {
+            //act
+            _presenter.MovieSelectionChanged(9999);
 
+            //assert
+            _view.Received().RedrawCopies(Arg.Any<IQueryable<MovieCopy>>());
         }
 
         [Test]
         public void MovieCopySelectionChanged()
         {
+            //act
+            _presenter.MovieCopySelectionChanged(9999);
 
+            //assert
+            _view.Received().RedrawLeasings(Arg.Any<IQueryable<Leasing>>(), Arg.Any<IQueryable<Customer>>());
         }
     }
 }
