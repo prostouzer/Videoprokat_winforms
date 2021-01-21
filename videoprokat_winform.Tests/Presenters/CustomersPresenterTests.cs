@@ -2,7 +2,6 @@
 using System.Data.Entity;
 using System.Linq;
 using NSubstitute;
-using NSubstitute.Core;
 using NUnit.Framework;
 using videoprokat_winform.Contexts;
 using videoprokat_winform.Models;
@@ -119,8 +118,6 @@ namespace videoprokat_winform.Tests.Presenters
             var leasing = new Leasing(DateTime.Now, DateTime.Now, 999, 999, 999);
             var leasings = new FakeDbSet<Leasing> {leasing}; // не мокаю, т.к. презентер в этом методе использует статический метод Single
             _context.LeasedCopies.Returns(leasings);
-            var movies = Substitute.For <DbSet<MovieOriginal>>();
-            var movieCopies = Substitute.For<DbSet<MovieCopy>>();
 
             //act
             _presenter.CustomerSelectionChanged(leasing.Id); 
