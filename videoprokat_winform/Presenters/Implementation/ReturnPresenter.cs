@@ -8,9 +8,9 @@ namespace videoprokat_winform.Presenters.Implementation
     public class ReturnPresenter : IReturnPresenter
     {
         private readonly IReturnView _returnView;
-        private readonly IVideoprokatContext _context;
+        private readonly VideoprokatContext _context;
 
-        public ReturnPresenter(IReturnView view, IVideoprokatContext context)
+        public ReturnPresenter(IReturnView view, VideoprokatContext context)
         {
             _returnView = view;
             _context = context;

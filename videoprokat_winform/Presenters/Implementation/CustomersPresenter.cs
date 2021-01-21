@@ -8,9 +8,9 @@ namespace videoprokat_winform.Presenters.Implementation
     public class CustomersPresenter : ICustomersPresenter
     {
         private readonly ICustomersView _customersView;
-        private readonly IVideoprokatContext _context;
+        private readonly VideoprokatContext _context;
 
-        public CustomersPresenter(ICustomersView view, IVideoprokatContext context)
+        public CustomersPresenter(ICustomersView view, VideoprokatContext context)
         {
             _customersView = view;
             _context = context;

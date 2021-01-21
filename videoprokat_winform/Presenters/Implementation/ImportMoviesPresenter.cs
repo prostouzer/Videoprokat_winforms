@@ -11,11 +11,11 @@ namespace videoprokat_winform.Presenters.Implementation
     public class ImportMoviesPresenter : IImportMoviesPresenter
     {
         private readonly IImportMoviesView _importMoviesView;
-        private readonly IVideoprokatContext _context;
+        private readonly VideoprokatContext _context;
 
         public List<MovieOriginal> MoviesList { get; } = new List<MovieOriginal>(); // превратил в открытое свойство для ImportMoviesTests
 
-        public ImportMoviesPresenter(IImportMoviesView view, IVideoprokatContext context)
+        public ImportMoviesPresenter(IImportMoviesView view, VideoprokatContext context)
         {
             _importMoviesView = view;
             _context = context;

@@ -8,9 +8,9 @@ namespace videoprokat_winform.Presenters.Implementation
     public class LeasingPresenter : ILeasingPresenter
     {
         private readonly ILeasingView _leasingView;
-        private readonly IVideoprokatContext _context;
+        private readonly VideoprokatContext _context;
 
-        public LeasingPresenter(ILeasingView view, IVideoprokatContext context)
+        public LeasingPresenter(ILeasingView view, VideoprokatContext context)
         {
             _leasingView = view;
             _context = context;

@@ -7,9 +7,9 @@ namespace videoprokat_winform.Presenters.Implementation
     public class MovieCopyPresenter : IMovieCopyPresenter
     {
         private readonly IMovieCopyView _movieCopyView;
-        private readonly IVideoprokatContext _context;
+        private readonly VideoprokatContext _context;
 
-        public MovieCopyPresenter(IMovieCopyView view, IVideoprokatContext context)
+        public MovieCopyPresenter(IMovieCopyView view, VideoprokatContext context)
         {
             _movieCopyView = view;
             _context = context;
