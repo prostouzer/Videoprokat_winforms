@@ -22,6 +22,7 @@ namespace videoprokat_winform.Tests.Presenters
             _view = Substitute.For<IMovieView>();
             var dbContextOptions = new DbContextOptionsBuilder<VideoprokatContext>().UseInMemoryDatabase("TestDb");
             _context = new VideoprokatContext(dbContextOptions.Options);
+            _context.Database.EnsureDeleted(); // мне не нужны заполненные данные из OnModelCreating после EnsureCreated
             _presenter = new MoviePresenter(_view, _context);
         }
 

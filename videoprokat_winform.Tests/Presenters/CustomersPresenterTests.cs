@@ -27,7 +27,6 @@ namespace videoprokat_winform.Tests.Presenters
 
             _view = Substitute.For<ICustomersView>();
             _presenter = new CustomersPresenter(_view, _context);
-            
         }
 
         [Test]
@@ -43,8 +42,6 @@ namespace videoprokat_winform.Tests.Presenters
         [Test]
         public void CustomersLoad()
         {
-            //arrange
-
             //act
             _presenter.LoadCustomers();
 
@@ -58,13 +55,13 @@ namespace videoprokat_winform.Tests.Presenters
         {
             //arrange
             _view.ConfirmNewCustomer().Returns(true); // юзер соглашается "Подтвердить нового пользователя" (MessageBox)
-            var testCustomer = new Customer("test customer");
+            var expectedCustomer = new Customer("test customer");
 
             //act
-            _presenter.AddCustomer(testCustomer);
+            _presenter.AddCustomer(expectedCustomer);
 
             //assert
-            Assert.AreSame(testCustomer, _context.Customers.Single());
+            Assert.AreEqual(true, _context.Customers.Any());
             _view.Received().RedrawCustomers(_context.Customers);
         }
 

@@ -23,6 +23,7 @@ namespace videoprokat_winform.Tests.Presenters
             _view = Substitute.For<IMovieCopyView>();
             var dbContextOptions = new DbContextOptionsBuilder<VideoprokatContext>().UseInMemoryDatabase("TestDb");
             _context = new VideoprokatContext(dbContextOptions.Options);
+            _context.Database.EnsureDeleted(); // мне не нужны заполненные данные из OnModelCreating после EnsureCreated
             _presenter = new MovieCopyPresenter(_view, _context);
         }
 

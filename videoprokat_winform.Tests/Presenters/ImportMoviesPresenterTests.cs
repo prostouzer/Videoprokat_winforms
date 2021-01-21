@@ -23,16 +23,14 @@ namespace videoprokat_winform.Tests.Presenters
         {
             var dbContextOptions = new DbContextOptionsBuilder<VideoprokatContext>().UseInMemoryDatabase("TestDb");
             _context = new VideoprokatContext(dbContextOptions.Options);
+            _context.Database.EnsureDeleted(); // мне не нужны заполненные данные из OnModelCreating после EnsureCreated
             _view = Substitute.For<IImportMoviesView>();
             _presenter = new ImportMoviesPresenter(_view, _context);
         }
 
         [Test]
-        public void ImportMoviesRun()
+        public void Run()
         {
-            //arrange
-
-
             //act
             _presenter.Run();
 
@@ -43,42 +41,35 @@ namespace videoprokat_winform.Tests.Presenters
         [Test]
         public void SelectNewFile()
         {
-            //arrange
-
-
             //act
             _presenter.SelectNewFile();
 
             //assert
             _view.Received().ChooseFilePath();
             _view.Received().RedrawMovies(Arg.Any<IQueryable<MovieOriginal>>());
-            // а можно еще проверить что presenter.ExtractMoviesFromFile(Arg.Any<string>) ?
         }
 
         [Test]
-        public void MoviesUpload_Confirmed()
+        public void UploadMovies_Confirmed()
         {
             //arrange
-            _view.ConfirmUploadMovies().Returns(true);
-            //var movies = Substitute.For<DbSet<MovieOriginal>>();
-            //_context.MoviesOriginal.Returns(movies);
-            var testMovie = new MovieOriginal("TEST TITLE", "TEST DESCR", 9999);
-            _presenter.MoviesList.Add(testMovie); // добавляю фильм чтобы был хотя бы один в MoviesList (для цикла foreach)
+            _view.ConfirmUploadMovies().Returns(true); // юзер соглашается добавлять новые фильмы
+            var expectedMovie = new MovieOriginal("TEST TITLE", "TEST DESCR", 9999);
+            _presenter.MoviesList.Add(expectedMovie); // добавляю фильм чтобы был хотя бы один в MoviesList (для цикла foreach)
 
             //act
             _presenter.UploadMovies();
 
             //assert
-            _context.MoviesOriginal.Received().Add(Arg.Any<MovieOriginal>());
-            _context.Received().SaveChanges();
+            Assert.AreSame(expectedMovie, _context.MoviesOriginal.Single());
             _view.Received().Close();
         }
 
         [Test]
-        public void MoviesUpload_NotConfirmed()
+        public void UploadMovies_NotConfirmed()
         {
             //arrange
-            _view.ConfirmUploadMovies().Returns(false);
+            _view.ConfirmUploadMovies().Returns(false); // юзер отказывается добавлять новые фильмы
             var testMovie = new MovieOriginal("TEST TITLE", "TEST DESCR", 9999);
             _presenter.MoviesList.Add(testMovie);
 
@@ -86,8 +77,7 @@ namespace videoprokat_winform.Tests.Presenters
             _presenter.UploadMovies();
 
             //assert
-            _context.MoviesOriginal.DidNotReceive().Add(Arg.Any<MovieOriginal>());
-            _context.DidNotReceive().SaveChanges();
+            Assert.AreEqual(false, _context.MoviesOriginal.Any());
             _view.DidNotReceive().Close();
         }
 
