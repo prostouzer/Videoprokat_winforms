@@ -58,20 +58,17 @@ namespace videoprokat_winform.Tests.Presenters
             _view.ConfirmNewLeasing().Returns(true); // юзер соглашается "Подтвердить нового пользователя" (MessageBox)
 
             var testMovieCopy = new MovieCopy(9999, "TEST", 9999);
-            //var movieCopies = new FakeDbSet<MovieCopy> {testMovieCopy}; // используется FakeDbSet т.к. презентер использует статические Linq методы (которые не мокаются). Иначе бы использовал Substitute.For<DbSet<MovieCopy>>
-            //_context.MoviesCopies.Returns(movieCopies);
+            _context.MoviesCopies.Add(testMovieCopy);
+            _context.SaveChanges();
 
-            var testLeasing = new Leasing(DateTime.Now, DateTime.Now, 9999, 0, 9999);
-            //var leasings = new FakeDbSet<Leasing>(); 
-            //_context.LeasedCopies.Returns(leasings);
+            var testLeasing = new Leasing(DateTime.Now, DateTime.Now, 9999, testMovieCopy.Id, 9999);
 
             //act
             _presenter.AddLeasing(testLeasing);
 
             //assert
             Assert.AreEqual(false, testMovieCopy.Available);
-            Assert.AreEqual(true, _context.LeasedCopies.Any()); // не использую _context.LeasedCopies.Received()... т.к. LeasedCopies не замоканные
-            _context.Received().SaveChanges();
+            Assert.AreEqual(true, _context.LeasedCopies.Any());
             _view.Received().Close();
         }
 
@@ -82,12 +79,10 @@ namespace videoprokat_winform.Tests.Presenters
             _view.ConfirmNewLeasing().Returns(false);
 
             var testMovieCopy = new MovieCopy(9999, "TEST", 9999);
-            //var movieCopies = new FakeDbSet<MovieCopy> { testMovieCopy }; // используется FakeDbSet т.к. презентер использует статические Linq методы (которые не мокаются). Иначе бы использовал Substitute.For<DbSet<MovieCopy>>
-            //_context.MoviesCopies.Returns(movieCopies);
+            _context.MoviesCopies.Add(testMovieCopy);
+            _context.SaveChanges();
 
-            var testLeasing = new Leasing(DateTime.Now, DateTime.Now, 9999, 0, 9999);
-            //var leasings = new FakeDbSet<Leasing>();
-            //_context.LeasedCopies.Returns(leasings);
+            var testLeasing = new Leasing(DateTime.Now, DateTime.Now, 9999, testMovieCopy.Id, 9999);
 
             //act
             _presenter.AddLeasing(testLeasing);
@@ -95,7 +90,6 @@ namespace videoprokat_winform.Tests.Presenters
             //assert
             Assert.AreEqual(true, testMovieCopy.Available);
             Assert.AreEqual(false, _context.LeasedCopies.Any());
-            _context.DidNotReceive().SaveChanges();
             _view.DidNotReceive().Close();
         }
     }
