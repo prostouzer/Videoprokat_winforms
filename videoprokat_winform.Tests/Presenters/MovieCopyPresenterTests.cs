@@ -47,22 +47,31 @@ namespace videoprokat_winform.Tests.Presenters
         [Test]
         public void MovieCopyAdd_Confirmed()
         {
-
-        }
-
-        [Test]
-        public void MovieCopyAdd_NotConfirmed()
-        {
             //arrange
-            _view.ConfirmNewMovieCopy().Returns(false);
+            _view.ConfirmNewMovieCopy().Returns(true); // юзер соглашается "Добавить новую копию фильма"
             var testMovieCopy = new MovieCopy(9999, "TEST", 9999);
 
             //act
             _presenter.AddMovieCopy(testMovieCopy);
 
             //asert
-            _context.MoviesCopies.DidNotReceive().Add(Arg.Any<MovieCopy>());
-            _context.DidNotReceive().SaveChanges();
+            Assert.AreEqual(true, _context.MoviesCopies.Any());
+
+            _view.Received().Close();
+        }
+
+        [Test]
+        public void MovieCopyAdd_NotConfirmed()
+        {
+            //arrange
+            _view.ConfirmNewMovieCopy().Returns(false); // юзер отказывается "Добавить новую копию фильма"
+            var testMovieCopy = new MovieCopy(9999, "TEST", 9999);
+
+            //act
+            _presenter.AddMovieCopy(testMovieCopy);
+
+            //asert
+            Assert.AreEqual(false, _context.MoviesCopies.Any());
 
             _view.DidNotReceive().Close();
         }
