@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using videoprokat_winform.Contexts;
-using videoprokat_winform.Models;
 using videoprokat_winform.Presenters;
 using videoprokat_winform.Presenters.Implementation;
 using videoprokat_winform.Views;

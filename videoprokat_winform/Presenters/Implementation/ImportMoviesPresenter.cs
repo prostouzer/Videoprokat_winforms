@@ -57,6 +57,7 @@ namespace videoprokat_winform.Presenters.Implementation
             while (!reader.EndOfStream && !abort)
             {
                 var line = reader.ReadLine();
+                if (line == null) continue;
                 var movies = line.Split(';');
                 foreach (var movie in movies)
                 {
