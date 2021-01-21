@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using NUnit.Framework;
 using videoprokat_winform.Contexts;
@@ -29,9 +30,6 @@ namespace videoprokat_winform.Tests.Presenters
         [Test]
         public void Run()
         {
-            //arrange
-
-
             //act
             _presenter.Run();
 
@@ -43,17 +41,15 @@ namespace videoprokat_winform.Tests.Presenters
         public void MovieAdd_Confirmed()
         {
             //arrange
-            _view.ConfirmNewMovie().Returns(true);
-            var movies = Substitute.For<DbSet<MovieOriginal>>();
-            _context.MoviesOriginal.Returns(movies);
+            _view.ConfirmNewMovie().Returns(true); // юзер соглашается "Добавить новый фильм"
             var testMovie = new MovieOriginal("TEST", "TEST", 9999);
 
             //act
             _presenter.AddMovie(testMovie);
 
             //assert
-            _context.MoviesOriginal.Received().Add(Arg.Any<MovieOriginal>());
-            _context.Received().SaveChanges();
+            Assert.AreEqual(true, _context.MoviesOriginal.Any());
+
             _view.Received().Close();
         }
 
@@ -61,15 +57,15 @@ namespace videoprokat_winform.Tests.Presenters
         public void MovieAdd_NotConfirmed()
         {
             //arrange
-            _view.ConfirmNewMovie().Returns(false);
+            _view.ConfirmNewMovie().Returns(false); // юзер отказывается "Добавить новый фильм"
             var testMovie = new MovieOriginal("TEST", "TEST", 9999);
 
             //act
             _presenter.AddMovie(testMovie);
 
             //assert
-            _context.MoviesOriginal.DidNotReceive().Add(Arg.Any<MovieOriginal>());
-            _context.DidNotReceive().SaveChanges();
+            Assert.AreEqual(false, _context.MoviesOriginal.Any());
+
             _view.DidNotReceive().Close();
         }
     }
