@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Linq;
 using NSubstitute;
+using NSubstitute.Core;
 using NUnit.Framework;
 using videoprokat_winform.Contexts;
 using videoprokat_winform.Models;
@@ -124,7 +126,7 @@ namespace videoprokat_winform.Tests.Presenters
             _presenter.CustomerSelectionChanged(leasing.Id); 
 
             //assert
-            _view.ReceivedWithAnyArgs().RedrawLeasings(leasings, movies, movieCopies); // просто с Received() ошибка типа Non-matched call
+            _view.Received().RedrawLeasings(Arg.Any<IQueryable<Leasing>>(), Arg.Any<IQueryable<MovieOriginal>>(), Arg.Any<IQueryable<MovieCopy>>());
         }
     }
 }

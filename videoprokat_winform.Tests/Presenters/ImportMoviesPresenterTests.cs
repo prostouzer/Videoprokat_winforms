@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
 using videoprokat_winform.Contexts;
@@ -49,7 +50,7 @@ namespace videoprokat_winform.Tests.Presenters
 
             //assert
             _view.Received().ChooseFilePath();
-            _view.Received().RedrawMovies(Arg.Any<List<MovieOriginal>>());
+            _view.Received().RedrawMovies(Arg.Any<IQueryable<MovieOriginal>>());
             // а можно еще проверить что presenter.ExtractMoviesFromFile(Arg.Any<string>) ?
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using videoprokat_winform.Models;
 
 namespace videoprokat_winform.Views
@@ -11,7 +12,7 @@ namespace videoprokat_winform.Views
 
         string ChooseFilePath();
         bool SkipWronglyDeclaredMovie(string[] movieValues);
-        void RedrawMovies(List<MovieOriginal> movies);
+        void RedrawMovies(IQueryable<MovieOriginal> moviesIQueryable);
         bool ConfirmUploadMovies();
     }
 }

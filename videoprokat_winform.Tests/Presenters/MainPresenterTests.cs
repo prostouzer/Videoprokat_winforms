@@ -22,6 +22,7 @@ namespace videoprokat_winform.Tests.Presenters
         private IReturnPresenter _returnPresenter;
 
         private MainPresenter _presenter;
+
         [SetUp]
         public void SetUp()
         {

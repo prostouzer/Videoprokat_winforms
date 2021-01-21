@@ -43,7 +43,7 @@ namespace videoprokat_winform
             return openFileDialog.FileName;
         }
 
-        public void RedrawMovies(List<MovieOriginal> movies)
+        public void RedrawMovies(IQueryable<MovieOriginal> movies)
         {
             if (movies.Any())
             {

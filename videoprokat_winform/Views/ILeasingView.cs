@@ -12,6 +12,6 @@ namespace videoprokat_winform.Views
         event Action<Leasing> OnLeaseMovieCopy;
 
         bool ConfirmNewLeasing();
-        void RedrawCustomers(IQueryable<Customer> customers);
+        void RedrawCustomers(IQueryable<Customer> customersIQueryable);
     }
 }

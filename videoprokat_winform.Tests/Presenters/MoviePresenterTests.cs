@@ -62,7 +62,6 @@ namespace videoprokat_winform.Tests.Presenters
             _view.ConfirmNewMovie().Returns(false);
             var testMovie = new MovieOriginal("TEST", "TEST", 9999);
 
-
             //act
             _presenter.AddMovie(testMovie);
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using videoprokat_winform.Contexts;
 using videoprokat_winform.Models;
 using videoprokat_winform.Views;
@@ -33,7 +34,7 @@ namespace videoprokat_winform.Presenters.Implementation
             var path = _importMoviesView.ChooseFilePath();
             ExtractMoviesFromFile(path);
 
-            _importMoviesView.RedrawMovies(MoviesList);
+            _importMoviesView.RedrawMovies(MoviesList.AsQueryable());
         }
         public void UploadMovies()
         {
