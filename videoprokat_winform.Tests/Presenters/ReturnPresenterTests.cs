@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using NUnit.Framework;
 using videoprokat_winform.Contexts;
@@ -13,58 +14,22 @@ namespace videoprokat_winform.Tests.Presenters
     internal class ReturnPresenterTests
     {
         private IReturnView _view;
-        private IVideoprokatContext _context;
+        private VideoprokatContext _context;
         private IReturnPresenter _presenter;
 
         [SetUp]
         public void SetUp()
         {
             _view = Substitute.For<IReturnView>();
-            _context = Substitute.For<IVideoprokatContext>();
+            var dbContextOptions = new DbContextOptionsBuilder<VideoprokatContext>().UseInMemoryDatabase("TestDb");
+            _context = new VideoprokatContext(dbContextOptions.Options);
             _presenter = new ReturnPresenter(_view, _context);
         }
 
         [Test]
         public void Run()
         {
-            //arrange
-            var testLeasing = new Leasing(DateTime.Now, DateTime.Now, 0, 0, 9999);
-            var testMovieCopy = new MovieCopy(0, "TEST COMMENT", 9999);
-            var testMovie = new MovieOriginal("TEST TITLE", "TEST DESCR", 9999);
-            var testCustomer = new Customer("TEST NAME");
 
-            var leasings = new FakeDbSet<Leasing> {testLeasing};
-            _context.LeasedCopies.Returns(leasings);
-            var copies = new FakeDbSet<MovieCopy> {testMovieCopy};
-            _context.MoviesCopies.Returns(copies);
-            var movies  = new FakeDbSet<MovieOriginal> {testMovie};
-            _context.MoviesOriginal.Returns(movies);
-            var customers = new FakeDbSet<Customer> {testCustomer};
-            _context.Customers.Returns(customers);
-
-            const int leasingId = 0;
-
-            //act
-            _presenter.Run(leasingId);
-
-            //assert
-            Assert.AreEqual(testLeasing.StartDate, _view.CurrentLeasing.StartDate);
-            Assert.AreEqual(testLeasing.ExpectedEndDate, _view.CurrentLeasing.ExpectedEndDate);
-            Assert.AreEqual(testLeasing.CustomerId, _view.CurrentLeasing.CustomerId);
-            Assert.AreEqual(testLeasing.MovieCopyId, _view.CurrentLeasing.MovieCopyId);
-            Assert.AreEqual(testLeasing.TotalPrice, _view.CurrentLeasing.TotalPrice);
-
-            Assert.AreEqual(testMovieCopy.MovieId, _view.CurrentMovieCopy.MovieId);
-            Assert.AreEqual(testMovieCopy.Commentary, _view.CurrentMovieCopy.Commentary);
-            Assert.AreEqual(testMovieCopy.PricePerDay, _view.CurrentMovieCopy.PricePerDay);
-
-            Assert.AreEqual(testMovie.Title, _view.CurrentMovie.Title);
-            Assert.AreEqual(testMovie.Description, _view.CurrentMovie.Description);
-            Assert.AreEqual(testMovie.YearReleased, _view.CurrentMovie.YearReleased);
-
-            Assert.AreEqual(testCustomer.Name, _view.CurrentCustomer.Name);
-
-            _view.Received().Show();
         }
 
         [Test]

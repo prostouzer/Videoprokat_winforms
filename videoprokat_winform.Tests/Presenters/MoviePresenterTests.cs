@@ -1,4 +1,4 @@
-﻿using System.Data.Entity;
+﻿using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using NUnit.Framework;
 using videoprokat_winform.Contexts;
@@ -13,14 +13,15 @@ namespace videoprokat_winform.Tests.Presenters
     internal class MoviePresenterTests
     {
         private IMovieView _view;
-        private IVideoprokatContext _context;
+        private VideoprokatContext _context;
         private IMoviePresenter _presenter;
 
         [SetUp]
         public void SetUp()
         {
             _view = Substitute.For<IMovieView>();
-            _context = Substitute.For<IVideoprokatContext>();
+            var dbContextOptions = new DbContextOptionsBuilder<VideoprokatContext>().UseInMemoryDatabase("TestDb");
+            _context = new VideoprokatContext(dbContextOptions.Options);
             _presenter = new MoviePresenter(_view, _context);
         }
 

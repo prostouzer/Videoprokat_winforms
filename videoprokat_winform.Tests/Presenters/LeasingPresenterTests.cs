@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using NUnit.Framework;
 using videoprokat_winform.Contexts;
@@ -14,14 +15,15 @@ namespace videoprokat_winform.Tests.Presenters
     internal class LeasingPresenterTests
     {
         private ILeasingView _view;
-        private IVideoprokatContext _context;
+        private VideoprokatContext _context;
         private ILeasingPresenter _presenter;
 
         [SetUp]
         public void SetUp()
         {
             _view = Substitute.For<ILeasingView>();
-            _context = Substitute.For<IVideoprokatContext>();
+            var dbContextOptions = new DbContextOptionsBuilder<VideoprokatContext>().UseInMemoryDatabase("TestDb");
+            _context = new VideoprokatContext(dbContextOptions.Options);
             _presenter = new LeasingPresenter(_view, _context);
         }
 
@@ -55,12 +57,12 @@ namespace videoprokat_winform.Tests.Presenters
             _view.ConfirmNewLeasing().Returns(true); // юзер соглашается "Подтвердить нового пользователя" (MessageBox)
 
             var testMovieCopy = new MovieCopy(9999, "TEST", 9999);
-            var movieCopies = new FakeDbSet<MovieCopy> {testMovieCopy}; // используется FakeDbSet т.к. презентер использует статические Linq методы (которые не мокаются). Иначе бы использовал Substitute.For<DbSet<MovieCopy>>
-            _context.MoviesCopies.Returns(movieCopies);
+            //var movieCopies = new FakeDbSet<MovieCopy> {testMovieCopy}; // используется FakeDbSet т.к. презентер использует статические Linq методы (которые не мокаются). Иначе бы использовал Substitute.For<DbSet<MovieCopy>>
+            //_context.MoviesCopies.Returns(movieCopies);
 
             var testLeasing = new Leasing(DateTime.Now, DateTime.Now, 9999, 0, 9999);
-            var leasings = new FakeDbSet<Leasing>(); 
-            _context.LeasedCopies.Returns(leasings);
+            //var leasings = new FakeDbSet<Leasing>(); 
+            //_context.LeasedCopies.Returns(leasings);
 
             //act
             _presenter.AddLeasing(testLeasing);
@@ -79,12 +81,12 @@ namespace videoprokat_winform.Tests.Presenters
             _view.ConfirmNewLeasing().Returns(false);
 
             var testMovieCopy = new MovieCopy(9999, "TEST", 9999);
-            var movieCopies = new FakeDbSet<MovieCopy> { testMovieCopy }; // используется FakeDbSet т.к. презентер использует статические Linq методы (которые не мокаются). Иначе бы использовал Substitute.For<DbSet<MovieCopy>>
-            _context.MoviesCopies.Returns(movieCopies);
+            //var movieCopies = new FakeDbSet<MovieCopy> { testMovieCopy }; // используется FakeDbSet т.к. презентер использует статические Linq методы (которые не мокаются). Иначе бы использовал Substitute.For<DbSet<MovieCopy>>
+            //_context.MoviesCopies.Returns(movieCopies);
 
             var testLeasing = new Leasing(DateTime.Now, DateTime.Now, 9999, 0, 9999);
-            var leasings = new FakeDbSet<Leasing>();
-            _context.LeasedCopies.Returns(leasings);
+            //var leasings = new FakeDbSet<Leasing>();
+            //_context.LeasedCopies.Returns(leasings);
 
             //act
             _presenter.AddLeasing(testLeasing);

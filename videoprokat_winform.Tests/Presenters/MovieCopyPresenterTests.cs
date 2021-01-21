@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using NUnit.Framework;
 using videoprokat_winform.Contexts;
@@ -13,14 +14,15 @@ namespace videoprokat_winform.Tests.Presenters
     internal class MovieCopyPresenterTests
     {
         private IMovieCopyView _view;
-        private IVideoprokatContext _context;
+        private VideoprokatContext _context;
         private IMovieCopyPresenter _presenter;
 
         [SetUp]
         public void SetUp()
         {
             _view = Substitute.For<IMovieCopyView>();
-            _context = Substitute.For<IVideoprokatContext>();
+            var dbContextOptions = new DbContextOptionsBuilder<VideoprokatContext>().UseInMemoryDatabase("TestDb");
+            _context = new VideoprokatContext(dbContextOptions.Options);
             _presenter = new MovieCopyPresenter(_view, _context);
         }
 
@@ -44,20 +46,7 @@ namespace videoprokat_winform.Tests.Presenters
         [Test]
         public void MovieCopyAdd_Confirmed()
         {
-            //arrange
-            _view.ConfirmNewMovieCopy().Returns(true);
-            var movieCopies = new FakeDbSet<MovieCopy>();
-            _context.MoviesCopies.Returns(movieCopies);
-            var testMovieCopy = new MovieCopy(9999, "TEST", 9999);
 
-            //act
-            _presenter.AddMovieCopy(testMovieCopy);
-
-            //asert
-            Assert.AreEqual(true, _context.MoviesCopies.Any());
-            _context.Received().SaveChanges();
-
-            _view.Received().Close();
         }
 
         [Test]

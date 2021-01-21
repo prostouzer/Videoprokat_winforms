@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using NUnit.Framework;
 using videoprokat_winform.Contexts;
@@ -14,13 +15,14 @@ namespace videoprokat_winform.Tests.Presenters
     public class ImportMoviesPresenterTests
     {
         private IImportMoviesView _view;
-        private IVideoprokatContext _context;
+        private VideoprokatContext _context;
         private IImportMoviesPresenter _presenter;
 
         [SetUp]
         public void SetUp()
         {
-            _context = Substitute.For<IVideoprokatContext>();
+            var dbContextOptions = new DbContextOptionsBuilder<VideoprokatContext>().UseInMemoryDatabase("TestDb");
+            _context = new VideoprokatContext(dbContextOptions.Options);
             _view = Substitute.For<IImportMoviesView>();
             _presenter = new ImportMoviesPresenter(_view, _context);
         }
@@ -58,8 +60,8 @@ namespace videoprokat_winform.Tests.Presenters
         {
             //arrange
             _view.ConfirmUploadMovies().Returns(true);
-            var movies = Substitute.For<DbSet<MovieOriginal>>();
-            _context.MoviesOriginal.Returns(movies);
+            //var movies = Substitute.For<DbSet<MovieOriginal>>();
+            //_context.MoviesOriginal.Returns(movies);
             var testMovie = new MovieOriginal("TEST TITLE", "TEST DESCR", 9999);
             _presenter.MoviesList.Add(testMovie); // добавляю фильм чтобы был хотя бы один в MoviesList (для цикла foreach)
 
