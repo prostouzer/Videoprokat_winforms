@@ -29,7 +29,7 @@ namespace videoprokat_winform.Presenters.Implementation
         {
             _customersView.RedrawCustomers(_context.Customers);
 
-            _customersView.OnUpdateCustomer += UpdateCustomer;
+            _customersView.OnUpdateCustomer += UpdateCustomer; // подписка после загрузки всех данных, чтобы OnUpdateCustomer не триггерился во время первоначального заполнения данных
         }
 
         public void AddCustomer(Customer customer)

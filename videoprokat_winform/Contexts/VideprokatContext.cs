@@ -11,15 +11,15 @@ namespace videoprokat_winform.Contexts
         public DbSet<MovieCopy> MoviesCopies { get; set; }
         public DbSet<Leasing> LeasedCopies { get; set; }
 
-        public VideoprokatContext()
+        public VideoprokatContext(DbContextOptions<VideoprokatContext> options) : base(options)
         {
             Database.EnsureCreated();
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["MyConnection"].ConnectionString);
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["MyConnection"].ConnectionString);
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

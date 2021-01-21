@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using NUnit.Framework;
 using videoprokat_winform.Contexts;
@@ -15,23 +15,22 @@ namespace videoprokat_winform.Tests.Presenters
     public class CustomersPresenterTests
     {
         private ICustomersView _view;
-        private IVideoprokatContext _context;
+        private VideoprokatContext _context;
         private ICustomersPresenter _presenter;
 
         [SetUp]
         public void SetUp()
         {
-            _context = Substitute.For<IVideoprokatContext>();
+            var dbContextOptions = new DbContextOptionsBuilder<VideoprokatContext>().UseInMemoryDatabase("TestDb");
+            _context = new VideoprokatContext(dbContextOptions.Options);
             _view = Substitute.For<ICustomersView>();
             _presenter = new CustomersPresenter(_view, _context);
+            
         }
 
         [Test]
         public void CustomersPresenterRun()
         {
-            //arrange
-
-
             //act
             _presenter.Run();
 
@@ -59,8 +58,8 @@ namespace videoprokat_winform.Tests.Presenters
         {
             //arrange
             _view.ConfirmNewCustomer().Returns(true); // юзер соглашается "Подтвердить нового пользователя" (MessageBox)
-            var customers = Substitute.For<DbSet<Customer>>();
-            _context.Customers.Returns(customers);
+            //var customers = Substitute.For<DbSet<Customer>>();
+            //_context.Customers.Returns(customers);
             var testCustomer = new Customer("test customer");
 
             //act
@@ -69,7 +68,7 @@ namespace videoprokat_winform.Tests.Presenters
             //assert
             _context.Customers.Received().Add(Arg.Any<Customer>());
             _context.Received().SaveChanges();
-            _view.Received().RedrawCustomers(customers);
+            _view.Received().RedrawCustomers(_context.Customers);
         }
 
         [Test]
@@ -98,9 +97,9 @@ namespace videoprokat_winform.Tests.Presenters
             var initialCustomer = new Customer("Initial Customer", 50);
             var updatedCustomer = new Customer("Updated Customer Name", 99);
 
-            var customers = new FakeDbSet<Customer> {initialCustomer}; // не мокаю, т.к. презентер в этом методе использует статический метод Single
+            //var customers = new FakeDbSet<Customer> {initialCustomer}; // не мокаю, т.к. презентер в этом методе использует статический метод Single
 
-            _context.Customers.Returns(customers);
+            //_context.Customers.Returns(customers);
 
             //act
             _presenter.UpdateCustomer(initialCustomerId, updatedCustomer);
@@ -116,8 +115,8 @@ namespace videoprokat_winform.Tests.Presenters
         {
             //arrange
             var leasing = new Leasing(DateTime.Now, DateTime.Now, 999, 999, 999);
-            var leasings = new FakeDbSet<Leasing> {leasing}; // не мокаю, т.к. презентер в этом методе использует статический метод Single
-            _context.LeasedCopies.Returns(leasings);
+            //var leasings = new FakeDbSet<Leasing> {leasing}; // не мокаю, т.к. презентер в этом методе использует статический метод Single
+            //_context.LeasedCopies.Returns(leasings);
 
             //act
             _presenter.CustomerSelectionChanged(leasing.Id); 

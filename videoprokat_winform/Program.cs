@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Windows.Forms;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +33,8 @@ namespace videoprokat_winform
         {
             var services = new ServiceCollection();
 
-            services.AddSingleton<VideoprokatContext>();
+            services.AddDbContext<VideoprokatContext>(options =>
+                options.UseSqlServer(ConfigurationManager.ConnectionStrings["MyConnection"].ConnectionString));
             services.AddTransient<MainPresenter>();
 
             services.AddTransient<IMainView, MainForm>();
